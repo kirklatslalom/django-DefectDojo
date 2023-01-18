@@ -147,7 +147,7 @@ class VeracodeParser(object):
         _references = "None"
         if "References:" in _description:
             _references = _description[
-                _description.index("References:") + 13 :
+                _description.index("References:") + 13 :  # noqa: E203
             ].replace(")  ", ")\n")
         finding.references = (
             _references

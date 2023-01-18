@@ -2686,7 +2686,10 @@ class async_delete:
     def chunk_list(self, model, list):
         chunk_size = get_setting("ASYNC_OBEJECT_DELETE_CHUNK_SIZE")
         # Break the list of objects into "chunk_size" lists
-        chunk_list = [list[i : i + chunk_size] for i in range(0, len(list), chunk_size)]
+        chunk_list = [
+            list[i : i + chunk_size]  # noqa: E203
+            for i in range(0, len(list), chunk_size)  # noqa: E203
+        ]  # noqa: E203
         logger.debug(
             "ASYNC_DELETE: Split "
             + self.get_object_name(model)

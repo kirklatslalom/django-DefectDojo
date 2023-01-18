@@ -107,7 +107,7 @@ class ScannerTest(BaseTestCase):
         forms = [form.strip().lower() for form in forms]
         forms = forms[
             forms.index('scan_type_choices = (("", "please select a scan type"),')
-            + 1 : forms.index(
+            + 1 : forms.index(  # noqa: E203
                 "sorted_scan_type_choices = sorted(scan_type_choices, key=lambda x: x[1])"
             )
             - 1
@@ -160,7 +160,9 @@ class ScannerTest(BaseTestCase):
         file.close()
 
         templates = [temp.strip().lower() for temp in templates]
-        templates = templates[templates.index("<ul>") + 1 : templates.index("</ul>")]
+        templates = templates[
+            templates.index("<ul>") + 1 : templates.index("</ul>")  # noqa: E203
+        ]  # noqa: E203
         remove_patterns = ["<li><b>", "</b>", "</li>", " scanner", " scan"]
         for pattern in remove_patterns:
             templates = [re.sub(pattern, "", temp) for temp in templates]

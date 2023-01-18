@@ -113,7 +113,7 @@ def get_item(vulnerability, test):
 
     component_name = vulnerability.get("component")
     component_version = vulnerability.get("source_comp_id")[
-        len(vulnerability.get("source_id", "")) + 1 :
+        len(vulnerability.get("source_id", "")) + 1 :  # noqa: E203
     ]
 
     # The 'id' field is empty? (at least in my sample file)

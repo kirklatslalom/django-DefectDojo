@@ -183,7 +183,7 @@ class SchemaChecker:
             return schema
 
         ref_name = schema["$ref"]
-        ref_name = ref_name[ref_name.rfind("/") + 1 :]
+        ref_name = ref_name[ref_name.rfind("/") + 1 :]  # noqa: E203
         return self._definitions[ref_name]
 
     def _check_has_required_fields(self, required_fields, obj):

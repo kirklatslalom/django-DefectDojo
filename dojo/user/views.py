@@ -785,7 +785,7 @@ class DojoPasswordResetForm(PasswordResetForm):
         url = hyperlink.parse(settings.SITE_URL)
         context["site_name"] = url.host
         context["protocol"] = url.scheme
-        context["domain"] = settings.SITE_URL[len(f"{url.scheme}://") :]
+        context["domain"] = settings.SITE_URL[len(f"{url.scheme}://") :]  # noqa: E203
 
         super().send_mail(
             subject_template_name,
