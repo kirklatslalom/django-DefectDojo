@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from urllib.parse import urlencode
 from dojo.models import Tool_Type

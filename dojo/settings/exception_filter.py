@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.views.debug import SafeExceptionReporterFilter
 
 

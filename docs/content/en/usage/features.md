@@ -238,7 +238,7 @@ details about the deduplication process : switch
     duplicates and that were in the previous scan of the same type
     (example ZAP) for the same engagement (or product in case of
     \"close_old_findings_product_scope\") and that are not present in the new
-    scan are closed (Inactive, Verified, Mitigated). 
+    scan are closed (Inactive, Verified, Mitigated).
 - `close_old_findings_product_scope` : if true, close_old_findings applies
     to all findings of the same type in the product. Note that
     \"Deduplication on engagement\" is no longer used to determine the
@@ -507,12 +507,12 @@ a future release this will be brought out to the UI.
 
 ## Endpoint Meta Importer
 
-For heavy infrastructure scanning organizations, endpoints need to be as 
+For heavy infrastructure scanning organizations, endpoints need to be as
 flexible as possible to get the most of DefectDojo. This flexibility comes
 in the form of Tags and custom fields. Tags allow users to filter, sort, and
 report objects in ways the base object is not totally proficient in doing.
 
-Endpoint Meta Importer provides a means to apply arbitrary tags and custom fields to 
+Endpoint Meta Importer provides a means to apply arbitrary tags and custom fields to
 endpoints in mass via a CSV file. Tags and customs fields are stored in the
 format of column:row.
 

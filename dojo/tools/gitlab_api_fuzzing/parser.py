@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 from dojo.models import Finding

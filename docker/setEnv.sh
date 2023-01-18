@@ -23,7 +23,7 @@ function show_current {
 function get_current {
     if [ -L ${override_link} ]
     then
-        # Check for Mac OSX 
+        # Check for Mac OSX
         if [[ "$OSTYPE" == "darwin"* ]]; then
             # readlink is not native to mac, so this will work in it's place.
             symlink=$(python3 -c "import os; print(os.path.realpath('docker-compose.override.yml'))")

@@ -1,1 +1,2 @@
-__author__ = 'Aaron Weaver'
+# -*- coding: utf-8 -*-
+__author__ = "Aaron Weaver"

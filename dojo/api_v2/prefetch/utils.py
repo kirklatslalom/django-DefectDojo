@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db.models.fields import related
 
 
@@ -36,6 +37,7 @@ def _get_prefetchable_fields(serializer):
     Args:
         serializer (Serializer): [description]
     """
+
     def _is_field_prefetchable(field):
         return _is_one_to_one_relation(field) or _is_many_to_many_relation(field)
 
@@ -52,7 +54,7 @@ def _get_prefetchable_fields(serializer):
         field = getattr(model, field_name)
         if _is_field_prefetchable(field):
             # ManyToMany relationship can be reverse
-            if hasattr(field, 'reverse') and field.reverse:
+            if hasattr(field, "reverse") and field.reverse:
                 fields.append((field_name, field.field.model))
             else:
                 fields.append((field_name, field.field.related_model))

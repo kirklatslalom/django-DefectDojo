@@ -13,11 +13,11 @@
                 <p>
                     {% if sla_age < 0 %}
                         This security finding has breached its SLA.
-                        
+
                         - Day(s) overdue: {{sla}}
                     {% else %}
                         A security finding is about to breach its SLA.
-                        
+
                         - Day(s) remaining: {{sla}}
                     {% endif %}
                 </p>
@@ -59,7 +59,7 @@
     Severity: {{finding.severity}}
     You can find details here: {{ url|full_url }}
     {% if system_settings.disclaimer and system_settings.disclaimer.strip %}
-        
+
         Disclaimer:
         {{ system_settings.disclaimer }}
     {% endif %}

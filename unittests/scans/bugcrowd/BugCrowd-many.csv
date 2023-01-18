@@ -9,7 +9,7 @@ This would not be possible via web access because of CSRF protections. On mobile
 
 BigCorp users can be tricked into having their sensitive data stolen via access to deeplinks by third party apps. Any document that is auto-downloaded can be ex-filtrated with the PoC provided. It's very common for apps to have sessions stay open after login and this exploit chain leverages that feature.
 
-So far I've been able to expose the following information from my account: Full name, Account type, Account ID number, Sales Code, Phone Number. 
+So far I've been able to expose the following information from my account: Full name, Account type, Account ID number, Sales Code, Phone Number.
 
 ---
 
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
-            
+
         } catch(Exception e)  {
             System.out.println(""is exception raises during sending mail"" + e);
         }
@@ -185,7 +185,7 @@ Some ideas on how to fix this.
 
 1. Check origin of the deeplink request and only allow requests from bigcorp.com or mobile apps
 
-2. Download files to a non-public directory like `/data/data/com.bigcorp.mobile.android.bigcorp/cache/*` 
+2. Download files to a non-public directory like `/data/data/com.bigcorp.mobile.android.bigcorp/cache/*`
 
 3. Restrict app's protected folders and URIs
 
@@ -245,7 +245,7 @@ Full list of vulnerable fragments can be retrieved by command
 grep android.support.v4.app.Fragment -r . | grep extends
 ```
 I found 129 candidates",,,2018-09-19 19:46:16 UTC,2018-09-25 18:32:22 UTC,,BigCorp Mobile Application for Android,android,,* [https://cwe.mitre.org/data/definitions/723](https://cwe.mitre.org/data/definitions/723)
-d44b95d792de018373be4ff3425d22159217be7552b902ba1f3030ohbie2ve1w,bigcorp,platform,Haxor-03,Bypassing file upload filter for potential XSS,Bypassing file upload filter for potential XSS,3,400,10,2020-02-28 18:19:34 UTC,Cross-Site Scripting (XSS),unresolved,open,FALSE,https://www.bigcorp.com/ActivityList/ActivityList?3&activityTypeCd=DOCUPLD&activityId=74140DOCUPLD1048758188&wa_ref=cntr_quicklinks_checklist_ref,"Right after signing up for your service you are requested to submit a few documents for verification. This upload seems to be slightly different from the normal document upload function, specifically that it should allow less filetypes by default 
+d44b95d792de018373be4ff3425d22159217be7552b902ba1f3030ohbie2ve1w,bigcorp,platform,Haxor-03,Bypassing file upload filter for potential XSS,Bypassing file upload filter for potential XSS,3,400,10,2020-02-28 18:19:34 UTC,Cross-Site Scripting (XSS),unresolved,open,FALSE,https://www.bigcorp.com/ActivityList/ActivityList?3&activityTypeCd=DOCUPLD&activityId=74140DOCUPLD1048758188&wa_ref=cntr_quicklinks_checklist_ref,"Right after signing up for your service you are requested to submit a few documents for verification. This upload seems to be slightly different from the normal document upload function, specifically that it should allow less filetypes by default
 ![image.png](https://bugcrowd.com/embed/bc32510e-do5b-4623-987c-f01db42364bc/74ab0923-6195-413f-b097-5c4ffedd4867 ""image.png"") compared to the normal document upload ![normal.png](https://bugcrowd.com/embed/bc32510e-do5b-4623-987c-f01db42364bc/b2bac822-c7b5-a44a-9473-42a781f734ec ""normal.png""). But it appears that the validation on the normal file upload is much better than the one on the verification file upload this is targeting.
 
 It appears that in the POST request that uploads the file the ""Content-type:"" header in the multipart form is completely ignored, as is the file ending. The verification is done by checking the first few bytes of the file to decide if it should be uploaded. Once it is uploaded im not 100% confident what happens, it appears that after it is checked and uploaded the actual file type is decided by the file ending instead of the mimetype. This results in being able to upload arbitrary content, BUT most of them just get reflected as content type ""Octet-stream"". I have found that .html works just fine and is loaded as a valid html document.

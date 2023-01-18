@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 import json
 from json.decoder import JSONDecodeError
@@ -13,20 +14,20 @@ class EdgescanAPI(object):
     DEFAULT_URL = "https://live.edgescan.com"
 
     def __init__(self, tool_config=None):
-        tool_type, _ = Tool_Type.objects.get_or_create(name='Edgescan')
+        tool_type, _ = Tool_Type.objects.get_or_create(name="Edgescan")
 
         if not tool_config:
             try:
                 tool_config = Tool_Configuration.objects.get(tool_type=tool_type)
             except Tool_Configuration.DoesNotExist:
                 raise Exception(
-                    'No Edgescan tool is configured. \n'
-                    'Create a new Tool at Settings -> Tool Configuration'
+                    "No Edgescan tool is configured. \n"
+                    "Create a new Tool at Settings -> Tool Configuration"
                 )
             except Tool_Configuration.MultipleObjectsReturned:
                 raise Exception(
-                    'More than one Tool Configuration for Edgescan exists. \n'
-                    'Please specify at Product configuration which one should be used.'
+                    "More than one Tool Configuration for Edgescan exists. \n"
+                    "Please specify at Product configuration which one should be used."
                 )
 
         if tool_config.authentication_type == "API":
@@ -34,7 +35,11 @@ class EdgescanAPI(object):
             self.url = tool_config.url or self.DEFAULT_URL
             self.options = self.get_extra_options(tool_config)
         else:
-            raise Exception('Edgescan Authentication type {} not supported'.format(tool_config.authentication_type))
+            raise Exception(
+                "Edgescan Authentication type {} not supported".format(
+                    tool_config.authentication_type
+                )
+            )
 
     @staticmethod
     def get_extra_options(tool_config):
@@ -42,11 +47,11 @@ class EdgescanAPI(object):
             try:
                 return json.loads(tool_config.extras)
             except (JSONDecodeError, TypeError):
-                raise ValueError('JSON not provided in Extras field.')
+                raise ValueError("JSON not provided in Extras field.")
 
     def get_findings(self, asset_ids):
         url = f"{self.url}/api/v1/vulnerabilities/export.json?c[asset_id_in]={asset_ids}&c[status]=open"
-        if self.options and 'date' in self.options:
+        if self.options and "date" in self.options:
             url += f"&c[date_opened_after]={self.options['date']}"
 
         response = requests.get(

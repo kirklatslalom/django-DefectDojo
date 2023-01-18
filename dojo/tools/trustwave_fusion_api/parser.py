@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import hashlib
 from datetime import datetime
@@ -28,13 +29,11 @@ class TrustwaveFusionAPIParser(object):
             item = get_item(node, test)
 
             item_key = hashlib.sha256(
-                "|".join([item.severity, item.title,
-                         item.description]).encode()
+                "|".join([item.severity, item.title, item.description]).encode()
             ).hexdigest()
 
             if item_key in items:
-                items[item_key].unsaved_endpoints.extend(
-                    item.unsaved_endpoints)
+                items[item_key].unsaved_endpoints.extend(item.unsaved_endpoints)
                 items[item_key].nb_occurences += 1
             else:
                 items[item_key] = item
@@ -75,16 +74,16 @@ def get_item(vuln, test):
             endpoint = Endpoint(host=str(location["ip"]))
     # check for protocol
     if (
-        "applicationProtocol" in location and
-        location["applicationProtocol"] and
-        location["applicationProtocol"] != "None"
+        "applicationProtocol" in location
+        and location["applicationProtocol"]
+        and location["applicationProtocol"] != "None"
     ):
         endpoint.protocol = location["applicationProtocol"]
     # check for port
     if (
-        "port" in location and
-        location["port"] in location and
-        location["port"] != "None"
+        "port" in location
+        and location["port"] in location
+        and location["port"] != "None"
     ):
         endpoint.port = location["port"]
     finding.unsaved_endpoints = [endpoint]  # assigning endpoint
@@ -112,17 +111,15 @@ def get_item(vuln, test):
 
     # Component Name and Version
     if (
-        "applicationCpe" in location and
-        location["applicationCpe"] and
-        location["applicationCpe"] != "None"
+        "applicationCpe" in location
+        and location["applicationCpe"]
+        and location["applicationCpe"] != "None"
     ):
         cpe = CPE(location["applicationCpe"])
 
-        component_name = cpe.get_vendor()[0] + ":" if len(
-            cpe.get_vendor()) > 0 else ""
+        component_name = cpe.get_vendor()[0] + ":" if len(cpe.get_vendor()) > 0 else ""
 
-        component_name += cpe.get_product()[0] if len(
-            cpe.get_product()) > 0 else ""
+        component_name += cpe.get_product()[0] if len(cpe.get_product()) > 0 else ""
 
         finding.component_name = component_name if component_name else None
         finding.component_version = (

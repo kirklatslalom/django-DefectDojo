@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ParserTest(object):
     def __init__(self, name: str, type: str, version: str):
         self.name = name

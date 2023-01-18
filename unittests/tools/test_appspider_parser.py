@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import path
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.appspider.parser import AppSpiderParser
@@ -9,7 +10,9 @@ class TestAppSpiderParser(DojoTestCase):
         test = Test()
         test.engagement = Engagement()
         test.engagement.product = Product()
-        testfile = open(path.join(path.dirname(__file__), "../scans/appspider/one_vuln.xml"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/appspider/one_vuln.xml")
+        )
         parser = AppSpiderParser()
         findings = parser.get_findings(testfile, test)
         for finding in findings:
@@ -23,4 +26,6 @@ class TestAppSpiderParser(DojoTestCase):
 
     def convert_severity(self):
         with self.subTest(val="0-Safe"):
-            self.assertIn(Finding.SEVERITIES, AppSpiderParser.convert_severity("0-Safe"))
+            self.assertIn(
+                Finding.SEVERITIES, AppSpiderParser.convert_severity("0-Safe")
+            )

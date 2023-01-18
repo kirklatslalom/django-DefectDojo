@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.nikto.parser import NiktoParser
 from dojo.models import Test, Engagement, Product
 
 
 class TestNiktoParser(DojoTestCase):
-
     def test_parse_file_with_old_format(self):
         test = Test()
         engagement = Engagement()
@@ -68,11 +68,15 @@ class TestNiktoParser(DojoTestCase):
                 self.assertEqual(443, endpoint.port)
                 self.assertEqual("juice-shop.herokuapp.com", endpoint.host)
                 self.assertEqual("public/", endpoint.path)
-            if ("Retrieved via header: 1.1 vegur" == finding.title and
-                    "Info" == finding.severity):
+            if (
+                "Retrieved via header: 1.1 vegur" == finding.title
+                and "Info" == finding.severity
+            ):
                 self.assertEqual(1, len(finding.unsaved_endpoints))
-            if ("Potentially Interesting Backup/Cert File Found. " == finding.title and
-                    "Info" == finding.severity):
+            if (
+                "Potentially Interesting Backup/Cert File Found. " == finding.title
+                and "Info" == finding.severity
+            ):
                 self.assertEqual(140, len(finding.unsaved_endpoints))
 
     def test_parse_file_json_with_uri_errors(self):
@@ -84,7 +88,10 @@ class TestNiktoParser(DojoTestCase):
                 endpoint.clean()
         self.assertEqual(13, len(findings))
         for finding in findings:
-            if "favicon.ico file identifies this server as: Apache Tomcat" == finding.title:
+            if (
+                "favicon.ico file identifies this server as: Apache Tomcat"
+                == finding.title
+            ):
                 self.assertEqual("500008", finding.vuln_id_from_tool)
                 self.assertEqual(1, finding.nb_occurences)
                 self.assertEqual("Medium", finding.severity)
@@ -94,7 +101,10 @@ class TestNiktoParser(DojoTestCase):
                 # self.assertEqual(443, endpoint.port)
                 # self.assertEqual("juice-shop.herokuapp.com", endpoint.host)
                 # self.assertEqual("public/", endpoint.path)
-            elif "/examples/servlets/index.html: Apache Tomcat default JSP pages present." == finding.title:
+            elif (
+                "/examples/servlets/index.html: Apache Tomcat default JSP pages present."
+                == finding.title
+            ):
                 self.assertEqual("000366", finding.vuln_id_from_tool)
                 self.assertEqual(1, finding.nb_occurences)
                 self.assertEqual("Info", finding.severity)
@@ -114,7 +124,9 @@ class TestNiktoParser(DojoTestCase):
         self.assertEqual(8, len(findings))
         with self.subTest(i=0):
             finding = findings[0]
-            self.assertEqual("Uncommon header 'x-cacheable' found, with contents: YES", finding.title)
+            self.assertEqual(
+                "Uncommon header 'x-cacheable' found, with contents: YES", finding.title
+            )
             self.assertEqual("999100", finding.vuln_id_from_tool)
             self.assertEqual(1, finding.nb_occurences)
             self.assertEqual("Info", finding.severity)
@@ -125,7 +137,9 @@ class TestNiktoParser(DojoTestCase):
             self.assertIsNone(endpoint.path)
         with self.subTest(i=1):
             finding = findings[1]
-            self.assertEqual("Uncommon header 'x-cache' found, with contents: HIT", finding.title)
+            self.assertEqual(
+                "Uncommon header 'x-cache' found, with contents: HIT", finding.title
+            )
             self.assertEqual("999100", finding.vuln_id_from_tool)
             self.assertEqual(1, finding.nb_occurences)
             self.assertEqual("Info", finding.severity)
@@ -145,7 +159,9 @@ class TestNiktoParser(DojoTestCase):
         self.assertEqual(6, len(findings))
         with self.subTest(i=0):
             finding = findings[0]
-            self.assertEqual("Uncommon header 'x-cache' found, with contents: HIT", finding.title)
+            self.assertEqual(
+                "Uncommon header 'x-cache' found, with contents: HIT", finding.title
+            )
             self.assertEqual("999100", finding.vuln_id_from_tool)
             self.assertEqual(1, finding.nb_occurences)
             self.assertEqual("Info", finding.severity)
@@ -156,7 +172,9 @@ class TestNiktoParser(DojoTestCase):
             self.assertIsNone(endpoint.path)
         with self.subTest(i=1):
             finding = findings[1]
-            self.assertEqual("Uncommon header 'x-cacheable' found, with contents: YES", finding.title)
+            self.assertEqual(
+                "Uncommon header 'x-cacheable' found, with contents: YES", finding.title
+            )
             self.assertEqual("999100", finding.vuln_id_from_tool)
             self.assertEqual(1, finding.nb_occurences)
             self.assertEqual("Info", finding.severity)
@@ -167,7 +185,10 @@ class TestNiktoParser(DojoTestCase):
             self.assertIsNone(endpoint.path)
         with self.subTest(i=5):
             finding = findings[5]
-            self.assertEqual("The Content-Encoding header is set to \"deflate\" this may mean that the server is vulnerable to the BREACH attack.", finding.title)
+            self.assertEqual(
+                'The Content-Encoding header is set to "deflate" this may mean that the server is vulnerable to the BREACH attack.',
+                finding.title,
+            )
             self.assertEqual("999966", finding.vuln_id_from_tool)
             self.assertEqual(1, finding.nb_occurences)
             self.assertEqual("Info", finding.severity)

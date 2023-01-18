@@ -13,7 +13,7 @@
                 <p>
                     A new test has been added: <a href="{{product_url|full_url}}">{{product}}</a> / <a href="{{engagement_url|full_url}}">{{ engagement.name }}</a> / <a href="{{ test_url|full_url }}">{{ test }}</a><br/>
                     Finding details in the 'scan_added' email, which is a separate notification (for now).
-                </p>    
+                </p>
                 <br/>
                     Kind regards,</br>
                 <br/>
@@ -46,7 +46,7 @@
     Type: {{ test.test_type }}
     You can find details here: {{ url|full_url }}
     {% if system_settings.disclaimer and system_settings.disclaimer.strip %}
-        
+
         Disclaimer:
         {{ system_settings.disclaimer }}
     {% endif %}

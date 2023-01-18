@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os.path
 
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
@@ -10,7 +11,6 @@ def sample_path(file_name):
 
 
 class TestTrustwaveParser(DojoTestCase):
-
     def test_no_vuln(self):
         test = Test()
         test.engagement = Engagement()
@@ -48,8 +48,14 @@ class TestTrustwaveParser(DojoTestCase):
         self.assertEqual("Critical", finding.severity)
         self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
         self.assertEqual("CVE-3011-32", finding.unsaved_vulnerability_ids[0])
-        self.assertEqual("Tom and Jerry versions 4 and 5 is vulnerable to Denial of Service (DoS) remote attack via the ever so long running series the simpsons", finding.description)
-        self.assertEqual("This vulnerability was addressed in Tom and Jerry Reboot 12.0 Affected users should upgrade to the latest stable version of Tom and Jerry.", finding.mitigation)
+        self.assertEqual(
+            "Tom and Jerry versions 4 and 5 is vulnerable to Denial of Service (DoS) remote attack via the ever so long running series the simpsons",
+            finding.description,
+        )
+        self.assertEqual(
+            "This vulnerability was addressed in Tom and Jerry Reboot 12.0 Affected users should upgrade to the latest stable version of Tom and Jerry.",
+            finding.mitigation,
+        )
         self.assertEqual(1, len(finding.unsaved_endpoints))
         endpoint = finding.unsaved_endpoints[0]
         self.assertEqual("www.example43.com", endpoint.host)

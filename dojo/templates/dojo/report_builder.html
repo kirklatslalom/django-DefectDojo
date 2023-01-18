@@ -231,7 +231,7 @@
                         var _form = $(this);
 
                         $(this).find('.editor').each(function () {
-                            _form.find('input[name="hidden_content"]').attr('value', $(this).html().replace( /(<br>|\s|<div><br><\/div>|&nbsp;)*$/, ""));                                                                                                
+                            _form.find('input[name="hidden_content"]').attr('value', $(this).html().replace( /(<br>|\s|<div><br><\/div>|&nbsp;)*$/, ""));
                         });
 
                         sr = $(this).serializeArray();

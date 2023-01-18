@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import json
 from datetime import datetime
@@ -18,7 +19,13 @@ class WpscanParser(object):
         return "Import JSON report"
 
     def get_vulnerabilities(
-        self, report_date, vulnerabilities, dupes, node=None, plugin=None, detection_confidence=None
+        self,
+        report_date,
+        vulnerabilities,
+        dupes,
+        node=None,
+        plugin=None,
+        detection_confidence=None,
     ):
         for vul in vulnerabilities:
             description = "\n".join(["**Title:** `" + vul["title"] + "`\n"])
@@ -60,7 +67,9 @@ class WpscanParser(object):
                     finding.unsaved_vulnerability_ids.append(f"CVE-{vulnerability_id}")
 
             # internal de-duplication
-            dupe_key = hashlib.sha256(str(finding.unique_id_from_tool).encode("utf-8")).hexdigest()
+            dupe_key = hashlib.sha256(
+                str(finding.unique_id_from_tool).encode("utf-8")
+            ).hexdigest()
             if dupe_key in dupes:
                 find = dupes[dupe_key]
                 if finding.references:
@@ -91,7 +100,10 @@ class WpscanParser(object):
 
         # manage Wordpress version findings
         if "version" in tree and tree["version"]:
-            if "vulnerabilities" in tree["version"] and tree["version"]["vulnerabilities"]:
+            if (
+                "vulnerabilities" in tree["version"]
+                and tree["version"]["vulnerabilities"]
+            ):
                 self.get_vulnerabilities(
                     report_date,
                     tree["version"]["vulnerabilities"],
@@ -111,14 +123,20 @@ class WpscanParser(object):
                 ]
             )
             if interesting_finding["interesting_entries"]:
-                description += "**Details:** `" + " ".join(interesting_finding["interesting_entries"]) + "`\n"
+                description += (
+                    "**Details:** `"
+                    + " ".join(interesting_finding["interesting_entries"])
+                    + "`\n"
+                )
             finding = Finding(
                 title=f"Interesting finding: {interesting_finding.get('to_s')}",
                 description=description,
                 severity="Info",
                 dynamic_finding=True,
                 static_finding=False,
-                scanner_confidence=self._get_scanner_confidence(interesting_finding.get("confidence")),
+                scanner_confidence=self._get_scanner_confidence(
+                    interesting_finding.get("confidence")
+                ),
             )
             # manage endpoint
             endpoint = Endpoint.from_uri(interesting_finding["url"])
@@ -130,7 +148,9 @@ class WpscanParser(object):
 
             # internal de-duplication
             dupe_key = hashlib.sha256(
-                str("interesting_findings" + finding.title + interesting_finding["url"]).encode("utf-8")
+                str(
+                    "interesting_findings" + finding.title + interesting_finding["url"]
+                ).encode("utf-8")
             ).hexdigest()
             if dupe_key in dupes:
                 find = dupes[dupe_key]
@@ -149,7 +169,9 @@ class WpscanParser(object):
                 if ref == "url":
                     references += f"* [{item}]({item})\n"
                 elif ref == "wpvulndb":
-                    references += f"* [WPScan WPVDB](https://wpscan.com/vulnerability/{item})\n"
+                    references += (
+                        f"* [WPScan WPVDB](https://wpscan.com/vulnerability/{item})\n"
+                    )
                 else:
                     references += f"* {item} - {ref}\n"
         return references

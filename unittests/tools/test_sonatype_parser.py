@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
 from dojo.tools.sonatype.parser import SonatypeParser

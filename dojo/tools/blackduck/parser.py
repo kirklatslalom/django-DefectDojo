@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 
 from dojo.models import Finding

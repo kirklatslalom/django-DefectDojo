@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
@@ -5,7 +6,6 @@ from dojo.tools.jfrog_xray_unified.parser import JFrogXrayUnifiedParser
 
 
 class TestJFrogXrayUnifiedParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln(self):
         testfile = open("unittests/scans/jfrog_xray_unified/no_vuln.json")
         parser = JFrogXrayUnifiedParser()
@@ -33,7 +33,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("Jinja2", item.component_name)
         self.assertEqual('"packagetype_pypi"', item.tags)
         self.assertEqual("2.11.2", item.component_version)
-        self.assertEqual("pypi-remote/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl", item.file_path)
+        self.assertEqual(
+            "pypi-remote/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -186,7 +189,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("3.12:sqlite-libs", item.component_name)
         self.assertEqual('"packagetype_alpine"', item.tags)
         self.assertEqual("3.32.1-r0", item.component_version)
-        self.assertEqual("dockerhub-remote/kiwigrid/k8s-sidecar/sha256__7cba93c3dde21c78fe07ee3f8ed8d82d05bf00415392606401df8a7d72057b5b/", item.file_path)
+        self.assertEqual(
+            "dockerhub-remote/kiwigrid/k8s-sidecar/sha256__7cba93c3dde21c78fe07ee3f8ed8d82d05bf00415392606401df8a7d72057b5b/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -209,7 +215,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("ubuntu:bionic:libssl1.1", item.component_name)
         self.assertEqual('"packagetype_debian"', item.tags)
         self.assertEqual("1.1.1-1ubuntu2.1~18.04.6", item.component_version)
-        self.assertEqual("dockerhub-remote/library/mongo/sha256__31f6433f7cfcd2180483e40728cbf97142df1e85de36d80d75c93e5e7fe10405/", item.file_path)
+        self.assertEqual(
+            "dockerhub-remote/library/mongo/sha256__31f6433f7cfcd2180483e40728cbf97142df1e85de36d80d75c93e5e7fe10405/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -233,7 +242,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("github.com/docker/docker", item.component_name)
         self.assertEqual('"packagetype_go"', item.tags)
         self.assertEqual("1.4.2-0.20200203170920-46ec8731fbce", item.component_version)
-        self.assertEqual("dockerhub-remote/fluxcd/helm-controller/sha256__27790f965d8965884e8dfc12cba0d1f609794a1abc69bc81a658bd76e463ffce/", item.file_path)
+        self.assertEqual(
+            "dockerhub-remote/fluxcd/helm-controller/sha256__27790f965d8965884e8dfc12cba0d1f609794a1abc69bc81a658bd76e463ffce/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -252,10 +264,15 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("FasterXML jackson", item.description[:17])
         self.assertEqual("sensitive information.", item.description[-22:])
         self.assertIsNone(item.mitigation)
-        self.assertEqual("com.fasterxml.jackson.core:jackson-databind", item.component_name)
+        self.assertEqual(
+            "com.fasterxml.jackson.core:jackson-databind", item.component_name
+        )
         self.assertEqual('"packagetype_maven"', item.tags)
         self.assertEqual("2.10.4", item.component_version)
-        self.assertEqual("elastic-docker-remote/elasticsearch/elasticsearch/7.9.1-amd64/", item.file_path)
+        self.assertEqual(
+            "elastic-docker-remote/elasticsearch/elasticsearch/7.9.1-amd64/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -279,7 +296,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("jquery", item.component_name)
         self.assertEqual('"packagetype_npm"', item.tags)
         self.assertEqual("3.4.1", item.component_version)
-        self.assertEqual("pypi-remote/cc/94/5f7079a0e00bd6863ef8f1da638721e9da21e5bacee597595b318f71d62e/Werkzeug-1.0.1-py2.py3-none-any.whl", item.file_path)
+        self.assertEqual(
+            "pypi-remote/cc/94/5f7079a0e00bd6863ef8f1da638721e9da21e5bacee597595b318f71d62e/Werkzeug-1.0.1-py2.py3-none-any.whl",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -303,7 +323,10 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         self.assertEqual("pip", item.component_name)
         self.assertEqual('"packagetype_pypi"', item.tags)
         self.assertEqual("20.2.3", item.component_version)
-        self.assertEqual("dockerhub-remote/kiwigrid/k8s-sidecar/sha256__4b5a25c8dbac9637f8e680566959fdccd1a98d74ce2f2746f9b0f9ff6b57d03b/", item.file_path)
+        self.assertEqual(
+            "dockerhub-remote/kiwigrid/k8s-sidecar/sha256__4b5a25c8dbac9637f8e680566959fdccd1a98d74ce2f2746f9b0f9ff6b57d03b/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -317,16 +340,23 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         item = [i for i in findings if i.title[:11] == "XRAY-106044"][-1]
         self.assertEqual(1, len(item.unsaved_vulnerability_ids))
         self.assertEqual("CVE-2019-19645", item.unsaved_vulnerability_ids[0])
-        self.assertEqual("XRAY-106044 - CVE-2019-19645 sqlite: infinite", item.title[:45])
+        self.assertEqual(
+            "XRAY-106044 - CVE-2019-19645 sqlite: infinite", item.title[:45]
+        )
         self.assertEqual("TABLE statements", item.title[-16:])
         self.assertEqual("Medium", item.severity)
         self.assertEqual("alter.c in SQLite", item.description[:17])
-        self.assertEqual("TABLE statements.\n\nRed Hat Severity: Moderate", item.description[-45:])
+        self.assertEqual(
+            "TABLE statements.\n\nRed Hat Severity: Moderate", item.description[-45:]
+        )
         self.assertIsNone(item.mitigation)
         self.assertEqual("7:sqlite:0", item.component_name)
-        self.assertIn('packagetype_rpm', item.tags)
+        self.assertIn("packagetype_rpm", item.tags)
         self.assertEqual("3.7.17-8.el7_7.1", item.component_version)
-        self.assertEqual("elastic-docker-remote/elasticsearch/elasticsearch/7.9.1-amd64/", item.file_path)
+        self.assertEqual(
+            "elastic-docker-remote/elasticsearch/elasticsearch/7.9.1-amd64/",
+            item.file_path,
+        )
         self.assertIsNotNone(item.severity_justification)
         self.assertGreater(len(item.severity_justification), 0)
         self.assertIsNotNone(item.references)
@@ -338,7 +368,9 @@ class TestJFrogXrayUnifiedParser(DojoTestCase):
         # **finished various packages**
 
     def test_parse_file_with_another_report(self):
-        testfile = open("unittests/scans/jfrog_xray_unified/Vulnerabilities-Report-XRAY_Unified.json")
+        testfile = open(
+            "unittests/scans/jfrog_xray_unified/Vulnerabilities-Report-XRAY_Unified.json"
+        )
         parser = JFrogXrayUnifiedParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()

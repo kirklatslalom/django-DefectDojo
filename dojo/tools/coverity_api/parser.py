@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from datetime import datetime
 
@@ -20,7 +21,9 @@ class CoverityApiParser(object):
         tree = json.load(file)
 
         if "viewContentsV1" not in tree:
-            raise ValueError("Report file is not a well-formed Coverity REST view report", file.name)
+            raise ValueError(
+                "Report file is not a well-formed Coverity REST view report", file.name
+            )
 
         items = list()
         for issue in tree["viewContentsV1"]["rows"]:
@@ -48,7 +51,9 @@ class CoverityApiParser(object):
             finding.unique_id_from_tool = issue.get("cid")
 
             if "firstDetected" in issue:
-                finding.date = datetime.strptime(issue["firstDetected"], "%m/%d/%y").date()
+                finding.date = datetime.strptime(
+                    issue["firstDetected"], "%m/%d/%y"
+                ).date()
 
             if "cwe" in issue and type(issue["cwe"]) == int:
                 finding.cwe = issue["cwe"]

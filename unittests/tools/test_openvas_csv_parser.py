@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.openvas_csv.parser import OpenVASCsvParser
 from dojo.models import Test, Engagement, Product
 
 
 class TestOpenVASUploadCsvParser(DojoTestCase):
-
     def test_openvas_csv_one_vuln(self):
         with open("unittests/scans/openvas/one_vuln.csv") as f:
             test = Test()
@@ -17,7 +17,9 @@ class TestOpenVASUploadCsvParser(DojoTestCase):
                     endpoint.clean()
             self.assertEqual(1, len(findings))
             # finding
-            self.assertEqual("SSH Weak Encryption Algorithms Supported", findings[0].title)
+            self.assertEqual(
+                "SSH Weak Encryption Algorithms Supported", findings[0].title
+            )
             self.assertEqual("Medium", findings[0].severity)
             # endpoints
             self.assertEqual(1, len(findings[0].unsaved_endpoints))
@@ -39,7 +41,10 @@ class TestOpenVASUploadCsvParser(DojoTestCase):
             self.assertEqual(4, len(findings))
             # finding
             finding = findings[3]
-            self.assertEqual("HTTP Brute Force Logins With Default Credentials Reporting", finding.title)
+            self.assertEqual(
+                "HTTP Brute Force Logins With Default Credentials Reporting",
+                finding.title,
+            )
             self.assertEqual("High", finding.severity)
             # endpoints
             self.assertEqual(1, len(finding.unsaved_endpoints))

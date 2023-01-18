@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime, date
 
 from dojo.tools.hydra.parser import HydraParser
@@ -43,11 +44,13 @@ class TestHydraParser(DojoTestCase):
             "127.0.0.1",
             "9999",
             "bill@example.com",
-            "bill"
+            "bill",
         )
 
     def test_hydra_parser_with_one_finding_and_missing_date_has_one_finding(self):
-        testfile = open("unittests/scans/hydra/hydra_report_one_finding_missing_date.json")
+        testfile = open(
+            "unittests/scans/hydra/hydra_report_one_finding_missing_date.json"
+        )
         parser = HydraParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -57,16 +60,13 @@ class TestHydraParser(DojoTestCase):
         finding = findings[0]
 
         self.__assertFindingEquals(
-            finding,
-            date.today(),
-            "127.0.0.1",
-            "9999",
-            "bill@example.com",
-            "bill"
+            finding, date.today(), "127.0.0.1", "9999", "bill@example.com", "bill"
         )
 
     def test_hydra_parser_with_two_findings_with_one_incomplete_has_one_finding(self):
-        testfile = open("unittests/scans/hydra/hydra_report_two_findings_with_one_incomplete.json")
+        testfile = open(
+            "unittests/scans/hydra/hydra_report_two_findings_with_one_incomplete.json"
+        )
         parser = HydraParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -81,7 +81,7 @@ class TestHydraParser(DojoTestCase):
             "127.0.0.1",
             "9999",
             "bill@example.com",
-            "bill"
+            "bill",
         )
 
     def test_hydra_parser_with_many_findings_has_many_findings(self):
@@ -98,7 +98,7 @@ class TestHydraParser(DojoTestCase):
             "127.0.0.1",
             "9999",
             "bill@example.com",
-            "bill"
+            "bill",
         )
         self.__assertFindingEquals(
             findings[1],
@@ -106,7 +106,7 @@ class TestHydraParser(DojoTestCase):
             "192.168.0.1",
             "1234",
             "joe@example.com",
-            "joe"
+            "joe",
         )
         self.__assertFindingEquals(
             findings[2],
@@ -114,23 +114,34 @@ class TestHydraParser(DojoTestCase):
             "something.bad.com",
             "4321",
             "jimmy@bad.com",
-            "somesimplepassword"
+            "somesimplepassword",
         )
 
     def __assertFindingEquals(
-            self,
-            actual_finding: Finding,
-            date: datetime,
-            finding_url,
-            finding_port,
-            finding_username,
-            finding_password
+        self,
+        actual_finding: Finding,
+        date: datetime,
+        finding_url,
+        finding_port,
+        finding_username,
+        finding_password,
     ):
-        self.assertEqual("Weak username / password combination found for " + finding_url, actual_finding.title)
+        self.assertEqual(
+            "Weak username / password combination found for " + finding_url,
+            actual_finding.title,
+        )
         self.assertEqual(date, actual_finding.date)
         self.assertEqual("High", actual_finding.severity)
-        self.assertEqual(finding_url + " on port " + finding_port + " is allowing logins with easy to guess username " + finding_username + " and password " + finding_password,
-                         actual_finding.description)
+        self.assertEqual(
+            finding_url
+            + " on port "
+            + finding_port
+            + " is allowing logins with easy to guess username "
+            + finding_username
+            + " and password "
+            + finding_password,
+            actual_finding.description,
+        )
         self.assertFalse(actual_finding.static_finding)
         self.assertTrue(actual_finding.dynamic_finding)
         # The following fields should be not be set from this parser.

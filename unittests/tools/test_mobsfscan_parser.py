@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.mobsfscan.parser import MobsfscanParser
 from dojo.models import Test
 
 
 class TestMobsfscanParser(DojoTestCase):
-
     def test_parse_no_findings(self):
         testfile = open("unittests/scans/mobsfscan/no_findings.json")
         parser = MobsfscanParser()
@@ -36,7 +36,10 @@ class TestMobsfscanParser(DojoTestCase):
             self.assertIsNotNone(finding.description)
             self.assertEqual(798, finding.cwe)
             self.assertIsNotNone(finding.references)
-            self.assertEqual("app/src/main/java/com/routes/domain/analytics/event/Signatures.kt", finding.file_path)
+            self.assertEqual(
+                "app/src/main/java/com/routes/domain/analytics/event/Signatures.kt",
+                finding.file_path,
+            )
             self.assertEqual(10, finding.line)
 
         with self.subTest(i=2):

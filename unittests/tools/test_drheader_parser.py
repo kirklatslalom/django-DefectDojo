@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.drheader.parser import DrHeaderParser
 from dojo.models import Test
 
 
 class TestDrHeaderParser(DojoTestCase):
-
     def test_parse_file_has_many_finding_one_tool(self):
         testfile = open("unittests/scans/drheader/scan.json")
         parser = DrHeaderParser()

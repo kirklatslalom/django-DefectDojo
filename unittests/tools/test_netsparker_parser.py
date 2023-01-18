@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
 from dojo.tools.netsparker.parser import NetsparkerParser
 
 
 class TestNetsparkerParser(DojoTestCase):
-
     def test_parse_file_with_one_finding(self):
         testfile = open("unittests/scans/netsparker/netsparker_one_finding.json")
         parser = NetsparkerParser()
@@ -20,7 +20,10 @@ class TestNetsparkerParser(DojoTestCase):
             self.assertEqual("25/06/2021", finding.date.strftime("%d/%m/%Y"))
             self.assertIsNotNone(finding.description)
             self.assertGreater(len(finding.description), 0)
-            self.assertEqual("CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N/E:H/RL:O/RC:C", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N/E:H/RL:O/RC:C",
+                finding.cvssv3,
+            )
             self.assertEqual(1, len(finding.unsaved_endpoints))
             endpoint = finding.unsaved_endpoints[0]
             self.assertEqual(str(endpoint), "http://php.testsparker.com/auth/login.php")
@@ -40,7 +43,10 @@ class TestNetsparkerParser(DojoTestCase):
             self.assertEqual("25/06/2021", finding.date.strftime("%d/%m/%Y"))
             self.assertIsNotNone(finding.description)
             self.assertGreater(len(finding.description), 0)
-            self.assertEqual("CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N/E:H/RL:O/RC:C", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:N/A:N/E:H/RL:O/RC:C",
+                finding.cvssv3,
+            )
             self.assertEqual(1, len(finding.unsaved_endpoints))
             endpoint = finding.unsaved_endpoints[0]
             self.assertEqual(str(endpoint), "http://php.testsparker.com/auth/login.php")
@@ -52,10 +58,15 @@ class TestNetsparkerParser(DojoTestCase):
             self.assertEqual("25/06/2021", finding.date.strftime("%d/%m/%Y"))
             self.assertIsNotNone(finding.description)
             self.assertGreater(len(finding.description), 0)
-            self.assertEqual("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H", finding.cvssv3
+            )
             self.assertEqual(1, len(finding.unsaved_endpoints))
             endpoint = finding.unsaved_endpoints[0]
-            self.assertEqual(str(endpoint), "http://php.testsparker.com/artist.php?id=-1%20OR%2017-7=10")
+            self.assertEqual(
+                str(endpoint),
+                "http://php.testsparker.com/artist.php?id=-1%20OR%2017-7=10",
+            )
 
         with self.subTest(i=2):
             finding = findings[2]
@@ -64,7 +75,10 @@ class TestNetsparkerParser(DojoTestCase):
             self.assertEqual("25/06/2021", finding.date.strftime("%d/%m/%Y"))
             self.assertIsNotNone(finding.description)
             self.assertGreater(len(finding.description), 0)
-            self.assertEqual("CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N/E:H/RL:O/RC:C", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N/E:H/RL:O/RC:C",
+                finding.cvssv3,
+            )
             self.assertEqual(1, len(finding.unsaved_endpoints))
             endpoint = finding.unsaved_endpoints[0]
             self.assertEqual(str(endpoint), "http://php.testsparker.com")

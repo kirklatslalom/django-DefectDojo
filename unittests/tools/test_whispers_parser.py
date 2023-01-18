@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from dojo.tools.whispers.parser import WhispersParser
 from dojo.models import Test
 
 
 class TestWhispersParser(TestCase):
-
     def test_whispers_parser_with_no_vuln_has_no_findings(self):
         testfile = open("unittests/scans/whispers/whispers_zero_vul.json")
         parser = WhispersParser()

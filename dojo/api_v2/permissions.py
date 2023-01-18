@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 from rest_framework.exceptions import ParseError, PermissionDenied, ValidationError
 from dojo.api_v2.serializers import (

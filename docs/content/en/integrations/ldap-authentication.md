@@ -126,4 +126,3 @@ DD_LDAP_BIND_PASSWORD: "${DD_LDAP_BIND_PASSWORD:-}"
 ```
 
 Alternatively you can set these values in a local_settings.py file.
-

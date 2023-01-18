@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
 from dojo.tools.blackduck_component_risk.parser import BlackduckComponentRiskParser
 from dojo.models import Test

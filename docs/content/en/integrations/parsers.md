@@ -417,11 +417,11 @@ Follow these steps to setup API importing:
 
 1.  Configure the Edgescan authentication details by navigating to
     `Configuration -> Tool Configuration -> Add Tool Configuration`. Enter a `Name`,
-    select the `Tool Type` "Edgescan", `Authentication Type` "API Key", paste 
+    select the `Tool Type` "Edgescan", `Authentication Type` "API Key", paste
     your Edgescan API key in the `API Key` field, and click `Submit`.
 2.  In the `Product` settings select `Add API Scan Configuration` and select the
     previously added Edgescan tool configuration. Provide the edgescan asset ID(s)
-    that you wish to import the findings for in the field `Service key 1`. 
+    that you wish to import the findings for in the field `Service key 1`.
     *Multiple asset IDs should be comma separated with no spacing.*
 3.  After this is done, you can import the findings on the `Product` page through
     `Findings -> Import Scan Results`. Select "Edgescan Scan" as the `Scan type`,
@@ -832,7 +832,7 @@ Import the JSON format for the \"Security & Compliance | Reports\" export. Jfrog
 
 ### JFrog Xray API Summary Artifact Scan
 
-Import the JSON format from the Arifact Summary API call https://www.jfrog.com/confluence/display/JFROG/Xray+REST+API#XrayRESTAPI-ArtifactSummary  
+Import the JSON format from the Arifact Summary API call https://www.jfrog.com/confluence/display/JFROG/Xray+REST+API#XrayRESTAPI-ArtifactSummary
 
 ### Kiuwan Scanner
 
@@ -1135,10 +1135,10 @@ Follow these steps to setup the SonarQube API import:
     Configuration / Tool Configuration. Note the url must be in the
     format of `https://<sonarqube_host>/api`. Select the tool
     type to be SonarQube. By default the tool will import vulnerabilities issues
-    and security hotspots only, but additional filters can be setup using the 
+    and security hotspots only, but additional filters can be setup using the
     Extras field separated by commas (e.g. BUG,VULNERABILITY,CODE_SMELL). When using
     SonarCloud, you must also specify the Organization ID in the Extras field as follows
-    `OrgID=sonarcloud-organzation-ID`. If also specifying issue type filters, please 
+    `OrgID=sonarcloud-organzation-ID`. If also specifying issue type filters, please
     seperate the items in the Extras field by a vertical bar as follows
     `BUG,VULNERABILITY,CODE_SMEL|OrgID=sonarcloud-organzation-ID`
 2.  In the Product settings add an API Scan Configuration. *Service key 1* must
@@ -1149,11 +1149,11 @@ Follow these steps to setup the SonarQube API import:
     use the name of the Product as the project key in SonarQube. If you would like to
     import findings from multiple projects, you can specify multiple keys as
     separated API Scan Configuration in the Product settings.
-3.  If using SonarCloud, the orginization ID can be used from step 1, but it 
+3.  If using SonarCloud, the orginization ID can be used from step 1, but it
     can be ovverirdden by supplying a different orginization ID in the *Service key 2* input field.
 4.  Once all of the settings are made, the SonarQube API Import will be
     able to import all vulnerability information from the SonarQube
-    instance. 
+    instance.
 
 ##### Multiple SonarQube API Configurations
 
@@ -1162,13 +1162,13 @@ Configuration shall be used. If you do not choose
 any, DefectDojo will use the API Scan Configuration of the Product if there is
 only one defined or the SonarQube Tool Configuration if there is only one.
 
-##### Multi Branch Scanning 
+##### Multi Branch Scanning
 
-If using a version of SonarQube with multi branch scanning, the branch tha be scanned can 
+If using a version of SonarQube with multi branch scanning, the branch tha be scanned can
 be supplied in the `branch tag` fieild at import/re-import time. If the branch does not exist,
-a notification will be generated in the alerts table indicating that branch to be imported 
-does not exist. If a branch name is not supplied during import/re-import, the default branch 
-of the SonarQube project will be used. 
+a notification will be generated in the alerts table indicating that branch to be imported
+does not exist. If a branch name is not supplied during import/re-import, the default branch
+of the SonarQube project will be used.
 
 **Note:**: If `https` is used for the SonarQube, the certificate must be
 trusted by the DefectDojo instance.

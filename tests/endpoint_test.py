@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import unittest
@@ -7,7 +8,6 @@ from product_test import ProductTest
 
 
 class EndpointTest(BaseTestCase):
-
     def test_create_endpoint(self):
         # Login to the site.
         # Username and password will be gotten from environ
@@ -23,13 +23,17 @@ class EndpointTest(BaseTestCase):
         driver.find_element(By.ID, "id_endpoint").clear()
         driver.find_element(By.ID, "id_endpoint").send_keys("moving.com.rnd")
         # Select product to assign endpoint to
-        Select(driver.find_element(By.ID, "id_product")).select_by_visible_text("QA Test")
+        Select(driver.find_element(By.ID, "id_product")).select_by_visible_text(
+            "QA Test"
+        )
         # submit
         driver.find_element(By.CSS_SELECTOR, "input.btn.btn-primary").click()
         # Query the site to determine if the finding has been added
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Endpoint added successfully'))
+        self.assertTrue(
+            self.is_success_message_present(text="Endpoint added successfully")
+        )
 
     def test_edit_endpoint(self):
         # Login to the site. Password will have to be modified
@@ -55,7 +59,9 @@ class EndpointTest(BaseTestCase):
         # Query the site to determine if the product has been added
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Endpoint updated successfully'))
+        self.assertTrue(
+            self.is_success_message_present(text="Endpoint updated successfully")
+        )
 
     def test_delete_endpoint(self):
         # Login to the site. Password will have to be modified
@@ -74,20 +80,22 @@ class EndpointTest(BaseTestCase):
         # Query the site to determine if the product has been added
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Endpoint and relationships removed.'))
+        self.assertTrue(
+            self.is_success_message_present(text="Endpoint and relationships removed.")
+        )
 
 
 def suite():
     suite = unittest.TestSuite()
     # Add each test the the suite to be run
     # success and failure is output by the test
-    suite.addTest(BaseTestCase('test_login'))
-    suite.addTest(BaseTestCase('disable_block_execution'))
-    suite.addTest(ProductTest('test_create_product'))
-    suite.addTest(EndpointTest('test_create_endpoint'))
-    suite.addTest(EndpointTest('test_edit_endpoint'))
-    suite.addTest(EndpointTest('test_delete_endpoint'))
-    suite.addTest(ProductTest('test_delete_product'))
+    suite.addTest(BaseTestCase("test_login"))
+    suite.addTest(BaseTestCase("disable_block_execution"))
+    suite.addTest(ProductTest("test_create_product"))
+    suite.addTest(EndpointTest("test_create_endpoint"))
+    suite.addTest(EndpointTest("test_edit_endpoint"))
+    suite.addTest(EndpointTest("test_delete_endpoint"))
+    suite.addTest(ProductTest("test_delete_product"))
     return suite
 
 

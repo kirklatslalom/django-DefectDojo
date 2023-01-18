@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test, Engagement, Product
 from dojo.tools.mobsf.parser import MobSFParser
 
 
 class TestMobSFParser(DojoTestCase):
-
     def test_parse_file(self):
         test = Test()
         engagement = Engagement()
@@ -16,19 +16,19 @@ class TestMobSFParser(DojoTestCase):
         testfile.close()
         self.assertEqual(18, len(findings))
         item = findings[0]
-        self.assertEqual('android.permission.WRITE_EXTERNAL_STORAGE', item.title)
-        self.assertEqual('High', item.severity)
+        self.assertEqual("android.permission.WRITE_EXTERNAL_STORAGE", item.title)
+        self.assertEqual("High", item.severity)
         item = findings[2]
-        self.assertEqual('android.permission.INTERNET', item.title)
-        self.assertEqual('Info', item.severity)
+        self.assertEqual("android.permission.INTERNET", item.title)
+        self.assertEqual("Info", item.severity)
         item = findings[10]
-        self.assertEqual('Symbols are stripped', item.title)
-        self.assertEqual('Info', item.severity)
-        self.assertEqual('lib/armeabi-v7a/libdivajni.so', item.file_path)
+        self.assertEqual("Symbols are stripped", item.title)
+        self.assertEqual("Info", item.severity)
+        self.assertEqual("lib/armeabi-v7a/libdivajni.so", item.file_path)
         self.assertEqual(7, item.nb_occurences)
         item = findings[17]
-        self.assertEqual('Loading Native Code (Shared Library)', item.title)
-        self.assertEqual('Info', item.severity)
+        self.assertEqual("Loading Native Code (Shared Library)", item.title)
+        self.assertEqual("Info", item.severity)
         self.assertEqual(1, item.nb_occurences)
 
     def test_parse_file2(self):

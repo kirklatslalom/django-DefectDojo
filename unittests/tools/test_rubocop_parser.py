@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 
 from dojo.models import Test
@@ -29,7 +30,9 @@ class TestRubocopParser(DojoTestCase):
             finding = findings[0]
             self.assertEqual("Avoid using `Marshal.load`.", finding.title)
             self.assertEqual("Medium", finding.severity)
-            self.assertEqual("app/controllers/password_resets_controller.rb", finding.file_path)
+            self.assertEqual(
+                "app/controllers/password_resets_controller.rb", finding.file_path
+            )
             self.assertEqual(6, finding.line)
             self.assertEqual("Security/MarshalLoad", finding.vuln_id_from_tool)
 
@@ -60,20 +63,28 @@ class TestRubocopParser(DojoTestCase):
             self.assertEqual("Security/JSONLoad", finding.vuln_id_from_tool)
         with self.subTest(i=3):
             finding = findings[3]
-            self.assertEqual("Prefer using `YAML.safe_load` over `YAML.load`.", finding.title)
+            self.assertEqual(
+                "Prefer using `YAML.safe_load` over `YAML.load`.", finding.title
+            )
             self.assertEqual("Medium", finding.severity)
         with self.subTest(i=4):
             finding = findings[4]
-            self.assertEqual("The use of `Kernel#open` is a serious security risk.", finding.title)
+            self.assertEqual(
+                "The use of `Kernel#open` is a serious security risk.", finding.title
+            )
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("Security/Open", finding.vuln_id_from_tool)
         with self.subTest(i=5):
             finding = findings[5]
-            self.assertEqual("The use of `Kernel#open` is a serious security risk.", finding.title)
+            self.assertEqual(
+                "The use of `Kernel#open` is a serious security risk.", finding.title
+            )
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("Security/Open", finding.vuln_id_from_tool)
         with self.subTest(i=6):
             finding = findings[6]
-            self.assertEqual("The use of `URI.open` is a serious security risk.", finding.title)
+            self.assertEqual(
+                "The use of `URI.open` is a serious security risk.", finding.title
+            )
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("Security/Open", finding.vuln_id_from_tool)

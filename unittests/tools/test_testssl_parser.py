@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.testssl.parser import TestsslParser
 from dojo.models import Test
 
 
 class TestTestsslParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln_has_no_finding(self):
         testfile = open("unittests/scans/testssl/defectdojo_no_vuln.csv")
         parser = TestsslParser()

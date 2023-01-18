@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 from datetime import datetime
@@ -5,7 +6,6 @@ from dojo.models import Finding
 
 
 class MeterianParser(object):
-
     def get_scan_types(self):
         return ["Meterian Scan"]
 
@@ -50,9 +50,13 @@ class MeterianParser(object):
                     date=scan_date,
                     test=test,
                     severity=severity,
-                    severity_justification="Issue severity of: **" + severity + "** from a base " +
-                    "CVSS score of: **" + str(advisory.get('cvss')) + "**",
-                    description=advisory['description'],
+                    severity_justification="Issue severity of: **"
+                    + severity
+                    + "** from a base "
+                    + "CVSS score of: **"
+                    + str(advisory.get("cvss"))
+                    + "**",
+                    description=advisory["description"],
                     component_name=lib_name,
                     component_version=lib_ver,
                     false_p=False,
@@ -62,11 +66,11 @@ class MeterianParser(object):
                     static_finding=True,
                     dynamic_finding=False,
                     file_path="Manifest file",
-                    unique_id_from_tool=advisory['id'],
-                    tags=[language]
+                    unique_id_from_tool=advisory["id"],
+                    tags=[language],
                 )
 
-                if 'cve' in advisory:
+                if "cve" in advisory:
                     if "N/A" != advisory["cve"]:
                         finding.unsaved_vulnerability_ids = [advisory["cve"]]
 
@@ -76,11 +80,29 @@ class MeterianParser(object):
                 mitigation_msg = "## Remediation\n"
                 safe_versions = dependency_report["safeVersions"]
                 if "latestPatch" in safe_versions:
-                    mitigation_msg += "Upgrade " + lib_name + " to version " + safe_versions["latestPatch"] + " or higher."
+                    mitigation_msg += (
+                        "Upgrade "
+                        + lib_name
+                        + " to version "
+                        + safe_versions["latestPatch"]
+                        + " or higher."
+                    )
                 elif "latestMinor" in safe_versions:
-                    mitigation_msg += "Upgrade " + lib_name + " to version " + safe_versions["latestMinor"] + " or higher."
+                    mitigation_msg += (
+                        "Upgrade "
+                        + lib_name
+                        + " to version "
+                        + safe_versions["latestMinor"]
+                        + " or higher."
+                    )
                 elif "latestMajor" in safe_versions:
-                    mitigation_msg += "Upgrade " + lib_name + " to version " + safe_versions["latestMajor"] + "."
+                    mitigation_msg += (
+                        "Upgrade "
+                        + lib_name
+                        + " to version "
+                        + safe_versions["latestMajor"]
+                        + "."
+                    )
                 else:
                     mitigation_msg = "We were not able to provide a safe version for this library.\nYou should consider replacing this component as it could be an issue for the safety of your application."
                 finding.mitigation = mitigation_msg
@@ -99,17 +121,21 @@ class MeterianParser(object):
 
     def get_severity(self, advisory):
         # Following the CVSS Scoring per https://nvd.nist.gov/vuln-metrics/cvss
-        if 'cvss' in advisory:
-            if advisory['cvss'] <= 3.9:
+        if "cvss" in advisory:
+            if advisory["cvss"] <= 3.9:
                 severity = "Low"
-            elif advisory['cvss'] >= 4.0 and advisory['cvss'] <= 6.9:
+            elif advisory["cvss"] >= 4.0 and advisory["cvss"] <= 6.9:
                 severity = "Medium"
-            elif advisory['cvss'] >= 7.0 and advisory['cvss'] <= 8.9:
+            elif advisory["cvss"] >= 7.0 and advisory["cvss"] <= 8.9:
                 severity = "High"
             else:
                 severity = "Critical"
         else:
-            if advisory["severity"] == "SUGGEST" or advisory["severity"] == "NA" or advisory["severity"] == "NONE":
+            if (
+                advisory["severity"] == "SUGGEST"
+                or advisory["severity"] == "NA"
+                or advisory["severity"] == "NONE"
+            ):
                 severity = "Info"
             else:
                 severity = advisory["severity"].title()

@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.vulners.parser import VulnersParser
 from dojo.models import Test
 
 
 class TestVulnersParser(DojoTestCase):
-
     def test_parse_many_findings(self):
         testfile = open("unittests/scans/vulners/report_many_vulns.json")
         parser = VulnersParser()
@@ -14,7 +14,10 @@ class TestVulnersParser(DojoTestCase):
         self.assertEqual("High", finding.severity)
         self.assertEqual("223.234.234.123", finding.unsaved_endpoints[0].host)
         self.assertEqual("VNS/CESA-2021:0348", finding.vuln_id_from_tool)
-        self.assertEqual("**CentOS Errata and Security Advisory** CESA-2021:0348", finding.description)
+        self.assertEqual(
+            "**CentOS Errata and Security Advisory** CESA-2021:0348",
+            finding.description,
+        )
         self.assertEqual(4, len(finding.unsaved_vulnerability_ids))
         self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H", finding.cvssv3)
 

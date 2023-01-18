@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 import logging
 from django.conf import settings
@@ -87,7 +88,11 @@ for module_name in os.listdir(package_dir):
                 module = import_module(f"dojo.tools.{module_name}.parser")
                 for attribute_name in dir(module):
                     attribute = getattr(module, attribute_name)
-                    if isclass(attribute) and attribute_name.lower() == module_name.replace("_", "") + "parser":
+                    if (
+                        isclass(attribute)
+                        and attribute_name.lower()
+                        == module_name.replace("_", "") + "parser"
+                    ):
                         register(attribute)
         except:
             logging.exception(f"failed to load {module_name}")

@@ -1,16 +1,17 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
 from dojo.tools.microfocus_webinspect.parser import MicrofocusWebinspectParser
 from dojo.models import Test, Engagement, Product
 
 
 class TestMicrofocusWebinspectParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln_has_no_findings(self):
         test = Test()
         test.engagement = Engagement()
         test.engagement.product = Product()
         testfile = open(
-            get_unit_tests_path() + "/scans/microfocus_webinspect/Webinspect_no_vuln.xml"
+            get_unit_tests_path()
+            + "/scans/microfocus_webinspect/Webinspect_no_vuln.xml"
         )
         parser = MicrofocusWebinspectParser()
         findings = parser.get_findings(testfile, test)
@@ -21,7 +22,8 @@ class TestMicrofocusWebinspectParser(DojoTestCase):
         test.engagement = Engagement()
         test.engagement.product = Product()
         testfile = open(
-            get_unit_tests_path() + "/scans/microfocus_webinspect/Webinspect_one_vuln.xml"
+            get_unit_tests_path()
+            + "/scans/microfocus_webinspect/Webinspect_one_vuln.xml"
         )
         parser = MicrofocusWebinspectParser()
         findings = parser.get_findings(testfile, test)
@@ -35,14 +37,17 @@ class TestMicrofocusWebinspectParser(DojoTestCase):
         endpoint = item.unsaved_endpoints[0]
         self.assertEqual("www.microfocus.com", endpoint.host)
         self.assertEqual(443, endpoint.port)
-        self.assertIsNone(endpoint.path)  # path begins with '/' but Endpoint store "root-less" path
+        self.assertIsNone(
+            endpoint.path
+        )  # path begins with '/' but Endpoint store "root-less" path
 
     def test_parse_file_with_multiple_vuln_has_multiple_finding(self):
         test = Test()
         test.engagement = Engagement()
         test.engagement.product = Product()
         testfile = open(
-            get_unit_tests_path() + "/scans/microfocus_webinspect/Webinspect_many_vuln.xml"
+            get_unit_tests_path()
+            + "/scans/microfocus_webinspect/Webinspect_many_vuln.xml"
         )
         parser = MicrofocusWebinspectParser()
         findings = parser.get_findings(testfile, test)
@@ -60,17 +65,15 @@ class TestMicrofocusWebinspectParser(DojoTestCase):
         endpoint = item.unsaved_endpoints[0]
         self.assertEqual("php.vulnweb.com", endpoint.host)
         self.assertEqual(80, endpoint.port)
-        self.assertIsNone(endpoint.path)  # path begins with '/' but Endpoint store "root-less" path
+        self.assertIsNone(
+            endpoint.path
+        )  # path begins with '/' but Endpoint store "root-less" path
 
     def test_convert_severity(self):
         with self.subTest("convert info", val="0"):
-            self.assertEqual(
-                "Info", MicrofocusWebinspectParser.convert_severity("0")
-            )
+            self.assertEqual("Info", MicrofocusWebinspectParser.convert_severity("0"))
         with self.subTest("convert medium", val="2"):
-            self.assertEqual(
-                "Medium", MicrofocusWebinspectParser.convert_severity("2")
-            )
+            self.assertEqual("Medium", MicrofocusWebinspectParser.convert_severity("2"))
 
     def test_parse_file_version_18_20(self):
         testfile = open("unittests/scans/microfocus_webinspect/Webinspect_V18_20.xml")
@@ -81,19 +84,23 @@ class TestMicrofocusWebinspectParser(DojoTestCase):
                 endpoint.clean()
         self.assertEqual(4, len(findings))
         item = findings[0]
-        self.assertEqual('Cache Management: Headers', item.title)
-        self.assertEqual('Info', item.severity)
+        self.assertEqual("Cache Management: Headers", item.title)
+        self.assertEqual("Info", item.severity)
         self.assertEqual(200, item.cwe)
         self.assertEqual(2, item.nb_occurences)
         self.assertEqual(2, len(item.unsaved_endpoints))
         endpoint = item.unsaved_endpoints[0]
         self.assertEqual("www.microfocus.com", endpoint.host)
         self.assertEqual(443, endpoint.port)
-        self.assertIsNone(endpoint.path)  # path begins with '/' but Endpoint store "root-less" path
+        self.assertIsNone(
+            endpoint.path
+        )  # path begins with '/' but Endpoint store "root-less" path
         endpoint = item.unsaved_endpoints[1]
         self.assertEqual("www.microfocus.com", endpoint.host)
         self.assertEqual(443, endpoint.port)
-        self.assertEqual("en-us/home", endpoint.path)  # path begins with '/' but Endpoint store "root-less" path
+        self.assertEqual(
+            "en-us/home", endpoint.path
+        )  # path begins with '/' but Endpoint store "root-less" path
         item = findings[1]
         self.assertEqual(525, item.cwe)
         self.assertEqual(1, item.nb_occurences)

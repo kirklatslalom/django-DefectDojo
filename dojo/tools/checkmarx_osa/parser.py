@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import logging
 from dojo.models import Finding
@@ -7,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 class CheckmarxOsaParser(object):
-
     def get_scan_types(self):
         return ["Checkmarx OSA"]
 
@@ -20,49 +20,64 @@ class CheckmarxOsaParser(object):
     def get_findings(self, filehandle, test):
         tree = json.load(filehandle)
         if len(tree) != 2:
-            logger.error("Bad format. Expected a list of two elements: CxOSALibraries.json and CxOSAVulnerabilities.json. Found %i elements", len(tree))
+            logger.error(
+                "Bad format. Expected a list of two elements: CxOSALibraries.json and CxOSAVulnerabilities.json. Found %i elements",
+                len(tree),
+            )
             raise ValueError("Invalid format: bad structure")
         libraries_dict = self.get_libraries(tree)
         vulnerabilities = self.get_vunlerabilities(tree)
         items = []
         for item in vulnerabilities:
-            mandatory_vulnerability_fields = ['libraryId', 'state', 'severity']
-            mandatory_library_fields = ['name', 'version']
+            mandatory_vulnerability_fields = ["libraryId", "state", "severity"]
+            mandatory_library_fields = ["name", "version"]
             self.check_mandatory(item, mandatory_vulnerability_fields)
-            library = libraries_dict[item['libraryId']]
+            library = libraries_dict[item["libraryId"]]
             self.check_mandatory(library, mandatory_library_fields)
-            if 'name' not in item['state']:
+            if "name" not in item["state"]:
                 raise ValueError("Invalid format: missing mandatory field state.name")
-            if 'name' not in item['severity']:
-                raise ValueError("Invalid format: missing mandatory field severity.name")
+            if "name" not in item["severity"]:
+                raise ValueError(
+                    "Invalid format: missing mandatory field severity.name"
+                )
 
             # Possible status as per checkmarx 9.2: TO_VERIFY, NOT_EXPLOITABLE, CONFIRMED, URGENT, PROPOSED_NOT_EXPLOITABLE
-            status = item['state']['name']
-            vulnerability_id = item.get('cveName', 'NC')
+            status = item["state"]["name"]
+            vulnerability_id = item.get("cveName", "NC")
             finding_item = Finding(
-                title='{0} {1} | {2}'.format(library['name'], library['version'], vulnerability_id),
-                severity=item['severity']['name'],
-                description=item.get('description', 'NC'),
-                unique_id_from_tool=item.get('id', None),
-                references=item.get('url', None),
-                mitigation=item.get('recommendations', None),
-                component_name=library['name'],
-                component_version=library['version'],
+                title="{0} {1} | {2}".format(
+                    library["name"], library["version"], vulnerability_id
+                ),
+                severity=item["severity"]["name"],
+                description=item.get("description", "NC"),
+                unique_id_from_tool=item.get("id", None),
+                references=item.get("url", None),
+                mitigation=item.get("recommendations", None),
+                component_name=library["name"],
+                component_version=library["version"],
                 # 1035 is "Using Components with Known Vulnerabilities"
                 # Possible improvment: get the CWE from the CVE using some database?
                 # nvd.nist.gov has the info; see for eg https://nvd.nist.gov/vuln/detail/CVE-2020-25649 "Weakness Enumeration"
                 cwe=1035,
-                cvssv3_score=item.get('score', None),
-                publish_date=datetime.strptime(item['publishDate'], '%Y-%m-%dT%H:%M:%S') if 'publishDate' in item else None,
+                cvssv3_score=item.get("score", None),
+                publish_date=datetime.strptime(item["publishDate"], "%Y-%m-%dT%H:%M:%S")
+                if "publishDate" in item
+                else None,
                 static_finding=True,
                 dynamic_finding=False,
-                scanner_confidence=self.checkmarx_confidence_to_defectdojo_confidence(library['confidenceLevel']) if 'confidenceLevel' in library else None,
-                active=status != 'NOT_EXPLOITABLE',
-                false_p=status == 'NOT_EXPLOITABLE',
-                verified=status != 'TO_VERIFY' and status != 'NOT_EXPLOITABLE' and status != 'PROPOSED_NOT_EXPLOITABLE',
-                test=test
+                scanner_confidence=self.checkmarx_confidence_to_defectdojo_confidence(
+                    library["confidenceLevel"]
+                )
+                if "confidenceLevel" in library
+                else None,
+                active=status != "NOT_EXPLOITABLE",
+                false_p=status == "NOT_EXPLOITABLE",
+                verified=status != "TO_VERIFY"
+                and status != "NOT_EXPLOITABLE"
+                and status != "PROPOSED_NOT_EXPLOITABLE",
+                test=test,
             )
-            if vulnerability_id != 'NC':
+            if vulnerability_id != "NC":
                 finding_item.unsaved_vulnerability_ids = [vulnerability_id]
             items.append(finding_item)
         return items
@@ -70,7 +85,7 @@ class CheckmarxOsaParser(object):
     def get_libraries(self, tree):
         libraries_dict = {}
         for library in tree[1]:
-            libraries_dict[library['id']] = library
+            libraries_dict[library["id"]] = library
         return libraries_dict
 
     def get_vunlerabilities(self, tree):

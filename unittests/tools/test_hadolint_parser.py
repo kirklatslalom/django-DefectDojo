@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
 from dojo.tools.hadolint.parser import HadolintParser
 
 
 class TesthadolintParser(DojoTestCase):
-
     def test_parse_file_with_one_dockerfile(self):
         testfile = open("unittests/scans/hadolint/one_dockerfile.json")
         parser = HadolintParser()

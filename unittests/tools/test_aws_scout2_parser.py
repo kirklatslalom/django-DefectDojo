@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.aws_scout2.parser import AWSScout2Parser
 from django.utils import timezone

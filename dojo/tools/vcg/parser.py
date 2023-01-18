@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 import hashlib
 import io
@@ -8,59 +9,57 @@ from dojo.models import Finding
 
 
 class VCGFinding(object):
-
     def get_finding_severity(self):
         return self.priority_mapping[self.priority]
 
     def get_finding_detail(self):
-        finding_detail = ''
+        finding_detail = ""
 
         if self.severity is not None:
-            finding_detail = 'Severity: ' + self.severity + '\n'
+            finding_detail = "Severity: " + self.severity + "\n"
 
         if self.description is not None:
-            finding_detail += 'Description: ' + self.description + '\n'
+            finding_detail += "Description: " + self.description + "\n"
 
         if self.filename is not None:
-            finding_detail += 'FileName: ' + self.filename + '\n'
+            finding_detail += "FileName: " + self.filename + "\n"
 
         if self.line is not None:
-            finding_detail += 'Line: ' + self.line + '\n'
+            finding_detail += "Line: " + self.line + "\n"
 
         if self.code_line is not None:
-            finding_detail += 'CodeLine: ' + self.code_line + '\n'
+            finding_detail += "CodeLine: " + self.code_line + "\n"
 
         return finding_detail
 
     def to_finding(self, test):
 
         return Finding(
-                title=self.title,
-                test=test,
-                description=self.get_finding_detail(),
-                severity=self.get_finding_severity(),
+            title=self.title,
+            test=test,
+            description=self.get_finding_detail(),
+            severity=self.get_finding_severity(),
         )
 
     def __init__(self):
         self.priority = 6
-        self.title = ''
-        self.severity = ''
-        self.description = ''
-        self.filename = ''
-        self.line = ''
-        self.code_line = ''
+        self.title = ""
+        self.severity = ""
+        self.description = ""
+        self.filename = ""
+        self.line = ""
+        self.code_line = ""
         self.priority_mapping = dict()
-        self.priority_mapping[1] = 'Critical'
-        self.priority_mapping[2] = 'High'
-        self.priority_mapping[3] = 'Medium'
-        self.priority_mapping[4] = 'Low'
-        self.priority_mapping[5] = 'Low'
-        self.priority_mapping[6] = 'Info'
-        self.priority_mapping[7] = 'Info'
+        self.priority_mapping[1] = "Critical"
+        self.priority_mapping[2] = "High"
+        self.priority_mapping[3] = "Medium"
+        self.priority_mapping[4] = "Low"
+        self.priority_mapping[5] = "Low"
+        self.priority_mapping[6] = "Info"
+        self.priority_mapping[7] = "Info"
 
 
 class VCGXmlParser(object):
-
     @staticmethod
     def get_field_from_xml(issue, field):
         if issue.find(field) is not None and issue.find(field).text is not None:
@@ -78,18 +77,22 @@ class VCGXmlParser(object):
 
         data = VCGFinding()
 
-        if self.get_field_from_xml(issue, 'Priority') is None:
+        if self.get_field_from_xml(issue, "Priority") is None:
             data.priority = 6
         else:
-            data.priority = int(float(self.get_field_from_xml(issue, 'Priority')))
+            data.priority = int(float(self.get_field_from_xml(issue, "Priority")))
 
-        data.title = '' if self.get_field_from_xml(issue, 'Title') is None else self.get_field_from_xml(issue, 'Title')
-        data.severity = self.get_field_from_xml(issue, 'Severity')
-        data.description = self.get_field_from_xml(issue, 'Description')
-        data.filename = self.get_field_from_xml(issue, 'FileName')
+        data.title = (
+            ""
+            if self.get_field_from_xml(issue, "Title") is None
+            else self.get_field_from_xml(issue, "Title")
+        )
+        data.severity = self.get_field_from_xml(issue, "Severity")
+        data.description = self.get_field_from_xml(issue, "Description")
+        data.filename = self.get_field_from_xml(issue, "FileName")
         # data.file_path = self.get_field_from_xml(issue, 'FileName')
-        data.line = self.get_field_from_xml(issue, 'Line')
-        data.code_line = self.get_field_from_xml(issue, 'CodeLine')
+        data.line = self.get_field_from_xml(issue, "Line")
+        data.code_line = self.get_field_from_xml(issue, "CodeLine")
         # data.line = self.get_field_from_xml(issue, 'CodeLine')
 
         finding = data.to_finding(test)
@@ -104,11 +107,19 @@ class VCGXmlParser(object):
 
         vcgscan = ElementTree.fromstring(content)
 
-        for issue in vcgscan.findall('CodeIssue'):
+        for issue in vcgscan.findall("CodeIssue"):
             finding = self.parse_issue(issue, test)
 
             if finding is not None:
-                key = hashlib.md5((finding.severity + '|' + finding.title + '|' + finding.description).encode('utf-8')).hexdigest()
+                key = hashlib.md5(
+                    (
+                        finding.severity
+                        + "|"
+                        + finding.title
+                        + "|"
+                        + finding.description
+                    ).encode("utf-8")
+                ).hexdigest()
 
                 if key not in dupes:
                     dupes[key] = finding
@@ -117,7 +128,6 @@ class VCGXmlParser(object):
 
 
 class VCGCsvParser(object):
-
     @staticmethod
     def get_field_from_row(row, column):
         if row[column] is not None:
@@ -141,7 +151,7 @@ class VCGCsvParser(object):
         data = VCGFinding()
 
         if self.get_field_from_row(row, title_column) is None:
-            data.title = ''
+            data.title = ""
         else:
             data.title = self.get_field_from_row(row, title_column)
 
@@ -162,13 +172,21 @@ class VCGCsvParser(object):
     def parse(self, content, test):
         dupes = dict()
         if type(content) is bytes:
-            content = content.decode('utf-8')
-        reader = csv.reader(io.StringIO(content), delimiter=',', quotechar='"')
+            content = content.decode("utf-8")
+        reader = csv.reader(io.StringIO(content), delimiter=",", quotechar='"')
         for row in reader:
             finding = self.parse_issue(row, test)
 
             if finding is not None:
-                key = hashlib.md5((finding.severity + '|' + finding.title + '|' + finding.description).encode('utf-8')).hexdigest()
+                key = hashlib.md5(
+                    (
+                        finding.severity
+                        + "|"
+                        + finding.title
+                        + "|"
+                        + finding.description
+                    ).encode("utf-8")
+                ).hexdigest()
 
                 if key not in dupes:
                     dupes[key] = finding
@@ -198,9 +216,9 @@ class VCGParser(object):
 
         content = filename.read()
 
-        if filename.name.lower().endswith('.xml'):
+        if filename.name.lower().endswith(".xml"):
             return list(VCGXmlParser().parse(content, test).values())
-        elif filename.name.lower().endswith('.csv'):
+        elif filename.name.lower().endswith(".csv"):
             return list(VCGCsvParser().parse(content, test).values())
         else:
-            raise Exception('Unknown File Format')
+            raise Exception("Unknown File Format")

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 import io
 import logging
@@ -16,12 +17,11 @@ LOGGER = logging.getLogger(__name__)
 
 
 class NessusCSVParser(object):
-
     def _convert_severity(self, val):
         if "None" == val:
-            return 'Info'
+            return "Info"
         if val is None:
-            return 'Info'
+            return "Info"
         else:
             return val.title()
 
@@ -48,75 +48,95 @@ class NessusCSVParser(object):
     def get_findings(self, filename, test: Test):
         content = filename.read()
         if type(content) is bytes:
-            content = content.decode('utf-8')
+            content = content.decode("utf-8")
         csv.field_size_limit(int(sys.maxsize / 10))  # the request/resp are big
         reader = csv.DictReader(io.StringIO(content))
         dupes = dict()
         for row in reader:
             # manage severity from two possible columns 'Severity' and 'Risk'
-            severity = 'Info'
-            if 'Severity' in row:
-                severity = self._convert_severity(row.get('Severity'))
-            elif 'Risk' in row:
-                severity = self._convert_severity(row.get('Risk'))
+            severity = "Info"
+            if "Severity" in row:
+                severity = self._convert_severity(row.get("Severity"))
+            elif "Risk" in row:
+                severity = self._convert_severity(row.get("Risk"))
             # manage title from two possible columns 'Nme' and 'Plugin Name'
-            title = row.get('Name')
-            if title is None and 'Plugin Name' in row:
-                title = row.get('Plugin Name')
+            title = row.get("Name")
+            if title is None and "Plugin Name" in row:
+                title = row.get("Plugin Name")
             # special case to skip empty titles
             if not title:
                 continue
-            description = row.get('Synopsis')
-            mitigation = str(row.get('Solution'))
-            impact = row.get('Description', 'N/A')
-            references = row.get('See Also', 'N/A')
+            description = row.get("Synopsis")
+            mitigation = str(row.get("Solution"))
+            impact = row.get("Description", "N/A")
+            references = row.get("See Also", "N/A")
 
-            dupe_key = severity + title + row.get('Host', 'No host') + str(row.get('Port', 'No port')) + row.get('Synopsis', 'No synopsis')
+            dupe_key = (
+                severity
+                + title
+                + row.get("Host", "No host")
+                + str(row.get("Port", "No port"))
+                + row.get("Synopsis", "No synopsis")
+            )
 
-            detected_cve = self._format_cve(str(row.get('CVE')))
+            detected_cve = self._format_cve(str(row.get("CVE")))
 
             if dupe_key in dupes:
                 find = dupes[dupe_key]
-                if 'Plugin Output' in row:
-                    find.description += row.get('Plugin Output')
+                if "Plugin Output" in row:
+                    find.description += row.get("Plugin Output")
             else:
-                if 'Plugin Output' in row:
-                    description = description + str(row.get('Plugin Output'))
-                find = Finding(title=title,
-                                test=test,
-                                description=description,
-                                severity=severity,
-                                mitigation=mitigation,
-                                impact=impact,
-                                references=references)
+                if "Plugin Output" in row:
+                    description = description + str(row.get("Plugin Output"))
+                find = Finding(
+                    title=title,
+                    test=test,
+                    description=description,
+                    severity=severity,
+                    mitigation=mitigation,
+                    impact=impact,
+                    references=references,
+                )
                 if detected_cve:
                     find.unsaved_vulnerability_ids = detected_cve
 
                 # manage CVSS vector (only v3.x for now)
-                if 'CVSS V3 Vector' in row and '' != row.get('CVSS V3 Vector'):
-                    find.cvssv3 = CVSS3('CVSS:3.0/' + str(row.get('CVSS V3 Vector'))).clean_vector(output_prefix=False)
+                if "CVSS V3 Vector" in row and "" != row.get("CVSS V3 Vector"):
+                    find.cvssv3 = CVSS3(
+                        "CVSS:3.0/" + str(row.get("CVSS V3 Vector"))
+                    ).clean_vector(output_prefix=False)
                 # manage CPE data
-                detected_cpe = self._format_cpe(str(row.get('CPE')))
+                detected_cpe = self._format_cpe(str(row.get("CPE")))
                 if detected_cpe:
                     # FIXME support more than one CPE in Nessus CSV parser
                     if len(detected_cpe) > 1:
-                        LOGGER.debug("more than one CPE for a finding. NOT supported by Nessus CSV parser")
+                        LOGGER.debug(
+                            "more than one CPE for a finding. NOT supported by Nessus CSV parser"
+                        )
                     cpe_decoded = CPE(detected_cpe[0])
-                    find.component_name = cpe_decoded.get_product()[0] if len(cpe_decoded.get_product()) > 0 else None
-                    find.component_version = cpe_decoded.get_version()[0] if len(cpe_decoded.get_version()) > 0 else None
+                    find.component_name = (
+                        cpe_decoded.get_product()[0]
+                        if len(cpe_decoded.get_product()) > 0
+                        else None
+                    )
+                    find.component_version = (
+                        cpe_decoded.get_version()[0]
+                        if len(cpe_decoded.get_version()) > 0
+                        else None
+                    )
 
                 find.unsaved_endpoints = list()
                 dupes[dupe_key] = find
             # manage endpoints
-            host = row.get('Host', row.get('DNS Name'))
+            host = row.get("Host", row.get("DNS Name"))
             if len(host) == 0:
-                host = row.get('IP Address', 'localhost')
+                host = row.get("IP Address", "localhost")
 
             endpoint = Endpoint(
-                          protocol=row.get('Protocol').lower() if 'Protocol' in row else None,
-                          host=host,
-                          port=row.get('Port')
-                        )
+                protocol=row.get("Protocol").lower() if "Protocol" in row else None,
+                host=host,
+                port=row.get("Port"),
+            )
             find.unsaved_endpoints.append(endpoint)
         return list(dupes.values())
 
@@ -126,15 +146,20 @@ class NessusXMLParser(object):
         nscan = ElementTree.parse(file)
         root = nscan.getroot()
 
-        if 'NessusClientData_v2' not in root.tag:
-            raise NamespaceErr('This version of Nessus report is not supported. Please make sure the export is '
-                               'formatted using the NessusClientData_v2 schema.')
+        if "NessusClientData_v2" not in root.tag:
+            raise NamespaceErr(
+                "This version of Nessus report is not supported. Please make sure the export is "
+                "formatted using the NessusClientData_v2 schema."
+            )
         dupes = {}
         for report in root.iter("Report"):
             for host in report.iter("ReportHost"):
-                ip = host.attrib['name']
-                fqdn = host.find(".//HostProperties/tag[@name='host-fqdn']").text if host.find(
-                    ".//HostProperties/tag[@name='host-fqdn']") is not None else None
+                ip = host.attrib["name"]
+                fqdn = (
+                    host.find(".//HostProperties/tag[@name='host-fqdn']").text
+                    if host.find(".//HostProperties/tag[@name='host-fqdn']") is not None
+                    else None
+                )
 
                 for item in host.iter("ReportItem"):
                     # if item.attrib["svc_name"] == "general":
@@ -146,21 +171,29 @@ class NessusXMLParser(object):
 
                     protocol = None
                     if str(item.attrib["svc_name"]):
-                        protocol = re.sub(r'[^A-Za-z0-9\-\+]+', "", item.attrib["svc_name"])
-                        if protocol == 'www':
-                            protocol = 'http'
+                        protocol = re.sub(
+                            r"[^A-Za-z0-9\-\+]+", "", item.attrib["svc_name"]
+                        )
+                        if protocol == "www":
+                            protocol = "http"
                         if protocol not in SCHEME_PORT_MAP:
-                            protocol = re.sub(r'[^A-Za-z0-9\-\+]+', "", item.attrib["protocol"])
+                            protocol = re.sub(
+                                r"[^A-Za-z0-9\-\+]+", "", item.attrib["protocol"]
+                            )
 
                     description = ""
                     plugin_output = None
                     if item.findtext("synopsis"):
                         description = item.find("synopsis").text + "\n\n"
                     if item.findtext("plugin_output"):
-                        plugin_output = "Plugin Output: " + ip + (
-                            (":" + port) if port is not None else "") + \
-                            " \n```\n" + item.find("plugin_output").text + \
-                            "\n```\n\n"
+                        plugin_output = (
+                            "Plugin Output: "
+                            + ip
+                            + ((":" + port) if port is not None else "")
+                            + " \n```\n"
+                            + item.find("plugin_output").text
+                            + "\n```\n\n"
+                        )
                         description += plugin_output
 
                     nessus_severity_id = int(item.attrib["severity"])
@@ -172,11 +205,23 @@ class NessusXMLParser(object):
                     if item.findtext("cvss_vector"):
                         impact += "CVSS Vector: " + item.find("cvss_vector").text + "\n"
                     if item.findtext("cvss_base_score"):
-                        impact += "CVSS Base Score: " + item.find("cvss_base_score").text + "\n"
+                        impact += (
+                            "CVSS Base Score: "
+                            + item.find("cvss_base_score").text
+                            + "\n"
+                        )
                     if item.findtext("cvss_temporal_score"):
-                        impact += "CVSS Temporal Score: " + item.find("cvss_temporal_score").text + "\n"
+                        impact += (
+                            "CVSS Temporal Score: "
+                            + item.find("cvss_temporal_score").text
+                            + "\n"
+                        )
 
-                    mitigation = item.find("solution").text if item.find("solution") is not None else "N/A"
+                    mitigation = (
+                        item.find("solution").text
+                        if item.find("solution") is not None
+                        else "N/A"
+                    )
                     references = ""
                     for ref in item.iter("see_also"):
                         refs = ref.text.split()
@@ -204,15 +249,17 @@ class NessusXMLParser(object):
                         if plugin_output is not None:
                             find.description += plugin_output
                     else:
-                        find = Finding(title=title,
-                                       test=test,
-                                       description=description,
-                                       severity=severity,
-                                       mitigation=mitigation,
-                                       impact=impact,
-                                       references=references,
-                                       cwe=cwe,
-                                       cvssv3=cvssv3)
+                        find = Finding(
+                            title=title,
+                            test=test,
+                            description=description,
+                            severity=severity,
+                            mitigation=mitigation,
+                            impact=impact,
+                            references=references,
+                            cwe=cwe,
+                            cvssv3=cvssv3,
+                        )
                         find.unsaved_vulnerability_ids = list()
                         find.unsaved_endpoints = list()
                         dupes[dupe_key] = find
@@ -220,15 +267,15 @@ class NessusXMLParser(object):
                     if vulnerability_id:
                         find.unsaved_vulnerability_ids.append(vulnerability_id)
 
-                    if fqdn and '://' in fqdn:
+                    if fqdn and "://" in fqdn:
                         endpoint = Endpoint.from_uri(fqdn)
                     else:
-                        if protocol == 'general':
+                        if protocol == "general":
                             endpoint = Endpoint(host=fqdn if fqdn else ip)
                         else:
-                            endpoint = Endpoint(protocol=protocol,
-                                                host=fqdn if fqdn else ip,
-                                                port=port)
+                            endpoint = Endpoint(
+                                protocol=protocol, host=fqdn if fqdn else ip, port=port
+                            )
                     find.unsaved_endpoints.append(endpoint)
 
         return list(dupes.values())
@@ -236,19 +283,18 @@ class NessusXMLParser(object):
     def get_text_severity(self, severity_id):
         """Convert data of the report into severity"""
         if severity_id == 4:
-            return 'Critical'
+            return "Critical"
         elif severity_id == 3:
-            return 'High'
+            return "High"
         elif severity_id == 2:
-            return 'Medium'
+            return "Medium"
         elif severity_id == 1:
-            return 'Low'
+            return "Low"
         else:
-            return 'Info'
+            return "Info"
 
 
 class NessusParser(object):
-
     def get_scan_types(self):
         return ["Nessus Scan"]
 
@@ -260,9 +306,13 @@ class NessusParser(object):
 
     def get_findings(self, filename, test):
 
-        if filename.name.lower().endswith('.xml') or filename.name.lower().endswith('.nessus'):
+        if filename.name.lower().endswith(".xml") or filename.name.lower().endswith(
+            ".nessus"
+        ):
             return NessusXMLParser().get_findings(filename, test)
-        elif filename.name.lower().endswith('.csv'):
+        elif filename.name.lower().endswith(".csv"):
             return NessusCSVParser().get_findings(filename, test)
         else:
-            raise ValueError('Filename extension not recognized. Use .xml, .nessus or .csv')
+            raise ValueError(
+                "Filename extension not recognized. Use .xml, .nessus or .csv"
+            )

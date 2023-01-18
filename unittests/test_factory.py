@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from dojo.tools.factory import get_parser
 from dojo.models import Test, Test_Type
 from .dojo_test_case import DojoTestCase, get_unit_tests_path
@@ -19,7 +20,9 @@ class TestFactory(DojoTestCase):
             testfile.close()
         with self.subTest(scan_type="Nessus Scan"):
             scan_type = "Nessus Scan"
-            testfile = open(get_unit_tests_path() + "/scans/nessus/nessus_v_unknown.xml")
+            testfile = open(
+                get_unit_tests_path() + "/scans/nessus/nessus_v_unknown.xml"
+            )
             parser = get_parser(scan_type)
             findings = parser.get_findings(testfile, Test())
             testfile.close()

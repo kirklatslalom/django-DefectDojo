@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import textwrap
 
@@ -65,7 +66,9 @@ class GitlabContainerScanParser(object):
                     )
 
             if "version" in dependency:
-                finding.component_version = textwrap.shorten(dependency["version"], width=90, placeholder="...")
+                finding.component_version = textwrap.shorten(
+                    dependency["version"], width=90, placeholder="..."
+                )
 
             if "solution" in vulnerability:
                 finding.mitigation = vulnerability["solution"]

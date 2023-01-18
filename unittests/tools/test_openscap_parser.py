@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.openscap.parser import OpenscapParser
 from dojo.models import Test
 
 
 class TestOpenscapParser(DojoTestCase):
-
     def test_openscap_parser_with_no_vuln_has_no_findings(self):
         testfile = open("unittests/scans/openscap/no_vuln_rhsa.xml")
         parser = OpenscapParser()
@@ -35,11 +35,16 @@ class TestOpenscapParser(DojoTestCase):
                 endpoint.clean()
         self.assertEqual(31, len(findings))
         finding = findings[0]
-        self.assertEqual("RHSA-2017:3315: kernel security and bug fix update (Moderate)", finding.title)
+        self.assertEqual(
+            "RHSA-2017:3315: kernel security and bug fix update (Moderate)",
+            finding.title,
+        )
         self.assertEqual("Medium", finding.severity)
         self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
         self.assertEqual("CVE-2017-1000380", finding.unsaved_vulnerability_ids[0])
-        self.assertEqual("oval-com.redhat.rhsa-def-20173315", finding.unique_id_from_tool)
+        self.assertEqual(
+            "oval-com.redhat.rhsa-def-20173315", finding.unique_id_from_tool
+        )
         # endpoints
         self.assertEqual(7, len(finding.unsaved_endpoints))
         self.assertEqual("sample.system", finding.unsaved_endpoints[0].host)

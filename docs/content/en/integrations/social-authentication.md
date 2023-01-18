@@ -191,7 +191,7 @@ user, such as 'superuser'.
     button on the login page which should *magically* work
 
 ### Automatic Import of User-Groups
-To import groups from Azure AD users, the following environment variable needs to be set:  
+To import groups from Azure AD users, the following environment variable needs to be set:
 
     {{< highlight python >}}
     DD_SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_GET_GROUPS=True
@@ -207,7 +207,7 @@ To prevent authorization creep, old Azure AD groups a user is not having anymore
     {{< /highlight >}}
 
  To limit the amount of groups imported from Azure AD, a regular expression can be used as the following:
-    
+
     {{< highlight python >}}
     DD_SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_GROUPS_FILTER='^team-.*' # or 'teamA|teamB|groupC'
     {{< /highlight >}}
@@ -255,7 +255,7 @@ Follow along below.
 There is also an option to use Keycloak as OAuth2 provider in order to authenticate users to Defect Dojo, also by using
 the social-auth plugin.
 
-Here are suggestion on how to configure Keycloak and DefectDojo: 
+Here are suggestion on how to configure Keycloak and DefectDojo:
 
 ### Configure Keycloak
 (assuming you already have an existing realm, otherwise create one)
@@ -268,7 +268,7 @@ Here are suggestion on how to configure Keycloak and DefectDojo:
    * Under `Fine grained openID connect configuration` -> `request object signature algorithm`: set to `RS256`
    * -> save these settings in keycloak (hit save button)
 3. Under `Scope` -> `Full Scope Allowed` set to `off`
-4. Under `mappers` -> add a custom mapper here: 
+4. Under `mappers` -> add a custom mapper here:
    * Name: `aud`
    * Mapper type: `audience`
    * Included audience: select your client/client-id here
@@ -289,13 +289,13 @@ Edit the settings (see [Configuration]({{< ref "/getting_started/configuration" 
    DD_SECURE_SSL_REDIRECT=True,
    DD_SOCIAL_AUTH_KEYCLOAK_OAUTH2_ENABLED=True,
    DD_SOCIAL_AUTH_KEYCLOAK_PUBLIC_KEY=(str, '<your realm public key>'),
-   DD_SOCIAL_AUTH_KEYCLOAK_KEY=(str, '<your client id>'), 
-   DD_SOCIAL_AUTH_KEYCLOAK_SECRET=(str, '<your keycloak client credentials secret>'), 
+   DD_SOCIAL_AUTH_KEYCLOAK_KEY=(str, '<your client id>'),
+   DD_SOCIAL_AUTH_KEYCLOAK_SECRET=(str, '<your keycloak client credentials secret>'),
    DD_SOCIAL_AUTH_KEYCLOAK_AUTHORIZATION_URL=(str, '<your authorization endpoint>'),
-   DD_SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL=(str, '<your token endpoint>')         
+   DD_SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL=(str, '<your token endpoint>')
    {{< /highlight >}}
- 
-or, alternatively, for helm configuration, add this to the `extraConfig` section: 
+
+or, alternatively, for helm configuration, add this to the `extraConfig` section:
 
 ```
 DD_SESSION_COOKIE_SECURE: 'True'
@@ -309,7 +309,7 @@ DD_SOCIAL_AUTH_KEYCLOAK_AUTHORIZATION_URL: '<your authorization endpoint>'
 DD_SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL: '<your token endpoint>'
 ```
 
-Optionally, you *can* set `DD_SOCIAL_AUTH_KEYCLOAK_LOGIN_BUTTON_TEXT` in order to customize the login button's text caption. 
+Optionally, you *can* set `DD_SOCIAL_AUTH_KEYCLOAK_LOGIN_BUTTON_TEXT` in order to customize the login button's text caption.
 
 ## GitHub
 1. Navigate to GitHub.com and follow instructions to create a new OAuth App [https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
@@ -319,10 +319,10 @@ Optionally, you *can* set `DD_SOCIAL_AUTH_KEYCLOAK_LOGIN_BUTTON_TEXT` in order t
     -   [https://the_hostname_you_have_dojo_deployed:your_server_port/complete/github/](https://the_hostname_you_have_dojo_deployed:your_server_port/complete/github/)
 4. Edit the settings (see [Configuration]({{< ref "/getting_started/configuration" >}})) with the following
     information:
-    {{< highlight python >}}  
-    DD_SOCIAL_AUTH_GITHUB_KEY=(str, 'GitHub OAuth App Client ID'),  
-    DD_SOCIAL_AUTH_GITHUB_SECRET=(str, 'GitHub OAuth App Client Secret'),  
-    DD_SOCIAL_AUTH_GITHUB_OAUTH2_ENABLED = True  
+    {{< highlight python >}}
+    DD_SOCIAL_AUTH_GITHUB_KEY=(str, 'GitHub OAuth App Client ID'),
+    DD_SOCIAL_AUTH_GITHUB_SECRET=(str, 'GitHub OAuth App Client Secret'),
+    DD_SOCIAL_AUTH_GITHUB_OAUTH2_ENABLED = True
     {{< /highlight >}}
 5. Restart DefectDojo, and you should now see a **Login with GitHub**
     button on the login page.
@@ -335,20 +335,20 @@ Optionally, you *can* set `DD_SOCIAL_AUTH_KEYCLOAK_LOGIN_BUTTON_TEXT` in order t
     -   [https://the_hostname_you_have_dojo_deployed:your_server_port/complete/github-enterprise/](https://the_hostname_you_have_dojo_deployed:your_server_port/complete/github-enterprise/)
 4. Edit the settings (see [Configuration]({{< ref "/getting_started/configuration" >}})) with the following
     information:
-    {{< highlight python >}}  
-    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY=(str, 'GitHub Enterprise OAuth App Client ID'),  
-    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET=(str, 'GitHub Enterprise OAuth App Client Secret'),  
-    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_URL=(str, 'https://github.<your_company>.com/'),  
-    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_API_URL=(str, 'https://github.<your_company>.com/api/v3/'),  
-    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_OAUTH2_ENABLED = True,  
+    {{< highlight python >}}
+    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY=(str, 'GitHub Enterprise OAuth App Client ID'),
+    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET=(str, 'GitHub Enterprise OAuth App Client Secret'),
+    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_URL=(str, 'https://github.<your_company>.com/'),
+    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_API_URL=(str, 'https://github.<your_company>.com/api/v3/'),
+    DD_SOCIAL_AUTH_GITHUB_ENTERPRISE_OAUTH2_ENABLED = True,
     {{< /highlight >}}
 5. Restart DefectDojo, and you should now see a **Login with GitHub Enterprise**
-    button on the login page.  
+    button on the login page.
 
 ## SAML 2.0
 In a similar direction to OAuth, this SAML addition provides a more secure
 perogative to SSO. For definitions of terms used and more information,
-see the plugin [plugin homepage](https://github.com/IdentityPython/djangosaml2). 
+see the plugin [plugin homepage](https://github.com/IdentityPython/djangosaml2).
 
 1.  Navigate to your SAML IdP and find your metadata
 2.  Edit the settings (see [Configuration]({{< ref "/getting_started/configuration" >}})) with the following

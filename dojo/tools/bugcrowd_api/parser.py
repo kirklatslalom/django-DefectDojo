@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import textwrap
 from datetime import datetime

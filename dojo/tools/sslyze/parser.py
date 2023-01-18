@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .parser_json import SSLyzeJSONParser
 from .parser_xml import SSLyzeXMLParser
 
@@ -21,9 +22,9 @@ class SslyzeParser(object):
         if filename is None:
             return list()
 
-        if filename.name.lower().endswith('.xml'):
+        if filename.name.lower().endswith(".xml"):
             return SSLyzeXMLParser().get_findings(filename, test)
-        elif filename.name.lower().endswith('.json'):
+        elif filename.name.lower().endswith(".json"):
             return SSLyzeJSONParser().get_findings(filename, test)
         else:
-            raise Exception('Unknown File Format')
+            raise Exception("Unknown File Format")

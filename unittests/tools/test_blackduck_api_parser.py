@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from dojo.models import Test, SEVERITIES
 from dojo.tools.blackduck_api.parser import BlackduckApiParser
 
@@ -6,7 +6,6 @@ from ..dojo_test_case import DojoTestCase
 
 
 class TestBlackduckApiParser(DojoTestCase):
-
     def test_bandit_parser_has_many_findings(self):
         testfile = open("unittests/scans/blackduck_api/many_vulns.json")
         parser = BlackduckApiParser()
@@ -18,7 +17,9 @@ class TestBlackduckApiParser(DojoTestCase):
         self.assertEqual(43, len(findings))
         with self.subTest(i=0):
             item = findings[0]
-            self.assertEqual("BDSA-2021-2909 in cdr/code-server:3.3.0-rc.27", item.title)
+            self.assertEqual(
+                "BDSA-2021-2909 in cdr/code-server:3.3.0-rc.27", item.title
+            )
             self.assertEqual("Medium", item.severity)
             self.assertEqual("cdr/code-server", item.component_name)
             self.assertEqual("3.3.0-rc.27", item.component_version)

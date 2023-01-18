@@ -1,11 +1,11 @@
+# -*- coding: utf-8 -*-
 from .importer import SonarQubeApiImporter
 
 
-SCAN_SONARQUBE_API = 'SonarQube API Import'
+SCAN_SONARQUBE_API = "SonarQube API Import"
 
 
 class SonarQubeAPIParser(object):
-
     def get_scan_types(self):
         return [SCAN_SONARQUBE_API]
 
@@ -19,7 +19,7 @@ class SonarQubeAPIParser(object):
         return False
 
     def requires_tool_type(self, scan_type):
-        return 'SonarQube'
+        return "SonarQube"
 
     def get_findings(self, json_output, test):
         return SonarQubeApiImporter().get_findings(json_output, test)

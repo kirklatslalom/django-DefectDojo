@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 from dojo.tools.stackhawk.parser import StackHawkParser
@@ -6,7 +7,9 @@ from unittests.dojo_test_case import DojoTestCase
 
 
 class TestStackHawkParser(DojoTestCase):
-    __test_datetime = datetime.datetime(2022, 2, 16, 23, 7, 19, 575000, datetime.timezone.utc)
+    __test_datetime = datetime.datetime(
+        2022, 2, 16, 23, 7, 19, 575000, datetime.timezone.utc
+    )
 
     def test_invalid_json_format(self):
         testfile = open("unittests/scans/stackhawk/invalid.json")
@@ -15,7 +18,9 @@ class TestStackHawkParser(DojoTestCase):
             parser.get_findings(testfile, Test())
 
     def test_parser_ensures_data_is_for_stackhawk_before_parsing(self):
-        testfile = open("unittests/scans/stackhawk/oddly_familiar_json_that_isnt_us.json")
+        testfile = open(
+            "unittests/scans/stackhawk/oddly_familiar_json_that_isnt_us.json"
+        )
         parser = StackHawkParser()
         with self.assertRaises(ValueError):
             parser.get_findings(testfile, Test())
@@ -48,10 +53,12 @@ class TestStackHawkParser(DojoTestCase):
             "20012",
             "10",
             False,
-            False
+            False,
         )
 
-    def test_stackhawk_parser_with_many_vuln_has_many_findings_and_removes_duplicates(self):
+    def test_stackhawk_parser_with_many_vuln_has_many_findings_and_removes_duplicates(
+        self,
+    ):
         testfile = open("unittests/scans/stackhawk/stackhawk_many_vul.json")
         parser = StackHawkParser()
         findings = parser.get_findings(testfile, Test())
@@ -70,7 +77,7 @@ class TestStackHawkParser(DojoTestCase):
             "90027",
             "10",
             False,
-            False
+            False,
         )
 
         self.__assertFindingEquals(
@@ -84,7 +91,7 @@ class TestStackHawkParser(DojoTestCase):
             "40025",
             "10",
             False,
-            False
+            False,
         )
 
         self.__assertFindingEquals(
@@ -98,7 +105,7 @@ class TestStackHawkParser(DojoTestCase):
             "20012",
             "10",
             False,
-            False
+            False,
         )
 
         self.__assertFindingEquals(
@@ -112,7 +119,7 @@ class TestStackHawkParser(DojoTestCase):
             "40012",
             "1",
             False,
-            False
+            False,
         )
 
         self.__assertFindingEquals(
@@ -126,7 +133,7 @@ class TestStackHawkParser(DojoTestCase):
             "10038",
             "12",
             False,
-            False
+            False,
         )
 
         self.__assertFindingEquals(
@@ -140,7 +147,7 @@ class TestStackHawkParser(DojoTestCase):
             "10063",
             "12",
             False,
-            False
+            False,
         )
 
     def test_that_a_scan_import_updates_the_test_description(self):
@@ -151,13 +158,17 @@ class TestStackHawkParser(DojoTestCase):
         testfile.close()
         self.assertEqual(
             test.description,
-            'View scan details here: ' +
-            '[https://app.stackhawk.com/scans/e2ff5651-7eef-47e9-b743-0c2f7d861e27]' +
-            '(https://app.stackhawk.com/scans/e2ff5651-7eef-47e9-b743-0c2f7d861e27)'
+            "View scan details here: "
+            + "[https://app.stackhawk.com/scans/e2ff5651-7eef-47e9-b743-0c2f7d861e27]"
+            + "(https://app.stackhawk.com/scans/e2ff5651-7eef-47e9-b743-0c2f7d861e27)",
         )
 
-    def test_that_a_scan_with_all_false_positive_endpoints_on_a_finding_marks_as_false_positive(self):
-        testfile = open("unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_false_positive.json")
+    def test_that_a_scan_with_all_false_positive_endpoints_on_a_finding_marks_as_false_positive(
+        self,
+    ):
+        testfile = open(
+            "unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_false_positive.json"
+        )
         parser = StackHawkParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -174,11 +185,15 @@ class TestStackHawkParser(DojoTestCase):
             "90027",
             "3",
             True,
-            False
+            False,
         )
 
-    def test_that_a_scan_with_all_risk_accepted_endpoints_on_a_finding_marks_as_risk_accepted(self):
-        testfile = open("unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_risk_accepted.json")
+    def test_that_a_scan_with_all_risk_accepted_endpoints_on_a_finding_marks_as_risk_accepted(
+        self,
+    ):
+        testfile = open(
+            "unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_risk_accepted.json"
+        )
         parser = StackHawkParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -195,11 +210,15 @@ class TestStackHawkParser(DojoTestCase):
             "90027",
             "3",
             False,
-            True
+            True,
         )
 
-    def test_that_a_scan_with_endpoints_in_differing_statuses_does_not_mark_as_risk_accepted_or_false_positive(self):
-        testfile = open("unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_have_different_status.json")
+    def test_that_a_scan_with_endpoints_in_differing_statuses_does_not_mark_as_risk_accepted_or_false_positive(
+        self,
+    ):
+        testfile = open(
+            "unittests/scans/stackhawk/stackhawk_one_vuln_all_endpoints_have_different_status.json"
+        )
         parser = StackHawkParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -216,33 +235,39 @@ class TestStackHawkParser(DojoTestCase):
             "90027",
             "3",
             False,
-            False
+            False,
         )
 
     def __assertFindingEquals(
-            self,
-            actual_finding: Finding,
-            title,
-            date: datetime.datetime,
-            application_name,
-            environment,
-            severity,
-            finding_url,
-            finding_id,
-            count,
-            false_positive,
-            risk_accepted
+        self,
+        actual_finding: Finding,
+        title,
+        date: datetime.datetime,
+        application_name,
+        environment,
+        severity,
+        finding_url,
+        finding_id,
+        count,
+        false_positive,
+        risk_accepted,
     ):
         self.assertEqual(title, actual_finding.title)
         self.assertEqual(date, actual_finding.date)
         self.assertEqual(application_name, actual_finding.component_name)
         self.assertEqual(environment, actual_finding.component_version)
         self.assertEqual(severity, actual_finding.severity)
-        self.assertEqual("View this finding in the StackHawk platform at:\n[" + finding_url + '](' + finding_url + ')',
-                         actual_finding.description)
+        self.assertEqual(
+            "View this finding in the StackHawk platform at:\n["
+            + finding_url
+            + "]("
+            + finding_url
+            + ")",
+            actual_finding.description,
+        )
         self.assertRegexpMatches(
             actual_finding.steps_to_reproduce,
-            "Use a specific message link and click 'Validate' to see the cURL!.*"
+            "Use a specific message link and click 'Validate' to see the cURL!.*",
         )
         self.assertFalse(actual_finding.static_finding)
         self.assertTrue(actual_finding.dynamic_finding)

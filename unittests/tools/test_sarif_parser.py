@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from os import path
 
@@ -19,7 +20,8 @@ class TestSarifParser(DojoTestCase):
     def test_example_report(self):
         testfile = open(
             path.join(
-                get_unit_tests_path() + "/scans/sarif/DefectDojo_django-DefectDojo__2020-12-11_13 42 10__export.sarif"
+                get_unit_tests_path()
+                + "/scans/sarif/DefectDojo_django-DefectDojo__2020-12-11_13 42 10__export.sarif"
             )
         )
         parser = SarifParser()
@@ -29,7 +31,9 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example2_report(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(1, len(findings))
@@ -48,23 +52,32 @@ class TestSarifParser(DojoTestCase):
 \tcollections/list.h:15\t-\toffset = (y + z) * q + 1;
 \tcollections/list.h:25\t-\tadd_core(ptr, offset, val)"""
         self.assertEqual(description, item.description)
-        self.assertEqual(datetime.datetime(2016, 7, 16, 14, 19, 1, tzinfo=datetime.timezone.utc), item.date)
+        self.assertEqual(
+            datetime.datetime(2016, 7, 16, 14, 19, 1, tzinfo=datetime.timezone.utc),
+            item.date,
+        )
         for finding in findings:
             self.common_checks(finding)
 
     def test_example_k1_report(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k1.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k1.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(0, len(findings))
 
     def test_example_k2_report(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k2.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k2.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(1, len(findings))
         item = findings[0]
-        self.assertEqual('Variable "count" was used without being initialized.', item.title)
+        self.assertEqual(
+            'Variable "count" was used without being initialized.', item.title
+        )
         self.assertEqual("src/collections/list.cpp", item.file_path)
         self.assertEqual(15, item.line)
         description = """**Result message:** Variable "count" was used without being initialized.
@@ -74,17 +87,23 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example_k3_report(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k3.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k3.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(1, len(findings))
         item = findings[0]
-        self.assertEqual('The insecure method "Crypto.Sha1.Encrypt" should not be used.', item.title)
+        self.assertEqual(
+            'The insecure method "Crypto.Sha1.Encrypt" should not be used.', item.title
+        )
         for finding in findings:
             self.common_checks(finding)
 
     def test_example_k4_report_mitigation(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k4.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k4.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(1, len(findings))
@@ -93,7 +112,8 @@ class TestSarifParser(DojoTestCase):
         with self.subTest(i=0):
             finding = findings[0]
             self.assertEqual(
-                'Variable "ptr" was used without being initialized. It was declared [here](0).', finding.title
+                'Variable "ptr" was used without being initialized. It was declared [here](0).',
+                finding.title,
             )
             self.assertEqual("C2001", finding.vuln_id_from_tool)
             self.assertEqual("collections/list.h", finding.file_path)
@@ -101,7 +121,11 @@ class TestSarifParser(DojoTestCase):
 
     def test_example_report_ms(self):
         """Report file come from Microsoft SARIF sdk on GitHub"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/SuppressionTestCurrent.sarif"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/sarif/SuppressionTestCurrent.sarif"
+            )
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(4, len(findings))
@@ -111,7 +135,12 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example_report_semgrep(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/semgrepowasp-benchmark-sample.sarif"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__),
+                "../scans/sarif/semgrepowasp-benchmark-sample.sarif",
+            )
+        )
         test = Test()
         parser = SarifParser()
         findings = parser.get_findings(testfile, test)
@@ -125,7 +154,9 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example_report_scanlift_dependency_check(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/dependency_check.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/dependency_check.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(13, len(findings))
@@ -148,7 +179,9 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example_report_scanlift_bash(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/bash-report.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/bash-report.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(27, len(findings))
@@ -159,7 +192,10 @@ class TestSarifParser(DojoTestCase):
             item.file_path,
         )
         self.assertIsNone(item.unsaved_vulnerability_ids)
-        self.assertEqual(datetime.datetime(2021, 3, 8, 15, 39, 40, tzinfo=datetime.timezone.utc), item.date)
+        self.assertEqual(
+            datetime.datetime(2021, 3, 8, 15, 39, 40, tzinfo=datetime.timezone.utc),
+            item.date,
+        )
         # finding 6
         with self.subTest(i=6):
             finding = findings[6]
@@ -177,7 +213,11 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_example_report_taint_python(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/taint-python-report.sarif"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/sarif/taint-python-report.sarif"
+            )
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(11, len(findings))
@@ -191,7 +231,10 @@ class TestSarifParser(DojoTestCase):
                 item.file_path,
             )
             self.assertIsNone(item.unsaved_vulnerability_ids)
-            self.assertEqual(datetime.datetime(2021, 3, 8, 15, 46, 16, tzinfo=datetime.timezone.utc), item.date)
+            self.assertEqual(
+                datetime.datetime(2021, 3, 8, 15, 46, 16, tzinfo=datetime.timezone.utc),
+                item.date,
+            )
             self.assertEqual(
                 "scanFileHash:4bc9f13947613303|scanPrimaryLocationHash:1a8bbb28fe7380df|scanTagsHash:21de8f8d0eb8d9b2",
                 finding.unique_id_from_tool,
@@ -219,7 +262,9 @@ class TestSarifParser(DojoTestCase):
 
     def test_njsscan(self):
         """Generated with opensecurity/njsscan (https://github.com/ajinabraham/njsscan)"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/njsscan.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/njsscan.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(2, len(findings))
@@ -230,7 +275,10 @@ class TestSarifParser(DojoTestCase):
             finding.file_path,
         )
         self.assertIsNone(finding.unsaved_vulnerability_ids)
-        self.assertEqual(datetime.datetime(2021, 3, 23, 0, 10, 48, tzinfo=datetime.timezone.utc), finding.date)
+        self.assertEqual(
+            datetime.datetime(2021, 3, 23, 0, 10, 48, tzinfo=datetime.timezone.utc),
+            finding.date,
+        )
         self.assertEqual(327, finding.cwe)
         # finding 1
         finding = findings[1]
@@ -239,14 +287,19 @@ class TestSarifParser(DojoTestCase):
             finding.file_path,
         )
         self.assertEqual(235, finding.line)
-        self.assertEqual(datetime.datetime(2021, 3, 23, 0, 10, 48, tzinfo=datetime.timezone.utc), finding.date)
+        self.assertEqual(
+            datetime.datetime(2021, 3, 23, 0, 10, 48, tzinfo=datetime.timezone.utc),
+            finding.date,
+        )
         self.assertEqual(798, finding.cwe)
         for finding in findings:
             self.common_checks(finding)
 
     def test_dockle(self):
         """Generated with goodwithtech/dockle (https://github.com/goodwithtech/dockle)"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/dockle_0_3_15.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/dockle_0_3_15.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(4, len(findings))
@@ -260,7 +313,8 @@ class TestSarifParser(DojoTestCase):
 **Rule short description:** Do not store credential in ENVIRONMENT vars/files"""
             self.assertEqual(description, finding.description)
             self.assertEqual(
-                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0010", finding.references
+                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0010",
+                finding.references,
             )
         with self.subTest(i=1):
             finding = findings[1]
@@ -270,7 +324,8 @@ class TestSarifParser(DojoTestCase):
 **Rule short description:** Enable Content trust for Docker"""
             self.assertEqual(description, finding.description)
             self.assertEqual(
-                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0005", finding.references
+                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0005",
+                finding.references,
             )
         with self.subTest(i=2):
             finding = findings[2]
@@ -280,7 +335,8 @@ class TestSarifParser(DojoTestCase):
 **Rule short description:** Add HEALTHCHECK instruction to the container image"""
             self.assertEqual(description, finding.description)
             self.assertEqual(
-                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0006", finding.references
+                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0006",
+                finding.references,
             )
         with self.subTest(i=3):
             finding = findings[3]
@@ -290,11 +346,14 @@ class TestSarifParser(DojoTestCase):
 **Rule short description:** Confirm safety of setuid/setgid files"""
             self.assertEqual(description, finding.description)
             self.assertEqual(
-                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0008", finding.references
+                "https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md#CIS-DI-0008",
+                finding.references,
             )
 
     def test_mobsfscan(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/mobsfscan.json"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/mobsfscan.json")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(9, len(findings))
@@ -302,7 +361,9 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_gitleaks(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/gitleaks_7.5.0.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/gitleaks_7.5.0.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(8, len(findings))
@@ -342,11 +403,16 @@ class TestSarifParser(DojoTestCase):
 **Snippet:**
 ```        self.assertEqual(\"AWS\\nAKIAIOSFODNN7EXAMPLE\", first_finding.description)```"""
             self.assertEqual(description, finding.description)
-            self.assertEqual("dojo/unittests/tools/test_gitlab_secret_detection_report_parser.py", finding.file_path)
+            self.assertEqual(
+                "dojo/unittests/tools/test_gitlab_secret_detection_report_parser.py",
+                finding.file_path,
+            )
             self.assertEqual(37, finding.line)
 
     def test_flawfinder(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/flawfinder.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/flawfinder.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(53, len(findings))
@@ -370,9 +436,12 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(327, finding.cwe)
             self.assertEqual("FF1048", finding.vuln_id_from_tool)
             self.assertEqual(
-                "e6c1ad2b1d96ffc4035ed8df070600566ad240b8ded025dac30620f3fd4aa9fd", finding.unique_id_from_tool
+                "e6c1ad2b1d96ffc4035ed8df070600566ad240b8ded025dac30620f3fd4aa9fd",
+                finding.unique_id_from_tool,
             )
-            self.assertEqual("https://cwe.mitre.org/data/definitions/327.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/327.html", finding.references
+            )
         with self.subTest(i=20):
             finding = findings[20]
             self.assertEqual(
@@ -391,9 +460,12 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(120, finding.cwe)
             self.assertEqual("FF1004", finding.vuln_id_from_tool)
             self.assertEqual(
-                "327fc54b75ab37bbbb31a1b71431aaefa8137ff755acc103685ad5adf88f5dda", finding.unique_id_from_tool
+                "327fc54b75ab37bbbb31a1b71431aaefa8137ff755acc103685ad5adf88f5dda",
+                finding.unique_id_from_tool,
             )
-            self.assertEqual("https://cwe.mitre.org/data/definitions/120.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/120.html", finding.references
+            )
         with self.subTest(i=52):
             finding = findings[52]
             self.assertEqual(
@@ -411,12 +483,17 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(482, finding.line)
             self.assertEqual("FF1021", finding.vuln_id_from_tool)
             self.assertEqual(
-                "ad8408027235170e870e7662751a01386beb2d2ed8beb75dd4ba8e4a70e91d65", finding.unique_id_from_tool
+                "ad8408027235170e870e7662751a01386beb2d2ed8beb75dd4ba8e4a70e91d65",
+                finding.unique_id_from_tool,
             )
-            self.assertEqual("https://cwe.mitre.org/data/definitions/120.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/120.html", finding.references
+            )
 
     def test_flawfinder_interfacev2(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/flawfinder.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/flawfinder.sarif")
+        )
         parser = SarifParser()
         tests = parser.get_tests(parser.get_scan_types()[0], testfile)
         self.assertEqual(1, len(tests))
@@ -441,7 +518,9 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(29, finding.line)
             self.assertEqual(327, finding.cwe)
             self.assertEqual("FF1048", finding.vuln_id_from_tool)
-            self.assertEqual("https://cwe.mitre.org/data/definitions/327.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/327.html", finding.references
+            )
         with self.subTest(i=20):
             finding = findings[20]
             self.assertEqual(
@@ -459,7 +538,9 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(31, finding.line)
             self.assertEqual(120, finding.cwe)
             self.assertEqual("FF1004", finding.vuln_id_from_tool)
-            self.assertEqual("https://cwe.mitre.org/data/definitions/120.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/120.html", finding.references
+            )
         with self.subTest(i=52):
             finding = findings[52]
             self.assertEqual(
@@ -476,10 +557,14 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual("src/cli_main.cc", finding.file_path)
             self.assertEqual(482, finding.line)
             self.assertEqual("FF1021", finding.vuln_id_from_tool)
-            self.assertEqual("https://cwe.mitre.org/data/definitions/120.html", finding.references)
+            self.assertEqual(
+                "https://cwe.mitre.org/data/definitions/120.html", finding.references
+            )
 
     def test_appendix_k1_double_interfacev2(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/appendix_k1_double.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/appendix_k1_double.sarif")
+        )
         parser = SarifParser()
         tests = parser.get_tests(parser.get_scan_types()[0], testfile)
         self.assertEqual(2, len(tests))
@@ -495,7 +580,9 @@ class TestSarifParser(DojoTestCase):
             self.assertEqual(0, len(findings))
 
     def test_codeql_snippet_report(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/codeQL-output.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/codeQL-output.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(72, len(findings))
@@ -519,7 +606,9 @@ class TestSarifParser(DojoTestCase):
             self.common_checks(finding)
 
     def test_severity_cvss_from_grype(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/sarif/cxf-3.4.6.sarif"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/sarif/cxf-3.4.6.sarif")
+        )
         parser = SarifParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(22, len(findings))
@@ -534,14 +623,24 @@ class TestSarifParser(DojoTestCase):
 
     def test_get_fingerprints_hashes(self):
         # example from 3.27.16 of the spec
-        data = {"fingerprints": {"stableResultHash/v2": "234567900abcd", "stableResultHash/v3": "34567900abcde"}}
+        data = {
+            "fingerprints": {
+                "stableResultHash/v2": "234567900abcd",
+                "stableResultHash/v3": "34567900abcde",
+            }
+        }
         self.assertEqual(
             {"stableResultHash": {"version": 3, "value": "34567900abcde"}},
             get_fingerprints_hashes(data["fingerprints"]),
         )
 
         # example than reverse the order
-        data2 = {"fingerprints": {"stableResultHash/v2": "234567900abcd", "stableResultHash/v1": "34567900abcde"}}
+        data2 = {
+            "fingerprints": {
+                "stableResultHash/v2": "234567900abcd",
+                "stableResultHash/v1": "34567900abcde",
+            }
+        }
         self.assertEqual(
             {"stableResultHash": {"version": 2, "value": "234567900abcd"}},
             get_fingerprints_hashes(data2["fingerprints"]),

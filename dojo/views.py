@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 from auditlog.models import LogEntry
@@ -14,7 +15,11 @@ from dojo.models import Engagement, Test, Finding, Endpoint, Product, FileUpload
 from dojo.filters import LogEntryFilter
 from dojo.forms import ManageFileFormSet
 from dojo.utils import get_page_items, Product_Tab, get_system_setting
-from dojo.authorization.authorization import user_has_permission, user_has_permission_or_403, user_has_configuration_permission_or_403
+from dojo.authorization.authorization import (
+    user_has_permission,
+    user_has_permission_or_403,
+    user_has_configuration_permission_or_403,
+)
 from dojo.authorization.roles_permissions import Permissions
 
 
@@ -73,72 +78,83 @@ def action_history(request, cid, oid):
         engagements = Engagement.objects.filter(risk_acceptance=obj)
         authorized = False
         for engagement in engagements:
-            if user_has_permission(request.user, engagement, Permissions.Engagement_View):
+            if user_has_permission(
+                request.user, engagement, Permissions.Engagement_View
+            ):
                 authorized = True
                 break
         if not authorized:
             raise PermissionDenied
     elif ct.model == "user":
-        user_has_configuration_permission_or_403(request.user, 'auth.view_user')
+        user_has_configuration_permission_or_403(request.user, "auth.view_user")
     else:
         if not request.user.is_superuser:
             raise PermissionDenied
 
     product_tab = None
     if product_id:
-        product_tab = Product_Tab(get_object_or_404(Product, id=product_id), title="History", tab=active_tab)
+        product_tab = Product_Tab(
+            get_object_or_404(Product, id=product_id), title="History", tab=active_tab
+        )
         if active_tab == "engagements":
             if str(ct) == "engagement":
                 product_tab.setEngagement(object_value)
             else:
                 product_tab.setEngagement(object_value.engagement)
 
-    history = LogEntry.objects.filter(content_type=ct,
-                                      object_pk=obj.id).order_by('-timestamp')
+    history = LogEntry.objects.filter(content_type=ct, object_pk=obj.id).order_by(
+        "-timestamp"
+    )
     log_entry_filter = LogEntryFilter(request.GET, queryset=history)
     paged_history = get_page_items(request, log_entry_filter.qs, 25)
 
-    if not get_system_setting('enable_auditlog'):
+    if not get_system_setting("enable_auditlog"):
         messages.add_message(
             request,
             messages.WARNING,
-            'Audit logging is currently disabled in System Settings.',
-            extra_tags='alert-danger')
+            "Audit logging is currently disabled in System Settings.",
+            extra_tags="alert-danger",
+        )
 
-    return render(request, 'dojo/action_history.html',
-                  {"history": paged_history,
-                   'product_tab': product_tab,
-                   "filtered": history,
-                   "log_entry_filter": log_entry_filter,
-                   "obj": obj,
-                   "test": test,
-                   "object_value": object_value,
-                   "finding": finding
-                   })
+    return render(
+        request,
+        "dojo/action_history.html",
+        {
+            "history": paged_history,
+            "product_tab": product_tab,
+            "filtered": history,
+            "log_entry_filter": log_entry_filter,
+            "obj": obj,
+            "test": test,
+            "object_value": object_value,
+            "finding": finding,
+        },
+    )
 
 
 def manage_files(request, oid, obj_type):
-    if obj_type == 'Engagement':
+    if obj_type == "Engagement":
         obj = get_object_or_404(Engagement, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Engagement_Edit)
-        obj_vars = ('view_engagement', 'engagement_set')
-    elif obj_type == 'Test':
+        obj_vars = ("view_engagement", "engagement_set")
+    elif obj_type == "Test":
         obj = get_object_or_404(Test, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Test_Edit)
-        obj_vars = ('view_test', 'test_set')
-    elif obj_type == 'Finding':
+        obj_vars = ("view_test", "test_set")
+    elif obj_type == "Finding":
         obj = get_object_or_404(Finding, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Finding_Edit)
-        obj_vars = ('view_finding', 'finding_set')
+        obj_vars = ("view_finding", "finding_set")
     else:
         raise Http404()
 
     files_formset = ManageFileFormSet(queryset=obj.files.all())
     error = False
 
-    if request.method == 'POST':
+    if request.method == "POST":
         files_formset = ManageFileFormSet(
-            request.POST, request.FILES, queryset=obj.files.all())
+            request.POST, request.FILES, queryset=obj.files.all()
+        )
         if files_formset.is_valid():
             # remove all from database and disk
 
@@ -152,9 +168,9 @@ def manage_files(request, oid, obj_type):
                 logger.debug("adding file: %s", o.file.name)
                 obj.files.add(o)
 
-            orphan_files = FileUpload.objects.filter(engagement__isnull=True,
-                                                     test__isnull=True,
-                                                     finding__isnull=True)
+            orphan_files = FileUpload.objects.filter(
+                engagement__isnull=True, test__isnull=True, finding__isnull=True
+            )
             for o in orphan_files:
                 logger.debug("purging orphan file: %s", o.file.name)
                 os.remove(os.path.join(settings.MEDIA_ROOT, o.file.name))
@@ -163,25 +179,30 @@ def manage_files(request, oid, obj_type):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                'Files updated successfully.',
-                extra_tags='alert-success')
+                "Files updated successfully.",
+                extra_tags="alert-success",
+            )
 
         else:
             error = True
             messages.add_message(
                 request,
                 messages.ERROR,
-                'Please check form data and try again.',
-                extra_tags='alert-danger')
+                "Please check form data and try again.",
+                extra_tags="alert-danger",
+            )
 
         if not error:
-            return HttpResponseRedirect(reverse(obj_vars[0], args=(oid, )))
+            return HttpResponseRedirect(reverse(obj_vars[0], args=(oid,)))
     return render(
-        request, 'dojo/manage_files.html', {
-            'files_formset': files_formset,
-            'obj': obj,
-            'obj_type': obj_type,
-        })
+        request,
+        "dojo/manage_files.html",
+        {
+            "files_formset": files_formset,
+            "obj": obj,
+            "obj_type": obj_type,
+        },
+    )
 
 
 # Serve the file only after verifying the user is supposed to see the file
@@ -190,7 +211,11 @@ def protected_serve(request, path, document_root=None, show_indexes=False):
     file = FileUpload.objects.get(file=path)
     if not file:
         raise Http404()
-    object_set = list(file.engagement_set.all()) + list(file.test_set.all()) + list(file.finding_set.all())
+    object_set = (
+        list(file.engagement_set.all())
+        + list(file.test_set.all())
+        + list(file.finding_set.all())
+    )
     # Should only one item (but not sure what type) in the list, so O(n=1)
     for obj in object_set:
         if isinstance(obj, Engagement):
@@ -203,21 +228,22 @@ def protected_serve(request, path, document_root=None, show_indexes=False):
 
 
 def access_file(request, fid, oid, obj_type, url=False):
-    if obj_type == 'Engagement':
+    if obj_type == "Engagement":
         obj = get_object_or_404(Engagement, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Engagement_View)
-    elif obj_type == 'Test':
+    elif obj_type == "Test":
         obj = get_object_or_404(Test, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Test_View)
-    elif obj_type == 'Finding':
+    elif obj_type == "Finding":
         obj = get_object_or_404(Finding, pk=oid)
         user_has_permission_or_403(request.user, obj, Permissions.Finding_View)
     else:
         raise Http404()
     # If reaching this far, user must have permission to get file
     file = get_object_or_404(FileUpload, pk=fid)
-    redirect_url = '{media_root}/{file_name}'.format(
+    redirect_url = "{media_root}/{file_name}".format(
         media_root=settings.MEDIA_ROOT,
-        file_name=file.file.url.lstrip(settings.MEDIA_URL))
+        file_name=file.file.url.lstrip(settings.MEDIA_URL),
+    )
     print(redirect_url)
     return FileResponse(open(redirect_url))

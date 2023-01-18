@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 from .dojo_test_case import DojoTestCase
 from dojo.models import System_Settings
 
 
 class TestSystemSettings(DojoTestCase):
-
     def test_system_settings_update(self):
         try:
             # although the unittests are run after initial data has been loaded, for some reason in cicd sometimes the settings aren't present

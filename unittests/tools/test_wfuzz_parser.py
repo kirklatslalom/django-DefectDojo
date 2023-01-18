@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.wfuzz.parser import WFuzzParser
 from dojo.models import Test
 
 
 class TestWFuzzParser(DojoTestCase):
-
     def test_parse_no_findings(self):
         testfile = open("unittests/scans/wfuzz/no_findings.json")
         parser = WFuzzParser()

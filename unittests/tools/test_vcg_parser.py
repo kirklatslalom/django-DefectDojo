@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import io
 import csv
 
@@ -201,7 +202,6 @@ class TestVCGCsvParser(DojoTestCase):
 
 
 class TestVCGImport(DojoTestCase):
-
     def test_can_parse_xml(self):
         content = """<?xml version="1.0" encoding="utf-8"?>
         <!--XML Export of VCG Results for directory: C:\\Projects\\WebGoat.Net. Scanned for C# security issues.-->

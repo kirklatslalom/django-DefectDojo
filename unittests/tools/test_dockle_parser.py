@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.dockle.parser import DockleParser
 from dojo.models import Test
 
 
 class TestDockleParser(DojoTestCase):
-
     def test_parse_no_findings(self):
         testfile = open("unittests/scans/dockle/no_findings.json")
         parser = DockleParser()
@@ -19,7 +19,9 @@ class TestDockleParser(DojoTestCase):
 
         with self.subTest(i=0):
             finding = findings[0]
-            self.assertEqual("CIS-DI-0001: Create a user for the container", finding.title)
+            self.assertEqual(
+                "CIS-DI-0001: Create a user for the container", finding.title
+            )
             self.assertEqual("Medium", finding.severity)
             self.assertIsNotNone(finding.description)
             self.assertTrue(finding.static_finding)
@@ -29,7 +31,9 @@ class TestDockleParser(DojoTestCase):
 
         with self.subTest(i=1):
             finding = findings[1]
-            self.assertEqual("CIS-DI-0005: Enable Content trust for Docker", finding.title)
+            self.assertEqual(
+                "CIS-DI-0005: Enable Content trust for Docker", finding.title
+            )
             self.assertEqual("Low", finding.severity)
             self.assertIsNotNone(finding.description)
             self.assertTrue(finding.static_finding)
@@ -39,7 +43,9 @@ class TestDockleParser(DojoTestCase):
 
         with self.subTest(i=2):
             finding = findings[2]
-            self.assertEqual("CIS-DI-0008: Confirm safety of setuid/setgid files", finding.title)
+            self.assertEqual(
+                "CIS-DI-0008: Confirm safety of setuid/setgid files", finding.title
+            )
             self.assertEqual("Low", finding.severity)
             self.assertIsNotNone(finding.description)
             self.assertTrue(finding.static_finding)

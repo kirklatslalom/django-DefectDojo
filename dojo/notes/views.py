@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Standard library imports
 import logging
 
@@ -45,17 +46,18 @@ def delete_note(request, id, page, objid):
 
     if form.is_valid():
         note.delete()
-        messages.add_message(request,
-                             messages.SUCCESS,
-                             _('Note deleted.'),
-                             extra_tags='alert-success')
+        messages.add_message(
+            request, messages.SUCCESS, _("Note deleted."), extra_tags="alert-success"
+        )
     else:
-        messages.add_message(request,
-                             messages.SUCCESS,
-                             _('Note was not succesfully deleted.'),
-                             extra_tags='alert-danger')
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _("Note was not succesfully deleted."),
+            extra_tags="alert-danger",
+        )
 
-    return HttpResponseRedirect(reverse(reverse_url, args=(object_id, )))
+    return HttpResponseRedirect(reverse(reverse_url, args=(object_id,)))
 
 
 def edit_note(request, id, page, objid):
@@ -86,9 +88,11 @@ def edit_note(request, id, page, objid):
     if note_type_activation:
         available_note_types = find_available_notetypes(object, note)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         if note_type_activation:
-            form = TypedNoteForm(request.POST, available_note_types=available_note_types, instance=note)
+            form = TypedNoteForm(
+                request.POST, available_note_types=available_note_types, instance=note
+            )
         else:
             form = NoteForm(request.POST, instance=note)
         if form.is_valid():
@@ -97,14 +101,16 @@ def edit_note(request, id, page, objid):
             note.editor = request.user
             note.edit_time = timezone.now()
             if note_type_activation:
-                history = NoteHistory(note_type=note.note_type,
-                                      data=note.entry,
-                                      time=note.edit_time,
-                                      current_editor=note.editor)
+                history = NoteHistory(
+                    note_type=note.note_type,
+                    data=note.entry,
+                    time=note.edit_time,
+                    current_editor=note.editor,
+                )
             else:
-                history = NoteHistory(data=note.entry,
-                                      time=note.edit_time,
-                                      current_editor=note.editor)
+                history = NoteHistory(
+                    data=note.entry, time=note.edit_time, current_editor=note.editor
+                )
             history.save()
             note.history.add(history)
             note.save()
@@ -112,29 +118,35 @@ def edit_note(request, id, page, objid):
             object.last_reviewed_by = request.user
             object.save()
             form = NoteForm()
-            messages.add_message(request,
-                                messages.SUCCESS,
-                                _('Note edited.'),
-                                extra_tags='alert-success')
-            return HttpResponseRedirect(reverse(reverse_url, args=(object_id, )))
+            messages.add_message(
+                request, messages.SUCCESS, _("Note edited."), extra_tags="alert-success"
+            )
+            return HttpResponseRedirect(reverse(reverse_url, args=(object_id,)))
         else:
-            messages.add_message(request,
-                                messages.SUCCESS,
-                                _('Note was not succesfully edited.'),
-                                extra_tags='alert-danger')
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                _("Note was not succesfully edited."),
+                extra_tags="alert-danger",
+            )
     else:
         if note_type_activation:
-            form = TypedNoteForm(available_note_types=available_note_types, instance=note)
+            form = TypedNoteForm(
+                available_note_types=available_note_types, instance=note
+            )
         else:
             form = NoteForm(instance=note)
 
     return render(
-        request, 'dojo/edit_note.html', {
-            'note': note,
-            'form': form,
-            'page': page,
-            'objid': objid,
-        })
+        request,
+        "dojo/edit_note.html",
+        {
+            "note": note,
+            "form": form,
+            "page": page,
+            "objid": objid,
+        },
+    )
 
 
 def note_history(request, id, page, objid):
@@ -162,22 +174,29 @@ def note_history(request, id, page, objid):
 
     history = note.history.all()
 
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse(reverse_url, args=(object_id, )))
+    if request.method == "POST":
+        return HttpResponseRedirect(reverse(reverse_url, args=(object_id,)))
 
     return render(
-        request, 'dojo/view_note_history.html', {
-            'history': history,
-            'note': note,
-            'page': page,
-            'objid': objid,
-        })
+        request,
+        "dojo/view_note_history.html",
+        {
+            "history": history,
+            "note": note,
+            "page": page,
+            "objid": objid,
+        },
+    )
 
 
 def find_available_notetypes(finding, editing_note):
     notes = finding.notes.all()
-    single_note_types = Note_Type.objects.filter(is_single=True, is_active=True).values_list('id', flat=True)
-    multiple_note_types = Note_Type.objects.filter(is_single=False, is_active=True).values_list('id', flat=True)
+    single_note_types = Note_Type.objects.filter(
+        is_single=True, is_active=True
+    ).values_list("id", flat=True)
+    multiple_note_types = Note_Type.objects.filter(
+        is_single=False, is_active=True
+    ).values_list("id", flat=True)
     available_note_types = []
     for note_type_id in multiple_note_types:
         available_note_types.append(note_type_id)
@@ -189,5 +208,5 @@ def find_available_notetypes(finding, editing_note):
             available_note_types.append(note_type_id)
     available_note_types.append(editing_note.note_type_id)
     available_note_types = list(set(available_note_types))
-    queryset = Note_Type.objects.filter(id__in=available_note_types).order_by('-id')
+    queryset = Note_Type.objects.filter(id__in=available_note_types).order_by("-id")
     return queryset

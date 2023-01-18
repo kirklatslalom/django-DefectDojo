@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import csv
 import hashlib
 import io
@@ -20,9 +20,9 @@ class ColumnMappingStrategy(object):
 
     @staticmethod
     def evaluate_bool_value(column_value):
-        if column_value.lower() == 'true':
+        if column_value.lower() == "true":
             return True
-        elif column_value.lower() == 'false':
+        elif column_value.lower() == "false":
             return False
         else:
             return None
@@ -36,9 +36,8 @@ class ColumnMappingStrategy(object):
 
 
 class DateColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'timestamp'
+        self.mapped_column = "timestamp"
         super(DateColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -46,9 +45,8 @@ class DateColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class TitleColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'nvt name'
+        self.mapped_column = "nvt name"
         super(TitleColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -56,9 +54,8 @@ class TitleColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class CweColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'cweid'
+        self.mapped_column = "cweid"
         super(CweColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -67,9 +64,8 @@ class CweColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class PortColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'port'
+        self.mapped_column = "port"
         super(PortColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -78,9 +74,8 @@ class PortColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class ProtocolColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'port protocol'
+        self.mapped_column = "port protocol"
         super(ProtocolColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -89,20 +84,20 @@ class ProtocolColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class IpColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'ip'
+        self.mapped_column = "ip"
         super(IpColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
-        if not finding.unsaved_endpoints[0].host:  # process only if host is not already defined (by field hostname)
+        if not finding.unsaved_endpoints[
+            0
+        ].host:  # process only if host is not already defined (by field hostname)
             finding.unsaved_endpoints[0].host = column_value
 
 
 class HostnameColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'hostname'
+        self.mapped_column = "hostname"
         super(HostnameColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -111,27 +106,25 @@ class HostnameColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class SeverityColumnMappingStrategy(ColumnMappingStrategy):
-
     @staticmethod
     def is_valid_severity(severity):
-        valid_severity = ('Info', 'Low', 'Medium', 'High', 'Critical')
+        valid_severity = ("Info", "Low", "Medium", "High", "Critical")
         return severity in valid_severity
 
     def __init__(self):
-        self.mapped_column = 'severity'
+        self.mapped_column = "severity"
         super(SeverityColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
         if self.is_valid_severity(column_value):
             finding.severity = column_value
         else:
-            finding.severity = 'Info'
+            finding.severity = "Info"
 
 
 class DescriptionColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'summary'
+        self.mapped_column = "summary"
         super(DescriptionColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -139,9 +132,8 @@ class DescriptionColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class MitigationColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'solution'
+        self.mapped_column = "solution"
         super(MitigationColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -149,9 +141,8 @@ class MitigationColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class ImpactColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'vulnerability insight'
+        self.mapped_column = "vulnerability insight"
         super(ImpactColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -159,9 +150,8 @@ class ImpactColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class ReferencesColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'specific result'
+        self.mapped_column = "specific result"
         super(ReferencesColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -169,9 +159,8 @@ class ReferencesColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class ActiveColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'active'
+        self.mapped_column = "active"
         super(ActiveColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -179,9 +168,8 @@ class ActiveColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class VerifiedColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'verified'
+        self.mapped_column = "verified"
         super(VerifiedColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -189,9 +177,8 @@ class VerifiedColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class FalsePositiveColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'falsepositive'
+        self.mapped_column = "falsepositive"
         super(FalsePositiveColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -199,9 +186,8 @@ class FalsePositiveColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class DuplicateColumnMappingStrategy(ColumnMappingStrategy):
-
     def __init__(self):
-        self.mapped_column = 'duplicate'
+        self.mapped_column = "duplicate"
         super(DuplicateColumnMappingStrategy, self).__init__()
 
     def map_column_value(self, finding, column_value):
@@ -209,7 +195,6 @@ class DuplicateColumnMappingStrategy(ColumnMappingStrategy):
 
 
 class OpenVASCsvParser(object):
-
     def create_chain(self):
         date_column_strategy = DateColumnMappingStrategy()
         title_column_strategy = TitleColumnMappingStrategy()
@@ -271,8 +256,8 @@ class OpenVASCsvParser(object):
 
         content = filename.read()
         if type(content) is bytes:
-            content = content.decode('utf-8')
-        reader = csv.reader(io.StringIO(content), delimiter=',', quotechar='"')
+            content = content.decode("utf-8")
+        reader = csv.reader(io.StringIO(content), delimiter=",", quotechar='"')
 
         row_number = 0
         for row in reader:
@@ -295,7 +280,17 @@ class OpenVASCsvParser(object):
                 if finding.description is None:
                     finding.description = ""
 
-                key = hashlib.sha256((str(finding.unsaved_endpoints[0]) + '|' + finding.severity + '|' + finding.title + '|' + finding.description).encode('utf-8')).hexdigest()
+                key = hashlib.sha256(
+                    (
+                        str(finding.unsaved_endpoints[0])
+                        + "|"
+                        + finding.severity
+                        + "|"
+                        + finding.title
+                        + "|"
+                        + finding.description
+                    ).encode("utf-8")
+                ).hexdigest()
 
                 if key not in dupes:
                     dupes[key] = finding

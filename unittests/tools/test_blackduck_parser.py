@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
 from dojo.tools.blackduck.parser import BlackduckParser
 from dojo.models import Test
@@ -27,14 +28,17 @@ class TestBlackduckHubParser(DojoTestCase):
         self.assertEqual("CVE-2007-3386", findings[10].unsaved_vulnerability_ids[0])
 
     def test_blackduck_csv_parser_new_format_has_many_findings(self):
-        testfile = Path(get_unit_tests_path() + "/scans/blackduck/many_vulns_new_format.csv")
+        testfile = Path(
+            get_unit_tests_path() + "/scans/blackduck/many_vulns_new_format.csv"
+        )
         parser = BlackduckParser()
         findings = parser.get_findings(testfile, Test())
         self.assertEqual(9, len(findings))
 
     def test_blackduck_enhanced_has_many_findings(self):
         testfile = Path(
-            get_unit_tests_path() + "/scans/blackduck/blackduck_enhanced_py3_unittest.zip"
+            get_unit_tests_path()
+            + "/scans/blackduck/blackduck_enhanced_py3_unittest.zip"
         )
         parser = BlackduckParser()
         findings = parser.get_findings(testfile, Test())
@@ -42,7 +46,8 @@ class TestBlackduckHubParser(DojoTestCase):
 
     def test_blackduck_enhanced_zip_upload(self):
         testfile = Path(
-            get_unit_tests_path() + "/scans/blackduck/blackduck_enhanced_py3_unittest_v2.zip"
+            get_unit_tests_path()
+            + "/scans/blackduck/blackduck_enhanced_py3_unittest_v2.zip"
         )
         parser = BlackduckParser()
         findings = parser.get_findings(testfile, Test())

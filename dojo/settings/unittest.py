@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # In order to run the unit tests, it is required to create a settings file
 # first;
 # Do so by copying the file dojo/settings/settings.dist.py to
@@ -7,8 +8,8 @@ from .settings import *
 DEBUG = True
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'unittest.sqlite',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "unittest.sqlite",
     }
 }

@@ -7,7 +7,7 @@
 {% block css %}
     {{ form.media.css }}
 {% endblock %}
-{% block js %}    
+{% block js %}
     {{ form.media.js }}
 {% endblock %}
 <div class="filter-set">
@@ -25,7 +25,7 @@
                     {% endwith %}
                 </div>
             {% endfor %}
-        </div>        
+        </div>
         {% if submit == 'report' %}
             {% query_string_as_hidden %}
             <div class="inline-block" style="vertical-align: text-top">

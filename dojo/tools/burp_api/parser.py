@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import logging
 import base64
@@ -25,7 +26,9 @@ class BurpApiParser(object):
         return "Burp REST API"
 
     def get_description_for_scan_types(self, scan_type):
-        return "Import Burp REST API scan data in JSON format (/scan/[task_id] endpoint)."
+        return (
+            "Import Burp REST API scan data in JSON format (/scan/[task_id] endpoint)."
+        )
 
     def get_findings(self, file, test):
         # API export is a JSON file
@@ -73,13 +76,22 @@ class BurpApiParser(object):
                     finding.scanner_confidence = convert_confidence(issue)
                 # manage endpoints
                 if "origin" in issue and "path" in issue:
-                    finding.unsaved_endpoints = [Endpoint.from_uri(issue.get("origin") + issue.get("path"))]
+                    finding.unsaved_endpoints = [
+                        Endpoint.from_uri(issue.get("origin") + issue.get("path"))
+                    ]
                 finding.unsaved_req_resp = []
-                for evidence in issue.get('evidence', []):
-                    if not evidence.get('type') in ['InformationListEvidence', "FirstOrderEvidence"]:
+                for evidence in issue.get("evidence", []):
+                    if not evidence.get("type") in [
+                        "InformationListEvidence",
+                        "FirstOrderEvidence",
+                    ]:
                         continue
-                    request = self.get_clean_base64(evidence.get('request_response').get('request'))
-                    response = self.get_clean_base64(evidence.get('request_response').get('response'))
+                    request = self.get_clean_base64(
+                        evidence.get("request_response").get("request")
+                    )
+                    response = self.get_clean_base64(
+                        evidence.get("request_response").get("response")
+                    )
                     finding.unsaved_req_resp.append({"req": request, "resp": response})
 
                 items.append(finding)
@@ -96,7 +108,9 @@ class BurpApiParser(object):
                 elif segment["type"] == "HighlightSegment":
                     output += "\n\n------------------------------------------------------------------\n\n"
                 else:
-                    raise ValueError(f"uncknown segment type in Burp data {segment['type']}")
+                    raise ValueError(
+                        f"uncknown segment type in Burp data {segment['type']}"
+                    )
         return output
 
 
@@ -115,10 +129,10 @@ def convert_severity(issue):
              ]
           },
     """
-    value = issue.get('severity', 'info').lower()
+    value = issue.get("severity", "info").lower()
     if value in ["high", "medium", "low", "info"]:
         return value.title()
-    return 'Info'
+    return "Info"
 
 
 def convert_confidence(issue):
@@ -134,7 +148,7 @@ def convert_confidence(issue):
              ]
           },
     """
-    value = issue.get('confidence', 'undefined').lower()
+    value = issue.get("confidence", "undefined").lower()
     if "certain" == value:
         return 2
     elif "firm" == value:

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.anchorectl_policies.parser import AnchoreCTLPoliciesParser
 from dojo.models import Test
@@ -17,9 +18,15 @@ class TestAnchoreCTLPoliciesParser(DojoTestCase):
         testfile.close()
         self.assertEqual(1, len(findings))
         singleFinding = findings[0]
-        self.assertEqual(singleFinding.severity, 'Medium')
-        self.assertEqual(singleFinding.title, 'RootUser - gate|dockerfile - trigger|b2605c2ddbdb02b8e2365c9248dada5a')
-        self.assertEqual(singleFinding.description, 'User root found as effective user, which is not on the allowed list')
+        self.assertEqual(singleFinding.severity, "Medium")
+        self.assertEqual(
+            singleFinding.title,
+            "RootUser - gate|dockerfile - trigger|b2605c2ddbdb02b8e2365c9248dada5a",
+        )
+        self.assertEqual(
+            singleFinding.description,
+            "User root found as effective user, which is not on the allowed list",
+        )
 
     def test_anchore_engine_parser_has_many_findings(self):
         testfile = open("unittests/scans/anchoreCTL_policies/many_violations.json")

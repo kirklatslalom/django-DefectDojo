@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 
 from dojo.models import Test
@@ -5,7 +6,6 @@ from dojo.tools.whitehat_sentinel.parser import WhiteHatSentinelParser
 
 
 class TestWhiteHatSentinelParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln_has_no_findings(self):
         with self.assertRaises(ValueError):
             testfile = open("unittests/scans/whitehat_sentinel/empty_file.json")

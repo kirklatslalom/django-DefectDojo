@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.pwn_sast.parser import PWNSASTParser
 from dojo.models import Test
 
 
 class TestPWNSASTParser(DojoTestCase):
-
     def test_parse_no_findings(self):
         testfile = open("unittests/scans/pwn_sast/no_findings.json")
         parser = PWNSASTParser()

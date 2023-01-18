@@ -409,7 +409,7 @@
                                 </td>
                                 <td class="nowrap">
                                     {% with finding|first_vulnerability_id as first_vulnerability_id %}
-                                    {% if first_vulnerability_id %}  
+                                    {% if first_vulnerability_id %}
                                     {% if first_vulnerability_id|has_vulnerability_url %}
                                         <a target="_blank" href="{{ first_vulnerability_id|vulnerability_url }}">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i> {{ first_vulnerability_id }}

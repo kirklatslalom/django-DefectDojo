@@ -1,5 +1,5 @@
 Plugin,Plugin Name,Family,Severity,IP Address,Protocol,Port,Exploit?,Repository,MAC Address,DNS Name,NetBIOS Name,Plugin Text,First Discovered,Last Observed,Exploit Frameworks,Synopsis,Description,Solution,See Also,Risk Factor,STIG Severity,Vulnerability Priority Rating,CVSS V2 Base Score,CVSS V3 Base Score,CVSS V2 Temporal Score,CVSS V3 Temporal Score,CVSS V2 Vector,CVSS V3 Vector,CPE,CVE,BID,Cross References,Vuln Publication Date,Patch Publication Date,Plugin Publication Date,Plugin Modification Date,Exploit Ease,Check Type,Version
-35291,SSL Certificate Signed Using Weak Hashing Algorithm,General,Medium,10.1.1.1,TCP,443,Yes,Individual Scan,,,,"Plugin Output: 
+35291,SSL Certificate Signed Using Weak Hashing Algorithm,General,Medium,10.1.1.1,TCP,443,Yes,Individual Scan,,,,"Plugin Output:
 The following certificates were part of the certificate chain sent by
 the remote host, but contain hashes that are considered to be weak.","Jan 5, 2021 10:24:08 MST","Jan 5, 2021 10:24:08 MST",,An SSL certificate in the certificate chain has been signed using a weak hash algorithm.,"The remote service uses an SSL certificate chain that has been signed using a cryptographically weak hashing algorithm (e.g. MD2, MD4, MD5, or SHA1). These signature algorithms are known to be vulnerable to collision attacks. An attacker can exploit this to generate another certificate with the same digital signature, allowing an attacker to masquerade as the affected service.
 
@@ -12,7 +12,7 @@ http://www.nessus.org/u?5d894816
 http://www.nessus.org/u?51db68aa
 http://www.nessus.org/u?9dc7bfba",Medium,,4.4,5,7.5,3.9,6.7,AV:N/AC:L/Au:N/C:N/I:P/A:N/E:POC/RL:OF/RC:C,AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N/E:P/RL:O/RC:C,"cpe:/a:ietf:md5
 cpe:/a:ietf:x.509_certificate",CVE-2004-2761,"1,184,933,065","CERT #836068,CWE #310","Aug 18, 2004 12:00:00 MDT",N/A,"Jan 5, 2009 12:00:00 MST","Apr 27, 2020 12:00:00 MDT",Exploits are available,remote,1.31
-51192,SSL Certificate Cannot Be Trusted,General,Medium,10.1.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output: 
+51192,SSL Certificate Cannot Be Trusted,General,Medium,10.1.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output:
 The following certificate was at the top of the certificate
 chain sent by the remote host, but it is signed by an unknown
 certificate authority :
@@ -26,14 +26,14 @@ certificate authority :
 
 If the remote host is a public host in production, any break in the chain makes it more difficult for users to verify the authenticity and identity of the web server. This could make it easier to carry out man-in-the-middle attacks against the remote host.",Purchase or generate a proper SSL certificate for this service.,"https://www.itu.int/rec/T-REC-X.509/en
 https://en.wikipedia.org/wiki/X.509",Medium,,,6.4,6.5,,,AV:N/AC:L/Au:N/C:P/I:P/A:N,AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N,,,,,N/A,N/A,"Dec 15, 2010 12:00:00 MST","Apr 27, 2020 12:00:00 MDT",,remote,1.19
-57582,SSL Self-Signed Certificate,General,Medium,10.2.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output: 
+57582,SSL Self-Signed Certificate,General,Medium,10.2.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output:
 The following certificate was found at the top of the certificate
 chain sent by the remote host, but is self-signed and was not
 found in the list of known certificate authorities :
-","Jan 5, 2021 10:24:08 MST","Jan 5, 2021 10:24:08 MST",,The SSL certificate chain for this service ends in an unrecognized self-signed certificate.,"The X.509 certificate chain for this service is not signed by a recognized certificate authority.  If the remote host is a public host in production, this nullifies the use of SSL as anyone could establish a man-in-the-middle attack against the remote host. 
+","Jan 5, 2021 10:24:08 MST","Jan 5, 2021 10:24:08 MST",,The SSL certificate chain for this service ends in an unrecognized self-signed certificate.,"The X.509 certificate chain for this service is not signed by a recognized certificate authority.  If the remote host is a public host in production, this nullifies the use of SSL as anyone could establish a man-in-the-middle attack against the remote host.
 
 Note that this plugin does not check for certificate chains that end in a certificate that is not self-signed, but is signed by an unrecognized certificate authority.",Purchase or generate a proper SSL certificate for this service.,,Medium,,,6.4,,,,AV:N/AC:L/Au:N/C:P/I:P/A:N,,,,,,N/A,N/A,"Jan 17, 2012 12:00:00 MST","Apr 27, 2020 12:00:00 MDT",,remote,1.5
-65821,SSL RC4 Cipher Suites Supported (Bar Mitzvah),General,Medium,10.2.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output: 
+65821,SSL RC4 Cipher Suites Supported (Bar Mitzvah),General,Medium,10.2.1.1,TCP,443,No,Individual Scan,,,,"Plugin Output:
 List of RC4 cipher suites supported by the remote server :
 ","Jan 5, 2021 10:24:08 MST","Jan 5, 2021 10:24:08 MST",,The remote service supports the use of the RC4 cipher.,"The remote host supports the use of RC4 in one or more cipher suites.
 The RC4 cipher is flawed in its generation of a pseudo-random stream of bytes so that a wide variety of small biases are introduced into the stream, decreasing its randomness.

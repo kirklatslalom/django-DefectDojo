@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.nuclei.parser import NucleiParser
 from dojo.models import Test
 
 
 class TestNucleiParser(DojoTestCase):
-
     def test_parse_no_empty(self):
         testfile = open("unittests/scans/nuclei/empty.jsonl")
         parser = NucleiParser()
@@ -62,7 +62,9 @@ class TestNucleiParser(DojoTestCase):
             self.assertIsNotNone(finding.description)
             self.assertIsNotNone(finding.references)
             self.assertIn("phpmyadmin", finding.unsaved_tags)
-            self.assertEqual("phpmyadmin/setup/index.php", finding.unsaved_endpoints[0].path)
+            self.assertEqual(
+                "phpmyadmin/setup/index.php", finding.unsaved_endpoints[0].path
+            )
             self.assertEqual("nuclei-example.com", finding.unsaved_endpoints[0].host)
             self.assertEqual(443, finding.unsaved_endpoints[0].port)
             self.assertEqual("phpmyadmin-setup", finding.vuln_id_from_tool)
@@ -126,7 +128,9 @@ class TestNucleiParser(DojoTestCase):
             self.assertEqual(None, finding.unsaved_endpoints[0].path)
             self.assertEqual("nuclei-example.com", finding.unsaved_endpoints[0].host)
             self.assertEqual(3306, finding.unsaved_endpoints[0].port)
-            self.assertEqual("mysql-native-password-bruteforce", finding.vuln_id_from_tool)
+            self.assertEqual(
+                "mysql-native-password-bruteforce", finding.vuln_id_from_tool
+            )
 
     def test_parse_many_findings_new(self):
         testfile = open("unittests/scans/nuclei/many_findings_new.json")
@@ -153,9 +157,11 @@ class TestNucleiParser(DojoTestCase):
             self.assertEqual("CVE-2018-15473", finding.vuln_id_from_tool)
             vulnerability_ids = finding.unsaved_vulnerability_ids
             self.assertEqual(1, len(vulnerability_ids))
-            self.assertIn('CVE-2018-15473', vulnerability_ids)
+            self.assertIn("CVE-2018-15473", vulnerability_ids)
             self.assertEqual(362, finding.cwe)
-            self.assertEqual("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N", finding.cvssv3
+            )
             self.assertEqual(5.3, finding.cvssv3_score)
 
         with self.subTest(i=1):
@@ -163,7 +169,7 @@ class TestNucleiParser(DojoTestCase):
             self.assertEqual("Exposed Prometheus metrics", finding.title)
             self.assertEqual("Low", finding.severity)
             self.assertEqual(1, finding.nb_occurences)
-            self.assertEqual('', finding.description)
+            self.assertEqual("", finding.description)
             self.assertIn("config", finding.unsaved_tags)
             self.assertIn("exposure", finding.unsaved_tags)
             self.assertIn("prometheus", finding.unsaved_tags)

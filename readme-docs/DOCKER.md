@@ -41,14 +41,14 @@ The Docker Compose setup supports 2 different databases (MySQL and PostgreSQL) a
 - postgres-rabbitmq
 - postgres-redis
 
-e.g. 
+e.g.
 ```zsh
 ./dc-up.sh mysql-redis
 ```
 
 A default profile can be set with the environment variable `DD_PROFILE`. If this environment variable is set when starting the containers, the parameter for the profile needs not to be given for the start scripts.
 
-When DD_PROFILE or command-line profile is not specified, the command will run "mysql-rabbitmq" as the default profile. 
+When DD_PROFILE or command-line profile is not specified, the command will run "mysql-rabbitmq" as the default profile.
 
 The environment variables needed for the different profiles are prepared in files, which need to be included additionally with the parameter `--env-file` with a choices that fits to the profile:
 
@@ -364,7 +364,7 @@ Run a single test. Example:
 python manage.py test unittests.tools.test_dependency_check_parser.TestDependencyCheckParser.test_parse_file_with_no_vulnerabilities_has_no_findings --keepdb
 ```
 
-For docker compose stack, there is a convenience script (`dc-unittest.sh`) capable of running a single test class. 
+For docker compose stack, there is a convenience script (`dc-unittest.sh`) capable of running a single test class.
 You will need to provide a docker compose profile (`--profile`), and a test case (`--test-case`). Example:
 
 ```

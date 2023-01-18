@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test, Engagement, Product, Finding
@@ -5,7 +6,6 @@ from dojo.tools.generic.parser import GenericParser
 
 
 class TestFile(object):
-
     def read(self):
         return self.content
 
@@ -15,12 +15,9 @@ class TestFile(object):
 
 
 class TestGenericParser(DojoTestCase):
-
     def setUp(self):
-        self.product = Product(name='sample product',
-                               description='what a description')
-        self.engagement = Engagement(name='sample engagement',
-                                     product=self.product)
+        self.product = Product(name="sample product", description="what a description")
+        self.engagement = Engagement(name="sample engagement", product=self.product)
         self.test = Test(engagement=self.engagement)
 
     def test_parse_report1(self):
@@ -57,8 +54,7 @@ class TestGenericParser(DojoTestCase):
         findings = parser.get_findings(file, self.test, True, True)
         self.assertEqual(0, len(findings))
 
-    def test_parse_csv_with_single_vulnerability_results_in_single_finding(
-            self):
+    def test_parse_csv_with_single_vulnerability_results_in_single_finding(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
 11/7/16,Potential XSS Vulnerability,79,,High,"FileName: default.aspx.cs
 Description: Potential XSS Vulnerability
@@ -70,8 +66,7 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
         findings = parser.get_findings(file, self.test, True, True)
         self.assertEqual(1, len(findings))
 
-    def test_parse_csv_with_multiple_vulnerabilities_results_in_multiple_findings(
-            self):
+    def test_parse_csv_with_multiple_vulnerabilities_results_in_multiple_findings(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
 11/7/16,Potential XSS Vulnerability,79,,High,"FileName: default.aspx.cs
 Description: Potential XSS Vulnerability
@@ -125,8 +120,7 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
         file = TestFile("findings.csv", content)
         parser = GenericParser()
         findings = parser.get_findings(file, self.test, True, True)
-        self.assertEqual('Potential XSS Vulnerability',
-                         findings[0].title)
+        self.assertEqual("Potential XSS Vulnerability", findings[0].title)
 
     def test_parsed_finding_has_cve(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified,CVE
@@ -171,10 +165,10 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
         finding = findings[0]
         self.assertEqual(1, len(finding.unsaved_endpoints))
         endpoint = finding.unsaved_endpoints[0]
-        self.assertEqual('localhost', endpoint.host)
+        self.assertEqual("localhost", endpoint.host)
         self.assertEqual(80, endpoint.port)
-        self.assertEqual('http', endpoint.protocol)
-        self.assertEqual('default.aspx', endpoint.path)
+        self.assertEqual("http", endpoint.protocol)
+        self.assertEqual("default.aspx", endpoint.path)
         self.assertIsNone(endpoint.query)
         self.assertIsNone(endpoint.fragment)
 
@@ -191,7 +185,7 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        self.assertEqual('High', findings[0].severity)
+        self.assertEqual("High", findings[0].severity)
 
     def test_parsed_finding_with_invalid_severity_has_info_severity(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -206,7 +200,7 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        self.assertEqual('Info', findings[0].severity)
+        self.assertEqual("Info", findings[0].severity)
 
     def test_parsed_finding_has_description(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -222,8 +216,9 @@ Code Line: Response.Write(output);",None,,,TRUE,FALSE
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
         self.assertEqual(
-            'FileName: default.aspx.cs\nDescription: Potential XSS Vulnerability\nLine:18\nCode Line: Response.Write(output);',
-            findings[0].description)
+            "FileName: default.aspx.cs\nDescription: Potential XSS Vulnerability\nLine:18\nCode Line: Response.Write(output);",
+            findings[0].description,
+        )
 
     def test_parsed_finding_has_mitigation(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -238,8 +233,7 @@ Code Line: Response.Write(output);","None Currently Available",,,TRUE,FALSE
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        self.assertEqual('None Currently Available',
-                         findings[0].mitigation)
+        self.assertEqual("None Currently Available", findings[0].mitigation)
 
     def test_parsed_finding_has_impact(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -254,8 +248,7 @@ Code Line: Response.Write(output);","None Currently Available","Impact is curren
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        self.assertEqual('Impact is currently unknown',
-                         findings[0].impact)
+        self.assertEqual("Impact is currently unknown", findings[0].impact)
 
     def test_parsed_finding_has_references(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -270,7 +263,7 @@ Code Line: Response.Write(output);","None Currently Available","Impact is curren
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        self.assertEqual('Finding has references.', findings[0].references)
+        self.assertEqual("Finding has references.", findings[0].references)
 
     def test_parsed_finding_has_positive_active_status(self):
         content = """Date,Title,CweId,Url,Severity,Description,Mitigation,Impact,References,Active,Verified
@@ -424,8 +417,8 @@ True,11/7/2015,Title,0,http://localhost,Severity,Description,Mitigation,Impact,R
         finding1 = findings1[0]
         finding2 = findings2[0]
 
-        fields1 = {k: v for k, v in finding1.__dict__.items() if k != '_state'}
-        fields2 = {k: v for k, v in finding2.__dict__.items() if k != '_state'}
+        fields1 = {k: v for k, v in finding1.__dict__.items() if k != "_state"}
+        fields2 = {k: v for k, v in finding2.__dict__.items() if k != "_state"}
 
         self.assertEqual(fields1, fields2)
 
@@ -447,10 +440,14 @@ True,11/7/2015,Title,0,http://localhost,Severity,Description,Mitigation,Impact,R
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2020-36234", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(261, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3
+            )
             self.assertIn("security", finding.tags)
             self.assertIn("network", finding.tags)
-            self.assertEqual("3287f2d0-554f-491b-8516-3c349ead8ee5", finding.unique_id_from_tool)
+            self.assertEqual(
+                "3287f2d0-554f-491b-8516-3c349ead8ee5", finding.unique_id_from_tool
+            )
             self.assertEqual("TEST1", finding.vuln_id_from_tool)
         with self.subTest(i=1):
             finding = findings[1]
@@ -475,7 +472,9 @@ True,11/7/2015,Title,0,http://localhost,Severity,Description,Mitigation,Impact,R
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2020-36234", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(261, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3
+            )
             self.assertEqual("Some mitigation", finding.mitigation)
         with self.subTest(i=1):
             finding = findings[1]
@@ -496,7 +495,9 @@ True,11/7/2015,Title,0,http://localhost,Severity,Description,Mitigation,Impact,R
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2020-36234", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(261, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:N", finding.cvssv3
+            )
             self.assertEqual("Some mitigation", finding.mitigation)
             self.assertEqual(1, len(finding.unsaved_endpoints))
             endpoint = finding.unsaved_endpoints[0]

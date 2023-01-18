@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 from ..dojo_test_case import DojoTestCase
@@ -8,7 +9,6 @@ from dateutil.tz import UTC
 
 
 class TestVeracodeScaScannerParser(DojoTestCase):
-
     def test_parse_csv(self):
         testfile = open("unittests/scans/veracode_sca/veracode_sca.csv")
         parser = VeracodeScaParser()
@@ -67,8 +67,13 @@ class TestVeracodeScaScannerParser(DojoTestCase):
         self.assertEqual("CVE-2022-36364", finding.unsaved_vulnerability_ids[0])
         self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", finding.cvssv3)
         self.assertEqual(665, finding.cwe)
-        self.assertEqual("ddcc6e1b-3ed9-45c8-b77a-ead759fb5e2c", finding.unique_id_from_tool)
-        self.assertEqual(datetime.datetime(2022, 7, 29, 5, 13, 0, 924000).astimezone(UTC), finding.date)
+        self.assertEqual(
+            "ddcc6e1b-3ed9-45c8-b77a-ead759fb5e2c", finding.unique_id_from_tool
+        )
+        self.assertEqual(
+            datetime.datetime(2022, 7, 29, 5, 13, 0, 924000).astimezone(UTC),
+            finding.date,
+        )
 
     def test_parse_json_fixed(self):
         testfile = open("unittests/scans/veracode_sca/veracode_sca_fixed.json")

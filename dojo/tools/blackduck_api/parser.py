@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import json
 
 from dojo.models import Finding
 
 from .importer import BlackduckApiImporter
 
-SCAN_TYPE_ID = 'BlackDuck API'
+SCAN_TYPE_ID = "BlackDuck API"
 
 
 class BlackduckApiParser(object):
@@ -34,19 +35,23 @@ class BlackduckApiParser(object):
             data = json.load(file)
         findings = []
         for entry in data:
-            vulnerability_id = entry["vulnerabilityWithRemediation"]["vulnerabilityName"]
+            vulnerability_id = entry["vulnerabilityWithRemediation"][
+                "vulnerabilityName"
+            ]
             component_name = entry["componentName"]
             component_version = entry["componentVersionName"]
             finding = Finding(
                 test=test,
-                title=f'{vulnerability_id} in {component_name}:{component_version}',
+                title=f"{vulnerability_id} in {component_name}:{component_version}",
                 description=entry["vulnerabilityWithRemediation"].get("description"),
                 severity=entry["vulnerabilityWithRemediation"]["severity"].title(),
                 component_name=component_name,
                 component_version=component_version,
                 static_finding=True,
                 dynamic_finding=False,
-                unique_id_from_tool=entry["vulnerabilityWithRemediation"].get("vulnerabilityName"),
+                unique_id_from_tool=entry["vulnerabilityWithRemediation"].get(
+                    "vulnerabilityName"
+                ),
             )
             # get CWE
             if entry["vulnerabilityWithRemediation"].get("cweId"):

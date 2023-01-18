@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 
 from dojo.tools.edgescan.parser import EdgescanParser
@@ -5,7 +6,6 @@ from dojo.models import Test
 
 
 class TestEdgescanParser(TestCase):
-
     def test_get_scan_types(self):
         parser = EdgescanParser()
         self.assertEqual(parser.get_scan_types(), ["Edgescan Scan"])
@@ -20,7 +20,7 @@ class TestEdgescanParser(TestCase):
         parser = EdgescanParser()
         self.assertEqual(
             parser.get_description_for_scan_types(scan_type),
-            "Edgescan findings can be imported by API or JSON file."
+            "Edgescan findings can be imported by API or JSON file.",
         )
 
     def test_requires_file(self):
@@ -48,13 +48,17 @@ class TestEdgescanParser(TestCase):
             self.assertEqual(finding.cwe, 75)
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual(finding.unsaved_vulnerability_ids[0], "CVE-2021-5300")
-            self.assertEqual(finding.cvssv3, "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N")
+            self.assertEqual(
+                finding.cvssv3, "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            )
             self.assertEqual(finding.url, "192.168.1.1")
             self.assertEqual(finding.severity, "High")
             self.assertEqual(finding.description, "Description Text")
             self.assertEqual(finding.mitigation, "Remediation Text")
             self.assertEqual(finding.active, True)
-            self.assertEqual(finding.tags, ["APPROVED", "Demo-Asset", "ABC Corporate", "test"])
+            self.assertEqual(
+                finding.tags, ["APPROVED", "Demo-Asset", "ABC Corporate", "test"]
+            )
             self.assertEqual(finding.unique_id_from_tool, 21581)
             self.assertEqual(1, len(finding.unsaved_endpoints))
             self.assertEqual(finding.unsaved_endpoints[0].host, "192.168.1.1")
@@ -88,7 +92,9 @@ class TestEdgescanParser(TestCase):
             self.assertEqual(finding_2.cwe, 77)
             self.assertEqual(1, len(finding_2.unsaved_vulnerability_ids))
             self.assertEqual(finding_2.unsaved_vulnerability_ids[0], "CVE-2021-4008")
-            self.assertEqual(finding_2.cvssv3, "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N")
+            self.assertEqual(
+                finding_2.cvssv3, "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            )
             self.assertEqual(finding_2.url, "example.test.com")
             self.assertEqual(finding_2.severity, "Low")
             self.assertEqual(finding_2.description, "Description Text 2")

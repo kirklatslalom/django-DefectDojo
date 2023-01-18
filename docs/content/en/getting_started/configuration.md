@@ -11,7 +11,7 @@ The main settings are all stored in [`dojo/settings/settings.dist.py`](https://g
 
 ### Environment variables
 
-Most of these parameters can be set by environment variables. 
+Most of these parameters can be set by environment variables.
 
 When you deploy DefectDojo via **Docker Compose**, you can set environment variables in [`docker-compose.yml`](https://github.com/DefectDojo/django-DefectDojo/blob/master/docker-compose.yml). Be aware you have to set the variables for three services: `uwsgi`, `celerybeat` and `celeryworker`.
 
@@ -36,4 +36,4 @@ In Docker Compose release mode, files in `docker/extra_settings/` (relative to t
 
 ## Configuration in the UI
 
-Users with the superuser status can configure more options via the UI under `Configuration` / `System Settings`. 
+Users with the superuser status can configure more options via the UI under `Configuration` / `System Settings`.

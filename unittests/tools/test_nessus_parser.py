@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import path
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.nessus.parser import NessusXMLParser, NessusCSVParser, NessusParser
@@ -12,7 +13,9 @@ class TestNessusParser(DojoTestCase):
         return test
 
     def test_parse_some_findings(self):
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln.xml"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln.xml")
+        )
         parser = NessusXMLParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -29,7 +32,9 @@ class TestNessusParser(DojoTestCase):
 
     def test_parse_some_findings_csv(self):
         """Test one report provided by a user"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln.csv"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln.csv")
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -45,7 +50,9 @@ class TestNessusParser(DojoTestCase):
         finding = findings[0]
         self.assertEqual(1, len(finding.unsaved_endpoints))
         self.assertEqual("10.1.1.1", finding.unsaved_endpoints[0].host)
-        self.assertEqual("AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N/E:P/RL:O/RC:C", finding.cvssv3)
+        self.assertEqual(
+            "AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N/E:P/RL:O/RC:C", finding.cvssv3
+        )
         # TODO work on component attributes for Nessus CSV parser
         self.assertIsNotNone(finding.component_name)
         self.assertEqual("md5", finding.component_name)
@@ -59,7 +66,11 @@ class TestNessusParser(DojoTestCase):
 
     def test_parse_some_findings_csv2(self):
         """Test that use default columns of Nessus Pro 8.13.1 (#257)"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-default.csv"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-default.csv"
+            )
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -74,14 +85,21 @@ class TestNessusParser(DojoTestCase):
         self.assertEqual("HTTP Server Type and Version", finding.title)
         finding = findings[25]
         self.assertIn(finding.severity, Finding.SEVERITIES)
-        self.assertEqual("SSL Certificate Signed Using Weak Hashing Algorithm (Known CA)", finding.title)
+        self.assertEqual(
+            "SSL Certificate Signed Using Weak Hashing Algorithm (Known CA)",
+            finding.title,
+        )
         self.assertEqual("Info", finding.severity)
         self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
         self.assertEqual("CVE-2004-2761", finding.unsaved_vulnerability_ids[0])
 
     def test_parse_some_findings_csv2_all(self):
         """Test that use a report with all columns of Nessus Pro 8.13.1 (#257)"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"
+            )
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -96,26 +114,43 @@ class TestNessusParser(DojoTestCase):
         self.assertEqual("HTTP Server Type and Version", finding.title)
         finding = findings[25]
         self.assertIn(finding.severity, Finding.SEVERITIES)
-        self.assertEqual("SSL Certificate Signed Using Weak Hashing Algorithm (Known CA)", finding.title)
+        self.assertEqual(
+            "SSL Certificate Signed Using Weak Hashing Algorithm (Known CA)",
+            finding.title,
+        )
         self.assertEqual("Info", finding.severity)
         self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
         self.assertEqual("CVE-2004-2761", finding.unsaved_vulnerability_ids[0])
 
     def test_parse_some_findings_csv_bytes(self):
         """This tests is designed to test the parser with different read modes"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"
+            )
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"), "rt")
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"
+            ),
+            "rt",
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
             for endpoint in finding.unsaved_endpoints:
                 endpoint.clean()
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"), "rb")
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_many_vuln2-all.csv"
+            ),
+            "rb",
+        )
         parser = NessusCSVParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -124,7 +159,9 @@ class TestNessusParser(DojoTestCase):
 
     def test_parse_some_findings_samples(self):
         """Test that come from samples repo"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_v_unknown.xml"))
+        testfile = open(
+            path.join(path.dirname(__file__), "../scans/nessus/nessus_v_unknown.xml")
+        )
         parser = NessusParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:
@@ -151,11 +188,15 @@ class TestNessusParser(DojoTestCase):
         finding = findings[9]
         self.assertEqual(7, len(finding.unsaved_vulnerability_ids))
         for vulnerability_id in finding.unsaved_vulnerability_ids:
-            self.assertEqual('CVE-2005-1794', vulnerability_id)
+            self.assertEqual("CVE-2005-1794", vulnerability_id)
 
     def test_parse_some_findings_with_cvssv3(self):
         """test with cvssv3"""
-        testfile = open(path.join(path.dirname(__file__), "../scans/nessus/nessus_with_cvssv3.nessus"))
+        testfile = open(
+            path.join(
+                path.dirname(__file__), "../scans/nessus/nessus_with_cvssv3.nessus"
+            )
+        )
         parser = NessusXMLParser()
         findings = parser.get_findings(testfile, self.create_test())
         for finding in findings:

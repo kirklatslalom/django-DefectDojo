@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.scantist.parser import ScantistParser
 from dojo.models import Test
 
 
 class TestScantistParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln_has_no_findings(self):
         testfile = open("unittests/scans/scantist/scantist-no-vuln.json")
         parser = ScantistParser()
@@ -18,7 +18,10 @@ class TestScantistParser(DojoTestCase):
         self.assertEqual(1, len(findings))
 
         findings = findings[0]
-        self.assertEqual(findings.title, findings.unsaved_vulnerability_ids[0] + "|" + findings.component_name)
+        self.assertEqual(
+            findings.title,
+            findings.unsaved_vulnerability_ids[0] + "|" + findings.component_name,
+        )
         self.assertEqual(
             findings.description,
             "Integer overflow in the crypt_raw method in the key-stretching implementation in jBCrypt before 0.4 "

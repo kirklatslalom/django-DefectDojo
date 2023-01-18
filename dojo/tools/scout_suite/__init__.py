@@ -1,1 +1,2 @@
-__author__ = 'Hasan Tayyar Besik'
+# -*- coding: utf-8 -*-
+__author__ = "Hasan Tayyar Besik"

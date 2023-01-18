@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
 from dojo.tools.kubebench.parser import KubeBenchParser
 from dojo.models import Test
 
 
 class TestKubeBenchParser(DojoTestCase):
-
     def test_parse_file_with_no_vuln_has_no_findings(self):
         testfile = open(
             get_unit_tests_path() + "/scans/kubebench/kube-bench-report-zero-vuln.json"
@@ -41,9 +41,9 @@ class TestKubeBenchParser(DojoTestCase):
         medium_severities = 0
         info_severities = 0
         for finding in findings:
-            if finding.severity == 'Medium':
+            if finding.severity == "Medium":
                 medium_severities += 1
-            if finding.severity == 'Info':
+            if finding.severity == "Info":
                 info_severities += 1
 
         self.assertEqual(36, medium_severities)
@@ -51,7 +51,10 @@ class TestKubeBenchParser(DojoTestCase):
 
         with self.subTest(i=0):
             finding = findings[0]
-            self.assertEqual("1.1.1 - Ensure that the API server pod specification file permissions are set to 644 or more restrictive (Automated)", finding.title)
+            self.assertEqual(
+                "1.1.1 - Ensure that the API server pod specification file permissions are set to 644 or more restrictive (Automated)",
+                finding.title,
+            )
             self.assertEqual("Medium", finding.severity)
             self.assertIsNotNone(finding.description)
             self.assertIsNotNone(finding.mitigation)

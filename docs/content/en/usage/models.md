@@ -48,7 +48,7 @@ Examples:
 ## Test
 
 Tests are a grouping of activities conducted by engineers to attempt to
-discover flaws in a product. Tests are bundled within engagements, have a 
+discover flaws in a product. Tests are bundled within engagements, have a
 start and end date and are defined by a test type.
 
 Examples:

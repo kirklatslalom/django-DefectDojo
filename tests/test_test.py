@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import unittest
@@ -8,7 +9,6 @@ from selenium.webdriver.common.by import By
 
 
 class TestUnitTest(BaseTestCase):
-
     def test_view_test(self):
         # View existing test from ProductTest()
         # Login to the site.
@@ -28,20 +28,44 @@ class TestUnitTest(BaseTestCase):
         driver.find_element(By.ID, "dropdownMenu2").click()
 
         bulk_edit_menu = driver.find_element(By.ID, "bulk_edit_menu")
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_active").is_enabled(), False)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_verified").is_enabled(), False)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_false_p").is_enabled(), False)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_out_of_scope").is_enabled(), False)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_is_mitigated").is_enabled(), False)
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_active").is_enabled(), False
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_verified").is_enabled(), False
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_false_p").is_enabled(), False
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_out_of_scope").is_enabled(),
+            False,
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_is_mitigated").is_enabled(),
+            False,
+        )
 
         driver.find_element(By.ID, "id_bulk_status").click()
 
         bulk_edit_menu = driver.find_element(By.ID, "bulk_edit_menu")
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_active").is_enabled(), True)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_verified").is_enabled(), True)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_false_p").is_enabled(), True)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_out_of_scope").is_enabled(), True)
-        self.assertEqual(bulk_edit_menu.find_element(By.ID, "id_bulk_is_mitigated").is_enabled(), True)
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_active").is_enabled(), True
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_verified").is_enabled(), True
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_false_p").is_enabled(), True
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_out_of_scope").is_enabled(),
+            True,
+        )
+        self.assertEqual(
+            bulk_edit_menu.find_element(By.ID, "id_bulk_is_mitigated").is_enabled(),
+            True,
+        )
 
     def test_create_test(self):
         # To create test for a product
@@ -52,7 +76,7 @@ class TestUnitTest(BaseTestCase):
         # Navigate to the Product page to select the product we created earlier
         self.goto_product_overview(driver)
         # wait for product_wrapper div as datatables javascript modifies the DOM on page load.
-        driver.find_element(By.ID, 'products_wrapper')
+        driver.find_element(By.ID, "products_wrapper")
         # Select and click on the particular product to create test for
         driver.find_element(By.LINK_TEXT, "QA Test").click()
         # "Click" the dropdown option
@@ -70,30 +94,42 @@ class TestUnitTest(BaseTestCase):
         # engagement description
         # Tab into the description area to fill some text
         # Couldnt find a way to get into the box with selenium
-        driver.find_element(By.ID, "id_name").send_keys("\tRunning Test on product before approving and push to production.")
+        driver.find_element(By.ID, "id_name").send_keys(
+            "\tRunning Test on product before approving and push to production."
+        )
         # engagement target start and target end already have defaults
         # we can safely skip
         # Testing Lead: This can be the logged in user
-        Select(driver.find_element(By.ID, "id_lead")).select_by_visible_text('Admin User (admin)')
+        Select(driver.find_element(By.ID, "id_lead")).select_by_visible_text(
+            "Admin User (admin)"
+        )
         # engagement status
-        Select(driver.find_element(By.ID, "id_status")).select_by_visible_text("In Progress")
+        Select(driver.find_element(By.ID, "id_status")).select_by_visible_text(
+            "In Progress"
+        )
         # "Click" the 'Add Test' button to Add Test to engagement
         driver.find_element(By.NAME, "_Add Tests").click()
         # Fill at least required fields needed to create Test
         # Test title
-        driver.find_element(By.ID, "id_title").clear()  # clear field before inserting anything
+        driver.find_element(
+            By.ID, "id_title"
+        ).clear()  # clear field before inserting anything
         driver.find_element(By.ID, "id_title").send_keys("Quick Security Testing")
         # Select Test type
-        Select(driver.find_element(By.ID, "id_test_type")).select_by_visible_text("Manual Code Review")
+        Select(driver.find_element(By.ID, "id_test_type")).select_by_visible_text(
+            "Manual Code Review"
+        )
         # skip Target start and Target end leaving their default values
         # Select Testing Environment
-        Select(driver.find_element(By.ID, "id_environment")).select_by_visible_text("Development")
+        Select(driver.find_element(By.ID, "id_environment")).select_by_visible_text(
+            "Development"
+        )
         # submit
         driver.find_element(By.CSS_SELECTOR, "input.btn.btn-primary").click()
         # Query the site to determine if the Test has been added
 
         # Assert on the query to determine success or failure
-        self.assertTrue(self.is_success_message_present(text='Test added successfully'))
+        self.assertTrue(self.is_success_message_present(text="Test added successfully"))
 
     def test_edit_test(self):
         # Login to the site.
@@ -108,13 +144,15 @@ class TestUnitTest(BaseTestCase):
         # "Click" the Edit Test option
         driver.find_element(By.LINK_TEXT, "Edit Test").click()
         # Change Testing Environment to Staging from Development
-        Select(driver.find_element(By.ID, "id_environment")).select_by_visible_text("Staging")
+        Select(driver.find_element(By.ID, "id_environment")).select_by_visible_text(
+            "Staging"
+        )
         # "Click" the submit button to complete the transaction
         driver.find_element(By.CSS_SELECTOR, "input.btn.btn-primary").click()
         # Query the site to determine if the Test has been updated
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Test saved.'))
+        self.assertTrue(self.is_success_message_present(text="Test saved."))
 
     def test_add_note(self):
         # Login to the site.
@@ -128,13 +166,17 @@ class TestUnitTest(BaseTestCase):
         driver.find_element(By.ID, "dropdownMenu1").click()
         # Notes are on the view_test page
         driver.find_element(By.ID, "id_entry").clear()
-        driver.find_element(By.ID, "id_entry").send_keys("This is a sample note for all to see.")
+        driver.find_element(By.ID, "id_entry").send_keys(
+            "This is a sample note for all to see."
+        )
         # "Click" the submit button to complete the transaction
         driver.find_element(By.XPATH, "//input[@value='Add Note']").click()
         # Query the site to determine if the Test has been updated
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Note added successfully.'))
+        self.assertTrue(
+            self.is_success_message_present(text="Note added successfully.")
+        )
 
     def test_add_test_finding(self):
         # Test To Add Finding To Test
@@ -159,31 +201,45 @@ class TestUnitTest(BaseTestCase):
         # finding Severity
         Select(driver.find_element(By.ID, "id_severity")).select_by_visible_text("High")
         # cvss
-        driver.find_element(By.ID, "id_cvssv3").send_keys("CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H")
+        driver.find_element(By.ID, "id_cvssv3").send_keys(
+            "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+        )
         # finding Description
-        driver.find_element(By.ID, "id_cvssv3").send_keys(Keys.TAB, "This is just a Test Case Finding2")
+        driver.find_element(By.ID, "id_cvssv3").send_keys(
+            Keys.TAB, "This is just a Test Case Finding2"
+        )
         # Finding Mitigation
         # Use Javascript to bypass the editor by making Setting textArea style from none to inline
         # Any Text written to textarea automatically reflects in Editor field.
-        driver.execute_script("document.getElementsByName('mitigation')[0].style.display = 'inline'")
-        driver.find_element(By.NAME, "mitigation").send_keys(Keys.TAB, "How to mitigate this finding2")
+        driver.execute_script(
+            "document.getElementsByName('mitigation')[0].style.display = 'inline'"
+        )
+        driver.find_element(By.NAME, "mitigation").send_keys(
+            Keys.TAB, "How to mitigate this finding2"
+        )
         # Finding Impact
         # Use Javascript to bypass the editor by making Setting textArea style from none to inline
         # Any Text written to textarea automatically reflects in Editor field.
-        driver.execute_script("document.getElementsByName('impact')[0].style.display = 'inline'")
-        driver.find_element(By.NAME, "impact").send_keys(Keys.TAB, "This has a very critical effect on production2")
+        driver.execute_script(
+            "document.getElementsByName('impact')[0].style.display = 'inline'"
+        )
+        driver.find_element(By.NAME, "impact").send_keys(
+            Keys.TAB, "This has a very critical effect on production2"
+        )
         # Add an endpoint
-        driver.find_element(By.ID, "id_endpoints_to_add").send_keys("product2.finding.com")
+        driver.find_element(By.ID, "id_endpoints_to_add").send_keys(
+            "product2.finding.com"
+        )
         # "Click" the Done button to Add the finding with other defaults
         with WaitForPageLoad(driver, timeout=30):
             driver.find_element(By.XPATH, "//input[@name='_Finished']").click()
         # Query the site to determine if the finding has been added
 
         # Assert to the query to dtermine status of failure
-        self.assertTrue(self.is_text_present_on_page(text='App Vulnerable to XSS2'))
+        self.assertTrue(self.is_text_present_on_page(text="App Vulnerable to XSS2"))
         # Select and click on the finding to check if endpoint has been added
         driver.find_element(By.LINK_TEXT, "App Vulnerable to XSS2").click()
-        self.assertTrue(self.is_text_present_on_page(text='product2.finding.com'))
+        self.assertTrue(self.is_text_present_on_page(text="product2.finding.com"))
 
     def test_add_stub_finding(self):
         # Login to the site.
@@ -197,7 +253,9 @@ class TestUnitTest(BaseTestCase):
         # Enter the title of the stub finding
         # Keep a good practice of clearing field before entering value
         driver.find_element(By.ID, "quick_add_finding").clear()
-        driver.find_element(By.ID, "quick_add_finding").send_keys("App Vulnerable to XSS3")
+        driver.find_element(By.ID, "quick_add_finding").send_keys(
+            "App Vulnerable to XSS3"
+        )
         # Click on Add Potential Finding
         driver.find_element(By.ID, "the_button").click()
 
@@ -215,14 +273,21 @@ class TestUnitTest(BaseTestCase):
         # Click on link of finding name to promote to finding
         driver.find_elements(By.NAME, "stub_finding_name")[0].click()
         # Check we have the correct stub finding
-        self.assertEqual(driver.find_element(By.ID, "id_title").get_attribute('value'), 'App Vulnerable to XSS3')
+        self.assertEqual(
+            driver.find_element(By.ID, "id_title").get_attribute("value"),
+            "App Vulnerable to XSS3",
+        )
         # Edit finding Description
-        driver.find_element(By.ID, "id_cvssv3_score").send_keys(Keys.TAB, Keys.TAB, "This is a promoted stub finding")
+        driver.find_element(By.ID, "id_cvssv3_score").send_keys(
+            Keys.TAB, Keys.TAB, "This is a promoted stub finding"
+        )
         # "Click" the Done button to Edit the finding
         driver.find_element(By.ID, "submit").click()
 
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Finding promoted successfully'))
+        self.assertTrue(
+            self.is_success_message_present(text="Finding promoted successfully")
+        )
 
     @on_exception_html_source_logger
     def test_add_and_delete_stub_finding(self):
@@ -258,9 +323,13 @@ class TestUnitTest(BaseTestCase):
 
         driver.find_element(By.ID, "merge_findings").click()
 
-        Select(driver.find_element(By.ID, "id_finding_action")).select_by_visible_text('Inactive')
+        Select(driver.find_element(By.ID, "id_finding_action")).select_by_visible_text(
+            "Inactive"
+        )
 
-        Select(driver.find_element(By.ID, "id_findings_to_merge")).select_by_visible_text('App Vulnerable to XSS3')
+        Select(
+            driver.find_element(By.ID, "id_findings_to_merge")
+        ).select_by_visible_text("App Vulnerable to XSS3")
 
         driver.find_element(By.CSS_SELECTOR, "input.btn.btn-primary").click()
 
@@ -280,26 +349,28 @@ class TestUnitTest(BaseTestCase):
         # "Click" the delete button to complete the transaction
         driver.find_element(By.CSS_SELECTOR, "button.btn.btn-danger").click()
         # Assert ot the query to dtermine status of failure
-        self.assertTrue(self.is_success_message_present(text='Test and relationships removed.'))
+        self.assertTrue(
+            self.is_success_message_present(text="Test and relationships removed.")
+        )
 
 
 def suite():
     suite = unittest.TestSuite()
     # Add each test the the suite to be run
     # success and failure is output by the test
-    suite.addTest(BaseTestCase('test_login'))
-    suite.addTest(ProductTest('test_create_product'))
-    suite.addTest(ProductTest('test_add_product_finding'))
-    suite.addTest(TestUnitTest('test_view_test'))
-    suite.addTest(TestUnitTest('test_create_test'))
-    suite.addTest(TestUnitTest('test_edit_test'))
-    suite.addTest(TestUnitTest('test_add_test_finding'))
-    suite.addTest(TestUnitTest('test_add_and_promote_stub_finding'))
-    suite.addTest(TestUnitTest('test_merge_findings'))
-    suite.addTest(TestUnitTest('test_add_and_delete_stub_finding'))
-    suite.addTest(TestUnitTest('test_add_note'))
-    suite.addTest(TestUnitTest('test_delete_test'))
-    suite.addTest(ProductTest('test_delete_product'))
+    suite.addTest(BaseTestCase("test_login"))
+    suite.addTest(ProductTest("test_create_product"))
+    suite.addTest(ProductTest("test_add_product_finding"))
+    suite.addTest(TestUnitTest("test_view_test"))
+    suite.addTest(TestUnitTest("test_create_test"))
+    suite.addTest(TestUnitTest("test_edit_test"))
+    suite.addTest(TestUnitTest("test_add_test_finding"))
+    suite.addTest(TestUnitTest("test_add_and_promote_stub_finding"))
+    suite.addTest(TestUnitTest("test_merge_findings"))
+    suite.addTest(TestUnitTest("test_add_and_delete_stub_finding"))
+    suite.addTest(TestUnitTest("test_add_note"))
+    suite.addTest(TestUnitTest("test_delete_test"))
+    suite.addTest(ProductTest("test_delete_product"))
     return suite
 
 

@@ -13,7 +13,7 @@ services:
       context: ./
       dockerfile: Dockerfile.nginx
     image: "defectdojo/defectdojo-nginx:${NGINX_VERSION:-latest}"
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
       - postgres-rabbitmq
@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile.django
       target: django
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
       - postgres-rabbitmq
@@ -63,7 +63,7 @@ services:
         - "defectdojo_media:${DD_MEDIA_ROOT:-/app/media}"
   celerybeat:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
       - postgres-rabbitmq
@@ -84,7 +84,7 @@ services:
           target: /app/docker/extra_settings
   celeryworker:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
       - postgres-rabbitmq
@@ -107,7 +107,7 @@ services:
         - "defectdojo_media:${DD_MEDIA_ROOT:-/app/media}"
   initializer:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
       - postgres-rabbitmq
@@ -131,7 +131,7 @@ services:
           target: /app/docker/extra_settings
   mysql:
     image: mysql:5.7.40@sha256:f5e2d4d7dccdc3f2a1d592bd3f0eb472b2f72f9fb942a84ff5b5cc049fe63a04
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - mysql-redis
     environment:
@@ -144,7 +144,7 @@ services:
       - defectdojo_data:/var/lib/mysql
   postgres:
     image: postgres:15.1-alpine@sha256:bd4adb0d32a9f366d4d231add4e3205fd5150ed851cba47e7038d8d3635f85ce
-    profiles: 
+    profiles:
       - postgres-rabbitmq
       - postgres-redis
     environment:
@@ -155,14 +155,14 @@ services:
       - defectdojo_postgres:/var/lib/postgresql/data
   rabbitmq:
     image: rabbitmq:3.11.5-alpine@sha256:e9dd024b254c714e726d4e40b59bd7cf7b9b1c734ace132803d00f596b1afb85
-    profiles: 
+    profiles:
       - mysql-rabbitmq
       - postgres-rabbitmq
     volumes:
        - defectdojo_rabbitmq:/var/lib/rabbitmq
   redis:
     image: redis:7.0.7-alpine@sha256:9dc2499d6c21f869a6e22b170003483d3fca8c03992f4a11f6493c0b392da40f
-    profiles: 
+    profiles:
       - mysql-redis
       - postgres-redis
     volumes:

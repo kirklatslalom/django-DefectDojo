@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 import json
 
 from dojo.models import Finding
 
 
 class DrHeaderParser(object):
-
     def get_scan_types(self):
         return ["DrHeader JSON Importer"]
 
@@ -18,15 +18,17 @@ class DrHeaderParser(object):
         data = json.load(filename)
         items = []
         for item in data:
-            findingdetail = ''
+            findingdetail = ""
             title = "Header : " + item["rule"]
             message = item["message"]
             severity = item["severity"].title()
-            find = Finding(title=title,
-                           test=test,
-                           description=message,
-                           severity=severity,
-                           static_finding=False)
+            find = Finding(
+                title=title,
+                test=test,
+                description=message,
+                severity=severity,
+                static_finding=False,
+            )
 
             items.append(find)
         return items

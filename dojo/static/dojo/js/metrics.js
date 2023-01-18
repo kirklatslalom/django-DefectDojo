@@ -74,7 +74,7 @@ function homepage_severity_plot(critical, high, medium, low) {
             hoverable: true,
             borderWidth: 1,
             borderColor: '#e7e7e7',
-    
+
         },
         tooltip: true,
     };
@@ -124,7 +124,7 @@ function opened_per_month(critical, high, medium, low) {
             hoverable: false,
             borderWidth: 1,
             borderColor: '#e7e7e7',
-    
+
         },
         tooltip: false,
     };
@@ -170,11 +170,11 @@ function accepted_per_month(critical, high, medium, low) {
             hoverable: false,
             borderWidth: 1,
             borderColor: '#e7e7e7',
-    
+
         },
         tooltip: false,
     };
-    
+
     $.plot($("#accepted_per_month"), [{
                 data: critical,
                 label: " Critical",

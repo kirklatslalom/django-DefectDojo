@@ -176,11 +176,11 @@
                                                 {% else %}
                                                     <a href="/empty_questionnaire/{{ survey.id }}">{{ survey.survey.name }}</a>
                                                 {% endif %}
-                                            </td> 
+                                            </td>
                                             <td><a href="/product/{{ survey.engagement.product_id }}">{{ survey.engagement.product.name }}</a></td>
                                             <td>
-                                                <a href="/engagement/{{ survey.engagement.id }}">{{ survey.engagement.name }}</a> 
-                                            </td> 
+                                                <a href="/engagement/{{ survey.engagement.id }}">{{ survey.engagement.name }}</a>
+                                            </td>
                                             <td>
                                                 {% if survey.responder %}
                                                     {{ survey.responder }}
@@ -225,7 +225,7 @@
                 </div>
             </div>
         {% endif %}
-    {% endblock %}    
+    {% endblock %}
     {% block punchcard %}
         <div class="row">
             {% if punchcard %}

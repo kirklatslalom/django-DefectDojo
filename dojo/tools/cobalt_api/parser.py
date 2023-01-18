@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import textwrap
 from datetime import datetime
@@ -5,7 +6,7 @@ from dojo.models import Endpoint, Finding
 from dojo.tools.cobalt_api.importer import CobaltApiImporter
 
 
-SCAN_COBALTIO_API = 'Cobalt.io API Import'
+SCAN_COBALTIO_API = "Cobalt.io API Import"
 
 
 class CobaltApiParser(object):
@@ -26,7 +27,7 @@ class CobaltApiParser(object):
         return False
 
     def requires_tool_type(self, scan_type):
-        return 'Cobalt.io'
+        return "Cobalt.io"
 
     def get_findings(self, file, test):
         if file is None:
@@ -83,7 +84,8 @@ class CobaltApiParser(object):
                 last_status_update=last_status_update,
                 static_finding=False,
                 dynamic_finding=True,
-                unique_id_from_tool=unique_id_from_tool)
+                unique_id_from_tool=unique_id_from_tool,
+            )
             finding.unsaved_endpoints = self.convert_endpoints(endpoints)
 
             findings.append(finding)
@@ -108,15 +110,15 @@ class CobaltApiParser(object):
         """Determine whether this finding should be imported to DefectDojo"""
         allowed_states = [
             "carried_over",  # Finding from a previous pentest
-            "check_fix",     # Fix for finding is being verified
-            "duplicate",     # Finding is a duplicate within the pentest
-            "invalid",       # Finding is found to be a false positive
-            "need_fix",      # Finding is verified and valid
-            "new",           # The finding is not yet verified by the pentest team
+            "check_fix",  # Fix for finding is being verified
+            "duplicate",  # Finding is a duplicate within the pentest
+            "invalid",  # Finding is found to be a false positive
+            "need_fix",  # Finding is verified and valid
+            "new",  # The finding is not yet verified by the pentest team
             "out_of_scope",  # Finding is out of the scope of the pentest
-            "triaging",      # The finding is not yet verified by the pentest team
-            "valid_fix",     # Fix for finding has been varified
-            "wont_fix",      # Risk of finding has been accepted
+            "triaging",  # The finding is not yet verified by the pentest team
+            "valid_fix",  # Fix for finding has been varified
+            "wont_fix",  # Risk of finding has been accepted
         ]
 
         if resource["state"] in allowed_states:
@@ -153,9 +155,11 @@ class CobaltApiParser(object):
             return "Info"
 
     def is_active(self, cobalt_state):
-        return not self.is_mitigated(cobalt_state) \
-            and not self.is_false_p(cobalt_state) \
+        return (
+            not self.is_mitigated(cobalt_state)
+            and not self.is_false_p(cobalt_state)
             and not self.is_out_of_scope(cobalt_state)
+        )
 
     def is_duplicate(self, cobalt_state):
         return cobalt_state == "duplicate"

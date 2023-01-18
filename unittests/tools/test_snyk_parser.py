@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
 from dojo.tools.snyk.parser import SnykParser
 
 
 class TestSnykParser(DojoTestCase):
-
     def test_snykParser_single_has_no_finding(self):
         testfile = open("unittests/scans/snyk/single_project_no_vulns.json")
         parser = SnykParser()
@@ -70,18 +70,18 @@ class TestSnykParser(DojoTestCase):
         self.assertEqual(611, finding.cwe)
         self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L", finding.cvssv3)
         self.assertEqual(
-            "## Remediation\nUpgrade `org.apache.santuario:xmlsec` to version 2.1.4 or higher.\n\n" +
-            "Upgrade Location: pom.xml\n" +
-            "Upgrade from org.apache.santuario:xmlsec@2.1.1 to org.apache.santuario:xmlsec@2.1.4 to fix this issue, as well as updating the following:\n - org.apache.santuario:xmlsec@2.1.1",
+            "## Remediation\nUpgrade `org.apache.santuario:xmlsec` to version 2.1.4 or higher.\n\n"
+            + "Upgrade Location: pom.xml\n"
+            + "Upgrade from org.apache.santuario:xmlsec@2.1.1 to org.apache.santuario:xmlsec@2.1.4 to fix this issue, as well as updating the following:\n - org.apache.santuario:xmlsec@2.1.1",
             finding.mitigation,
         )
         self.assertEqual(
-            "**SNYK ID**: https://app.snyk.io/vuln/SNYK-JAVA-ORGAPACHESANTUARIO-460281\n\n**GitHub " +
-            "Commit**: https://github.com/apache/santuario-java/commit/52ae824cf5f5c873a0e37bb33fedcc3b387" +
-            "cdba6\n**GitHub Commit**: https://github.com/apache/santuario-java/commit/c5210f77a77105fba81" +
-            "311d16c07ceacc21f39d5\n**Possible Jira Issue**: https://issues.apache.org/jira/browse/SANTUARIO-" +
-            "504?jql=project%20%3D%20SANTUARIO\n**Security Release**: http://santuario.apache.org/secadv.data/" +
-            "CVE-2019-12400.asc?version=1&modificationDate=1566573083000&api=v2\n",
+            "**SNYK ID**: https://app.snyk.io/vuln/SNYK-JAVA-ORGAPACHESANTUARIO-460281\n\n**GitHub "
+            + "Commit**: https://github.com/apache/santuario-java/commit/52ae824cf5f5c873a0e37bb33fedcc3b387"
+            + "cdba6\n**GitHub Commit**: https://github.com/apache/santuario-java/commit/c5210f77a77105fba81"
+            + "311d16c07ceacc21f39d5\n**Possible Jira Issue**: https://issues.apache.org/jira/browse/SANTUARIO-"
+            + "504?jql=project%20%3D%20SANTUARIO\n**Security Release**: http://santuario.apache.org/secadv.data/"
+            + "CVE-2019-12400.asc?version=1&modificationDate=1566573083000&api=v2\n",
             finding.references,
         )
         self.assertEqual(
@@ -89,15 +89,16 @@ class TestSnykParser(DojoTestCase):
         )
 
     def test_snykParser_file_path_with_ampersand_is_preserved(self):
-        testfile = open("unittests/scans/snyk/single_project_one_vuln_with_ampersands.json")
+        testfile = open(
+            "unittests/scans/snyk/single_project_one_vuln_with_ampersands.json"
+        )
         parser = SnykParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
         self.assertEqual(1, len(findings))
         finding = findings[0]
         self.assertEqual(
-            "myproject > @angular/localize > @babel/core > lodash",
-            finding.file_path
+            "myproject > @angular/localize > @babel/core > lodash", finding.file_path
         )
 
     def test_snykParser_allprojects_issue4277(self):
@@ -112,11 +113,15 @@ class TestSnykParser(DojoTestCase):
             self.assertEqual("High", finding.severity)
             self.assertEqual("Microsoft.AspNetCore", finding.component_name)
             self.assertEqual("2.2.0", finding.component_version)
-            self.assertEqual("SNYK-DOTNET-MICROSOFTASPNETCORE-174184", finding.vuln_id_from_tool)
+            self.assertEqual(
+                "SNYK-DOTNET-MICROSOFTASPNETCORE-174184", finding.vuln_id_from_tool
+            )
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2019-0815", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(200, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H", finding.cvssv3
+            )
         with self.subTest(i=40):
             finding = findings[40]
             self.assertEqual("High", finding.severity)
@@ -126,7 +131,10 @@ class TestSnykParser(DojoTestCase):
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2021-23337", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(78, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:U/RC:C", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:U/RC:C",
+                finding.cvssv3,
+            )
         with self.subTest(i=81):
             finding = findings[81]
             self.assertEqual("Medium", finding.severity)
@@ -136,7 +144,10 @@ class TestSnykParser(DojoTestCase):
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
             self.assertEqual("CVE-2020-7608", finding.unsaved_vulnerability_ids[0])
             self.assertEqual(400, finding.cwe)
-            self.assertEqual("CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L/E:P/RL:O/RC:C", finding.cvssv3)
+            self.assertEqual(
+                "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L/E:P/RL:O/RC:C",
+                finding.cvssv3,
+            )
 
     def test_snykParser_cvssscore_none(self):
         with open("unittests/scans/snyk/single_project_None_cvss.json") as testfile:
@@ -157,7 +168,10 @@ class TestSnykParser(DojoTestCase):
             # Mobile-Security-Framework-MobSF@0.0.0: SQL Injection
             finding = findings[0]
             self.assertEqual("Critical", finding.severity)
-            self.assertIn('target_file:Mobile-Security-Framework-MobSF/requirements.txt', finding.unsaved_tags)
+            self.assertIn(
+                "target_file:Mobile-Security-Framework-MobSF/requirements.txt",
+                finding.unsaved_tags,
+            )
 
     def test_snykParser_update_libs_tag(self):
         with open("unittests/scans/snyk/single_project_upgrade_libs.json") as testfile:
@@ -170,6 +184,6 @@ class TestSnykParser(DojoTestCase):
             finding = findings[227]
             print(finding, finding.severity, finding.unsaved_tags)
             self.assertEqual("High", finding.severity)
-            self.assertIn('target_file:package-lock.json', finding.unsaved_tags)
-            self.assertIn('upgrade_to:react-scripts@5.0.0', finding.unsaved_tags)
-            self.assertIn('shell-quote@1.7.2', finding.mitigation)
+            self.assertIn("target_file:package-lock.json", finding.unsaved_tags)
+            self.assertIn("upgrade_to:react-scripts@5.0.0", finding.unsaved_tags)
+            self.assertIn("shell-quote@1.7.2", finding.mitigation)

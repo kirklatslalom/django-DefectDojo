@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.models import Test
 from dojo.tools.retirejs.parser import RetireJsParser
@@ -19,7 +20,10 @@ class TestRetireJsParser(DojoTestCase):
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("handlebars", finding.component_name)
             self.assertEqual("3.0.0", finding.component_version)
-            self.assertEqual("/home/damien/dd/.venv/report/scout2-report/inc-handlebars/handlebars-v3.0.0.js", finding.file_path)
+            self.assertEqual(
+                "/home/damien/dd/.venv/report/scout2-report/inc-handlebars/handlebars-v3.0.0.js",
+                finding.file_path,
+            )
         with self.subTest(i=10):
             finding = findings[10]
             self.assertEqual(
@@ -29,7 +33,10 @@ class TestRetireJsParser(DojoTestCase):
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("bootstrap", finding.component_name)
             self.assertEqual("3.0.3", finding.component_version)
-            self.assertEqual("/home/damien/dd/.venv/report/scout2-report/inc-bootstrap/js/bootstrap.min.js", finding.file_path)
+            self.assertEqual(
+                "/home/damien/dd/.venv/report/scout2-report/inc-bootstrap/js/bootstrap.min.js",
+                finding.file_path,
+            )
         with self.subTest(i=22):
             finding = findings[22]
             self.assertEqual(
@@ -39,4 +46,7 @@ class TestRetireJsParser(DojoTestCase):
             self.assertEqual("Medium", finding.severity)
             self.assertEqual("jquery", finding.component_name)
             self.assertEqual("1.8.0", finding.component_version)
-            self.assertEqual("/home/damien/dd/.venv/lib/python3.9/site-packages/tastypie_swagger/static/tastypie_swagger/js/lib/jquery-1.8.0.min.js", finding.file_path)
+            self.assertEqual(
+                "/home/damien/dd/.venv/lib/python3.9/site-packages/tastypie_swagger/static/tastypie_swagger/js/lib/jquery-1.8.0.min.js",
+                finding.file_path,
+            )

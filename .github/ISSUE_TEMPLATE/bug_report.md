@@ -35,7 +35,7 @@ A clear and concise description of what you expected to happen.
  - Operating System: [e.g. Ubuntu 18.04]
  - DefectDojo version (see footer) or commit message: [use `git show -s --format="[%ci] %h: %s [%d]"`]
 
-**Logs** 
+**Logs**
 Use `docker-compose logs` (or similar, depending on your deployment method) to get the logs and add the relevant sections here showing the error occurring (if applicable).
 
 **Sample scan files**

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from defusedxml import ElementTree as ET
 from html2text import html2text
 
@@ -35,14 +36,19 @@ class ZapParser(object):
                     title=item.findtext("alert"),
                     description=html2text(item.findtext("desc")),
                     severity=self.MAPPING_SEVERITY.get(item.findtext("riskcode")),
-                    scanner_confidence=self.MAPPING_CONFIDENCE.get(item.findtext("riskcode")),
+                    scanner_confidence=self.MAPPING_CONFIDENCE.get(
+                        item.findtext("riskcode")
+                    ),
                     mitigation=html2text(item.findtext("solution")),
                     references=html2text(item.findtext("reference")),
                     dynamic_finding=True,
                     static_finding=False,
                     vuln_id_from_tool=item.findtext("pluginid"),
                 )
-                if item.findtext("cweid") is not None and item.findtext("cweid").isdigit():
+                if (
+                    item.findtext("cweid") is not None
+                    and item.findtext("cweid").isdigit()
+                ):
                     finding.cwe = int(item.findtext("cweid"))
 
                 finding.unsaved_endpoints = []
@@ -51,10 +57,14 @@ class ZapParser(object):
                     endpoint = Endpoint.from_uri(instance.findtext("uri"))
                     # If the requestheader key is set, the report is in the "XML with requests and responses"
                     # format - load requests and responses and add them to the database
-                    if instance.findtext('requestheader') is not None:
+                    if instance.findtext("requestheader") is not None:
                         # Assemble the request from header and body
-                        request = instance.findtext('requestheader') + instance.findtext('requestbody')
-                        response = instance.findtext('responseheader') + instance.findtext('responsebody')
+                        request = instance.findtext(
+                            "requestheader"
+                        ) + instance.findtext("requestbody")
+                        response = instance.findtext(
+                            "responseheader"
+                        ) + instance.findtext("responsebody")
                     else:
                         # The report is in the regular XML format, without requests and responses.
                         # Use the default settings for constructing the request and response fields.

@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.ggshield.parser import GgshieldParser
 from dojo.models import Test
 
 
 class TestGgshieldParser(DojoTestCase):
-
     def test_parse_empty(self):
         testfile = open("unittests/scans/ggshield/no_finding.json")
         parser = GgshieldParser()
@@ -20,7 +20,9 @@ class TestGgshieldParser(DojoTestCase):
         self.assertEqual(1, len(findings))
         finding = findings[0]
         self.assertEqual("wapf/settings.py", finding.file_path)
-        self.assertEqual("Hard coded Django Secret Key found in wapf/settings.py", finding.title)
+        self.assertEqual(
+            "Hard coded Django Secret Key found in wapf/settings.py", finding.title
+        )
         self.assertIsNotNone(finding.description)
         self.assertEqual("2021-07-05", finding.date)
 
@@ -32,11 +34,15 @@ class TestGgshieldParser(DojoTestCase):
         self.assertEqual(2, len(findings))
         finding = findings[0]
         self.assertEqual("wapf/settings.py", finding.file_path)
-        self.assertEqual("Hard coded Django Secret Key found in wapf/settings.py", finding.title)
+        self.assertEqual(
+            "Hard coded Django Secret Key found in wapf/settings.py", finding.title
+        )
         self.assertIsNotNone(finding.description)
         self.assertEqual("2021-03-13", finding.date)
         finding = findings[1]
         self.assertEqual("wapf/settings.py", finding.file_path)
-        self.assertEqual("Hard coded Django Secret Key found in wapf/settings.py", finding.title)
+        self.assertEqual(
+            "Hard coded Django Secret Key found in wapf/settings.py", finding.title
+        )
         self.assertIsNotNone(finding.description)
         self.assertEqual("2021-07-05", finding.date)

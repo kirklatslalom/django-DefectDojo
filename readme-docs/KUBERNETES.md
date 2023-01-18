@@ -250,7 +250,7 @@ mediaPersistentVolume:
   type: pvc
   # there are two options to create pvc 1) when you want the chart to create pvc for you, set django.mediaPersistentVolume.persistentVolumeClaim.create to true and do not specify anything for django.mediaPersistentVolume.PersistentVolumeClaim.name  2) when you want to create pvc outside the chart, pass the pvc name via django.mediaPersistentVolume.PersistentVolumeClaim.name and ensure django.mediaPersistentVolume.PersistentVolumeClaim.create is set to false
   persistentVolumeClaim:
-    create: true 
+    create: true
     name:
     size: 5Gi
     accessModes:

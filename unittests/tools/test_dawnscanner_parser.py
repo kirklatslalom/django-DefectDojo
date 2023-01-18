@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from os import path
 
@@ -8,7 +9,11 @@ from dojo.tools.dawnscanner.parser import DawnScannerParser
 
 class TestDawnScannerParser(DojoTestCase):
     def test_burp_with_one_vuln_has_one_finding(self):
-        with open(path.join(path.dirname(__file__), "../scans/dawnscanner/dawnscanner_v1.6.9.json")) as test_file:
+        with open(
+            path.join(
+                path.dirname(__file__), "../scans/dawnscanner/dawnscanner_v1.6.9.json"
+            )
+        ) as test_file:
             parser = DawnScannerParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -28,13 +33,23 @@ class TestDawnScannerParser(DojoTestCase):
                     finding.description,
                 )
                 self.assertEqual(
-                    datetime.datetime(2019, 4, 1, 21, 14, 32, tzinfo=datetime.timezone(datetime.timedelta(seconds=0))),
+                    datetime.datetime(
+                        2019,
+                        4,
+                        1,
+                        21,
+                        14,
+                        32,
+                        tzinfo=datetime.timezone(datetime.timedelta(seconds=0)),
+                    ),
                     finding.date,
                 )  # 2019-04-01 21:14:32 +0000
 
             with self.subTest(i=3):
                 finding = findings[3]
-                self.assertEqual("Owasp Ror CheatSheet: Security Related Headers", finding.title)
+                self.assertEqual(
+                    "Owasp Ror CheatSheet: Security Related Headers", finding.title
+                )
                 self.assertEqual("Info", finding.severity)
                 self.assertIsNone(finding.unsaved_vulnerability_ids)
                 self.assertEqual(
@@ -46,6 +61,14 @@ class TestDawnScannerParser(DojoTestCase):
                     finding.mitigation,
                 )
                 self.assertEqual(
-                    datetime.datetime(2019, 4, 1, 21, 14, 32, tzinfo=datetime.timezone(datetime.timedelta(seconds=0))),
+                    datetime.datetime(
+                        2019,
+                        4,
+                        1,
+                        21,
+                        14,
+                        32,
+                        tzinfo=datetime.timezone(datetime.timedelta(seconds=0)),
+                    ),
                     finding.date,
                 )  # 2019-04-01 21:14:32 +0000

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 import hashlib
 import io
@@ -9,7 +10,6 @@ from dojo.models import Endpoint, Finding
 
 
 class GenericParser(object):
-
     def get_scan_types(self):
         return ["Generic Findings Import"]
 
@@ -30,7 +30,7 @@ class GenericParser(object):
     def get_findings_json(self, filename, test, active=None, verified=None):
         data = json.load(filename)
         findings = list()
-        for item in data['findings']:
+        for item in data["findings"]:
             # remove endpoints of the dictionnary
             unsaved_endpoints = None
             if "endpoints" in item:
@@ -59,11 +59,11 @@ class GenericParser(object):
                 finding.unsaved_endpoints = []
                 for endpoint_item in unsaved_endpoints:
                     if type(endpoint_item) is str:
-                        if '://' in endpoint_item:  # is the host full uri?
+                        if "://" in endpoint_item:  # is the host full uri?
                             endpoint = Endpoint.from_uri(endpoint_item)
                             # can raise exception if the host is not valid URL
                         else:
-                            endpoint = Endpoint.from_uri('//' + endpoint_item)
+                            endpoint = Endpoint.from_uri("//" + endpoint_item)
                             # can raise exception if there is no way to parse the host
                     else:
                         endpoint = Endpoint(**endpoint_item)
@@ -84,53 +84,61 @@ class GenericParser(object):
     def get_findings_csv(self, filename, test, active=None, verified=None):
         content = filename.read()
         if type(content) is bytes:
-            content = content.decode('utf-8')
-        reader = csv.DictReader(io.StringIO(content), delimiter=',', quotechar='"')
+            content = content.decode("utf-8")
+        reader = csv.DictReader(io.StringIO(content), delimiter=",", quotechar='"')
 
         dupes = dict()
         for row in reader:
             finding = Finding(
                 test=test,
-                title=row['Title'],
-                description=row['Description'],
-                date=parse(row['Date']).date(),
-                severity=row['Severity'],
-                duplicate=self._convert_bool(row.get('Duplicate', 'FALSE')),  # bool False by default
+                title=row["Title"],
+                description=row["Description"],
+                date=parse(row["Date"]).date(),
+                severity=row["Severity"],
+                duplicate=self._convert_bool(
+                    row.get("Duplicate", "FALSE")
+                ),  # bool False by default
                 nb_occurences=1,
             )
             # manage active
-            if 'Active' in row:
-                finding.active = self._convert_bool(row.get('Active', 'FALSE'))  # bool False by default
+            if "Active" in row:
+                finding.active = self._convert_bool(
+                    row.get("Active", "FALSE")
+                )  # bool False by default
             # manage mitigation
-            if 'Mitigation' in row:
-                finding.mitigation = row['Mitigation']
+            if "Mitigation" in row:
+                finding.mitigation = row["Mitigation"]
             # manage impact
-            if 'Impact' in row:
-                finding.impact = row['Impact']
+            if "Impact" in row:
+                finding.impact = row["Impact"]
             # manage impact
-            if 'References' in row:
-                finding.references = row['References']
+            if "References" in row:
+                finding.references = row["References"]
             # manage verified
-            if 'Verified' in row:
-                finding.verified = self._convert_bool(row.get('Verified', 'FALSE'))  # bool False by default
+            if "Verified" in row:
+                finding.verified = self._convert_bool(
+                    row.get("Verified", "FALSE")
+                )  # bool False by default
             # manage false positives
-            if 'FalsePositive' in row:
-                finding.false_p = self._convert_bool(row.get('FalsePositive', 'FALSE'))  # bool False by default
+            if "FalsePositive" in row:
+                finding.false_p = self._convert_bool(
+                    row.get("FalsePositive", "FALSE")
+                )  # bool False by default
             # manage CVE
-            if 'CVE' in row and [row['CVE']]:
-                finding.unsaved_vulnerability_ids = [row['CVE']]
+            if "CVE" in row and [row["CVE"]]:
+                finding.unsaved_vulnerability_ids = [row["CVE"]]
             # manage Vulnerability Id
-            if 'Vulnerability Id' in row and row['Vulnerability Id']:
+            if "Vulnerability Id" in row and row["Vulnerability Id"]:
                 if finding.unsaved_vulnerability_ids:
-                    finding.unsaved_vulnerability_ids.append(row['Vulnerability Id'])
+                    finding.unsaved_vulnerability_ids.append(row["Vulnerability Id"])
                 else:
-                    finding.unsaved_vulnerability_ids = [row['Vulnerability Id']]
+                    finding.unsaved_vulnerability_ids = [row["Vulnerability Id"]]
             # manage CWE
-            if 'CweId' in row:
-                finding.cwe = int(row['CweId'])
+            if "CweId" in row:
+                finding.cwe = int(row["CweId"])
             # FIXME remove this severity hack
-            if finding.severity == 'Unknown':
-                finding.severity = 'Info'
+            if finding.severity == "Unknown":
+                finding.severity = "Info"
 
             if "CVSSV3" in row:
                 cvss_objects = cvss_parser.parse_cvss_from_text(row["CVSSV3"])
@@ -144,22 +152,30 @@ class GenericParser(object):
                 finding.verified = verified
 
             # manage endpoints
-            if 'Url' in row:
-                finding.unsaved_endpoints = [Endpoint.from_uri(row['Url'])
-                                             if '://' in row['Url'] else
-                                             Endpoint.from_uri("//" + row['Url'])]
+            if "Url" in row:
+                finding.unsaved_endpoints = [
+                    Endpoint.from_uri(row["Url"])
+                    if "://" in row["Url"]
+                    else Endpoint.from_uri("//" + row["Url"])
+                ]
 
             # manage internal de-duplication
-            key = hashlib.sha256("|".join([
-                finding.severity,
-                finding.title,
-                finding.description,
-            ]).encode("utf-8")).hexdigest()
+            key = hashlib.sha256(
+                "|".join(
+                    [
+                        finding.severity,
+                        finding.title,
+                        finding.description,
+                    ]
+                ).encode("utf-8")
+            ).hexdigest()
             if key in dupes:
                 find = dupes[key]
                 find.unsaved_endpoints.extend(finding.unsaved_endpoints)
                 if find.unsaved_vulnerability_ids:
-                    find.unsaved_vulnerability_ids.extend(finding.unsaved_vulnerability_ids)
+                    find.unsaved_vulnerability_ids.extend(
+                        finding.unsaved_vulnerability_ids
+                    )
                 else:
                     find.unsaved_vulnerability_ids = finding.unsaved_vulnerability_ids
                 find.nb_occurences += 1
@@ -169,4 +185,4 @@ class GenericParser(object):
         return list(dupes.values())
 
     def _convert_bool(self, val):
-        return val.lower()[0:1] == 't'  # bool False by default
+        return val.lower()[0:1] == "t"  # bool False by default

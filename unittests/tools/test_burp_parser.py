@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import path
 
 from ..dojo_test_case import DojoTestCase
@@ -6,9 +7,10 @@ from dojo.tools.burp.parser import BurpParser
 
 
 class TestBurpParser(DojoTestCase):
-
     def test_burp_with_one_vuln_has_one_finding(self):
-        with open(path.join(path.dirname(__file__), "../scans/burp/one_finding.xml")) as test_file:
+        with open(
+            path.join(path.dirname(__file__), "../scans/burp/one_finding.xml")
+        ) as test_file:
             parser = BurpParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -20,7 +22,9 @@ class TestBurpParser(DojoTestCase):
             self.assertEqual(3, len(findings[0].unsaved_endpoints))
 
     def test_burp_with_multiple_vulns_has_multiple_findings(self):
-        with open(path.join(path.dirname(__file__), "../scans/burp/seven_findings.xml")) as test_file:
+        with open(
+            path.join(path.dirname(__file__), "../scans/burp/seven_findings.xml")
+        ) as test_file:
             parser = BurpParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -31,10 +35,17 @@ class TestBurpParser(DojoTestCase):
                 finding = findings[0]
                 self.assertEqual("5245344", finding.vuln_id_from_tool)
                 self.assertEqual("Info", finding.severity)
-                self.assertEqual("Frameable response (potential Clickjacking)", finding.title)
+                self.assertEqual(
+                    "Frameable response (potential Clickjacking)", finding.title
+                )
 
     def test_burp_with_one_vuln_with_blank_response(self):
-        with open(path.join(path.dirname(__file__), "../scans/burp/one_finding_with_blank_response.xml")) as test_file:
+        with open(
+            path.join(
+                path.dirname(__file__),
+                "../scans/burp/one_finding_with_blank_response.xml",
+            )
+        ) as test_file:
             parser = BurpParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -50,7 +61,9 @@ class TestBurpParser(DojoTestCase):
             self.assertEqual("High", findings[0].severity)
 
     def test_burp_with_one_vuln_with_cwe(self):
-        with open(path.join(path.dirname(__file__), "../scans/burp/one_finding_with_cwe.xml")) as test_file:
+        with open(
+            path.join(path.dirname(__file__), "../scans/burp/one_finding_with_cwe.xml")
+        ) as test_file:
             parser = BurpParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -66,7 +79,9 @@ class TestBurpParser(DojoTestCase):
             self.assertEqual("Info", findings[0].severity)
 
     def test_burp_issue4399(self):
-        with open(path.join(path.dirname(__file__), "../scans/burp/issue4399.xml")) as test_file:
+        with open(
+            path.join(path.dirname(__file__), "../scans/burp/issue4399.xml")
+        ) as test_file:
             parser = BurpParser()
             findings = parser.get_findings(test_file, Test())
             for finding in findings:
@@ -84,7 +99,9 @@ class TestBurpParser(DojoTestCase):
                 finding = findings[10]
                 self.assertEqual("3648136005422773248", finding.unique_id_from_tool)
                 self.assertEqual("4197376", finding.vuln_id_from_tool)
-                self.assertEqual("Input returned in response (reflected)", finding.title)
+                self.assertEqual(
+                    "Input returned in response (reflected)", finding.title
+                )
                 self.assertEqual(20, finding.cwe)
                 self.assertEqual("Info", finding.severity)
             with self.subTest(i=19):

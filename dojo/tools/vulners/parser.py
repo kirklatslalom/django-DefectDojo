@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import logging
 from cvss.cvss3 import CVSS3
@@ -8,13 +9,7 @@ from dojo.tools.vulners.importer import VulnersImporter
 logger = logging.getLogger(__name__)
 
 
-vulners_severity_mapping = {
-    1: 'Info',
-    2: 'Low',
-    3: 'Medium',
-    4: 'High',
-    5: 'Critical'
-}
+vulners_severity_mapping = {1: "Info", 2: "Low", 3: "Medium", 4: "High", 5: "Critical"}
 
 
 class VulnersParser(object):
@@ -65,23 +60,25 @@ class VulnersParser(object):
                 mitigation=component.get("cumulativeFix"),
                 static_finding=False,  # by definition
                 dynamic_finding=True,  # by definition
-                vuln_id_from_tool='VNS/' + id,
-                component_name=agentfqdn if agentfqdn != 'unknown' else agentip
+                vuln_id_from_tool="VNS/" + id,
+                component_name=agentfqdn if agentfqdn != "unknown" else agentip,
             )
 
             endpoint = Endpoint(host=agentip)
             finding.unsaved_endpoints = [endpoint]
-            finding.unsaved_vulnerability_ids = ['VNS/' + id]
+            finding.unsaved_vulnerability_ids = ["VNS/" + id]
 
             # CVE List
-            cve_ids = vuln.get('cvelist', [])
+            cve_ids = vuln.get("cvelist", [])
             if len(cve_ids):
                 for cve in cve_ids:
-                    finding.unsaved_vulnerability_ids.append('VNS/' + cve)
+                    finding.unsaved_vulnerability_ids.append("VNS/" + cve)
 
             # CVSSv3 vector
-            if vuln.get('cvss3'):
-                finding.cvssv3 = CVSS3(vuln.get('cvss3', {}).get('cvssV3', {}).get('vectorString', '')).clean_vector()
+            if vuln.get("cvss3"):
+                finding.cvssv3 = CVSS3(
+                    vuln.get("cvss3", {}).get("cvssV3", {}).get("vectorString", "")
+                ).clean_vector()
 
             # References
             references = f"**Vulners ID** \nhttps://vulners.com/{family}/{id} \n"
@@ -90,7 +87,7 @@ class VulnersParser(object):
                 for cveid in cve_ids:
                     references += f"https://vulners.com/cve/{cveid}  \n"
 
-            external_references = vuln.get('references', [])
+            external_references = vuln.get("references", [])
             if len(external_references):
                 references += "**External References** \n"
                 for ref in external_references:

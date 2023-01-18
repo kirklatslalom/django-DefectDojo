@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.gitlab_container_scan.parser import GitlabContainerScanParser
@@ -6,14 +7,18 @@ from dojo.models import Test
 
 class TestGitlabContainerScanParser(DojoTestCase):
     def test_gitlab_container_scan_parser_with_no_vuln_has_no_findings(self):
-        testfile = open("unittests/scans/gitlab_container_scan/gl-container-scanning-report-0-vuln.json")
+        testfile = open(
+            "unittests/scans/gitlab_container_scan/gl-container-scanning-report-0-vuln.json"
+        )
         parser = GitlabContainerScanParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
         self.assertEqual(0, len(findings))
 
     def test_gitlab_container_scan_parser_with_one_vuln_has_one_findings(self):
-        testfile = open("unittests/scans/gitlab_container_scan/gl-container-scanning-report-1-vuln.json")
+        testfile = open(
+            "unittests/scans/gitlab_container_scan/gl-container-scanning-report-1-vuln.json"
+        )
         parser = GitlabContainerScanParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -30,10 +35,15 @@ class TestGitlabContainerScanParser(DojoTestCase):
         self.assertEqual("CVE-2019-3462", first_finding.unsaved_vulnerability_ids[0])
         self.assertEqual("High", first_finding.severity)
         self.assertEqual("Upgrade apt from 1.4.8 to 1.4.9", first_finding.mitigation)
-        self.assertEqual("df52bc8ce9a2ae56bbcb0c4ecda62123fbd6f69b", first_finding.unique_id_from_tool)
+        self.assertEqual(
+            "df52bc8ce9a2ae56bbcb0c4ecda62123fbd6f69b",
+            first_finding.unique_id_from_tool,
+        )
 
     def test_gitlab_container_scan_parser_with_five_vuln_has_five_findings(self):
-        testfile = open("unittests/scans/gitlab_container_scan/gl-container-scanning-report-5-vuln.json")
+        testfile = open(
+            "unittests/scans/gitlab_container_scan/gl-container-scanning-report-5-vuln.json"
+        )
         parser = GitlabContainerScanParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -55,7 +65,10 @@ class TestGitlabContainerScanParser(DojoTestCase):
         with self.subTest(i=0):
             finding = findings[0]
             self.assertIsNone(finding.date)
-            self.assertEqual("busybox: remote attackers may execute arbitrary code if netstat is used", finding.title)
+            self.assertEqual(
+                "busybox: remote attackers may execute arbitrary code if netstat is used",
+                finding.title,
+            )
             self.assertEqual("busybox", finding.component_name)
             self.assertEqual("1.34.1-r4", finding.component_version)
             self.assertEqual(1, len(finding.unsaved_vulnerability_ids))
@@ -68,7 +81,8 @@ class TestGitlabContainerScanParser(DojoTestCase):
             finding = findings[50]
             self.assertIsNone(finding.date)
             self.assertEqual(
-                "openssl: Infinite loop in BN_mod_sqrt() reachable when parsing certificates", finding.title
+                "openssl: Infinite loop in BN_mod_sqrt() reachable when parsing certificates",
+                finding.title,
             )
             self.assertEqual("libretls", finding.component_name)
             self.assertEqual("3.3.4-r2", finding.component_version)

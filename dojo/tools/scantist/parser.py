@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import json
 
@@ -25,7 +26,9 @@ class ScantistParser(object):
         return scan_type
 
     def get_description_for_scan_types(self, scan_type):
-        return "Import Scantist Dependency Scanning Report vulnerabilities in JSON format."
+        return (
+            "Import Scantist Dependency Scanning Report vulnerabilities in JSON format."
+        )
 
     def get_findings(self, file, test):
         tree = json.load(file)
@@ -37,6 +40,7 @@ class ScantistParser(object):
         test:
         : purpose: parses input rawto extract dojo
         """
+
         def get_findings(vuln, test):
             """
             vuln : input vulnerable node
@@ -49,7 +53,7 @@ class ScantistParser(object):
             component_name = vuln.get("Library")
             component_version = vuln.get("Library Version")
 
-            title = vulnerability_id + '|' + component_name
+            title = vulnerability_id + "|" + component_name
             description = vuln.get("Description")
 
             file_path = vuln.get("File Path", "")
@@ -65,12 +69,12 @@ class ScantistParser(object):
                 severity=severity,
                 cwe=cwe,
                 mitigation=mitigation,
-                references=vuln.get('references'),
+                references=vuln.get("references"),
                 file_path=file_path,
                 component_name=component_name,
                 component_version=component_version,
-                severity_justification=vuln.get('severity_justification'),
-                dynamic_finding=True
+                severity_justification=vuln.get("severity_justification"),
+                dynamic_finding=True,
             )
             if vulnerability_id:
                 finding.unsaved_vulnerability_ids = [vulnerability_id]
@@ -82,7 +86,9 @@ class ScantistParser(object):
 
             if item:
                 hash_key = hashlib.md5(
-                    node.get('Public ID').encode('utf-8') + node.get('Library').encode('utf-8')).hexdigest()
+                    node.get("Public ID").encode("utf-8")
+                    + node.get("Library").encode("utf-8")
+                ).hexdigest()
 
                 items[hash_key] = get_findings(node, test)
 

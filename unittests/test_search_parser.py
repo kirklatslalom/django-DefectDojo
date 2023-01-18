@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .dojo_test_case import DojoTestCase
 from dojo.search.views import parse_search_query
 

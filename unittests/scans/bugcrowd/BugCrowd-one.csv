@@ -9,7 +9,7 @@ This would not be possible via web access because of CSRF protections. On mobile
 
 BigCorp users can be tricked into having their sensitive data stolen via access to deeplinks by third party apps. Any document that is auto-downloaded can be ex-filtrated with the PoC provided. It's very common for apps to have sessions stay open after login and this exploit chain leverages that feature.
 
-So far I've been able to expose the following information from my account: Full name, Account type, Account ID number, Sales Code, Phone Number. 
+So far I've been able to expose the following information from my account: Full name, Account type, Account ID number, Sales Code, Phone Number.
 
 ---
 
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
-            
+
         } catch(Exception e)  {
             System.out.println(""is exception raises during sending mail"" + e);
         }
@@ -185,7 +185,7 @@ Some ideas on how to fix this.
 
 1. Check origin of the deeplink request and only allow requests from bigcorp.com or mobile apps
 
-2. Download files to a non-public directory like `/data/data/com.bigcorp.mobile.android.bigcorp/cache/*` 
+2. Download files to a non-public directory like `/data/data/com.bigcorp.mobile.android.bigcorp/cache/*`
 
 3. Restrict app's protected folders and URIs
 

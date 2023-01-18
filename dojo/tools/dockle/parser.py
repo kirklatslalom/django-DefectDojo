@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import hashlib
 from dojo.models import Finding
@@ -27,22 +28,20 @@ class DockleParser(object):
     def get_findings(self, filename, test):
         data = json.load(filename)
         dupes = {}
-        for item in data['details']:
-            code = item['code']
-            dockle_severity = item['level']
-            title = item['title']
+        for item in data["details"]:
+            code = item["code"]
+            dockle_severity = item["level"]
+            title = item["title"]
             if dockle_severity == "IGNORE":
                 continue
             if dockle_severity in self.SEVERITY:
                 severity = self.SEVERITY[dockle_severity]
             else:
                 severity = "Medium"
-            description = item.get('alerts', [])
+            description = item.get("alerts", [])
             description.sort()
             description = "\n".join(description)
-            dupe_key = hashlib.sha256(
-                (code + title).encode("utf-8")
-            ).hexdigest()
+            dupe_key = hashlib.sha256((code + title).encode("utf-8")).hexdigest()
 
             if dupe_key in dupes:
                 finding = dupes[dupe_key]

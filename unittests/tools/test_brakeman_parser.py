@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from ..dojo_test_case import DojoTestCase
 from dojo.tools.brakeman.parser import BrakemanParser
 from dojo.models import Test
 
 
 class TestBrakemanParser(DojoTestCase):
-
     def test_parse_file_no_finding(self):
         testfile = open("unittests/scans/brakeman/no_finding.json")
         parser = BrakemanParser()

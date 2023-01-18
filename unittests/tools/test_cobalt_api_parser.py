@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 from ..dojo_test_case import DojoTestCase, get_unit_tests_path
@@ -8,7 +9,6 @@ from dojo.models import Test, Test_Type
 
 
 class TestCobaltApiParser(DojoTestCase):
-
     def test_cobalt_api_parser_with_no_vuln_has_no_findings(self):
         testfile = open("unittests/scans/cobalt_api/cobalt_api_zero_vul.json")
         parser = CobaltApiParser()
@@ -27,7 +27,9 @@ class TestCobaltApiParser(DojoTestCase):
         self.assertEqual(3, len(findings))
 
     def test_cobalt_api_parser_with_carried_over_finding(self):
-        testfile = open("unittests/scans/cobalt_api/cobalt_api_one_vul_carried_over.json")
+        testfile = open(
+            "unittests/scans/cobalt_api/cobalt_api_one_vul_carried_over.json"
+        )
         parser = CobaltApiParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -167,7 +169,9 @@ class TestCobaltApiParser(DojoTestCase):
         self.assertTrue(finding.dynamic_finding)
 
     def test_cobalt_api_parser_with_out_of_scope_finding(self):
-        testfile = open("unittests/scans/cobalt_api/cobalt_api_one_vul_out_of_scope.json")
+        testfile = open(
+            "unittests/scans/cobalt_api/cobalt_api_one_vul_out_of_scope.json"
+        )
         parser = CobaltApiParser()
         findings = parser.get_findings(testfile, Test())
         testfile.close()
@@ -278,14 +282,16 @@ class TestCobaltApiParser(DojoTestCase):
         self.assertFalse(finding.static_finding)
         self.assertTrue(finding.dynamic_finding)
 
-    @patch('dojo.tools.cobalt_api.importer.CobaltApiImporter.get_findings')
+    @patch("dojo.tools.cobalt_api.importer.CobaltApiImporter.get_findings")
     def test_cobalt_api_parser_with_api(self, mock):
-        with open(get_unit_tests_path() + '/scans/cobalt_api/cobalt_api_many_vul.json') as api_findings_file:
+        with open(
+            get_unit_tests_path() + "/scans/cobalt_api/cobalt_api_many_vul.json"
+        ) as api_findings_file:
             api_findings = json.load(api_findings_file)
         mock.return_value = api_findings
 
         test_type = Test_Type()
-        test_type.name = 'test_type'
+        test_type.name = "test_type"
         test = Test()
         test.test_type = test_type
 
@@ -294,6 +300,6 @@ class TestCobaltApiParser(DojoTestCase):
 
         mock.assert_called_with(test)
         self.assertEqual(3, len(findings))
-        self.assertEqual(findings[0].title, 'SQL Injection')
-        self.assertEqual(findings[1].title, 'Cross Site Scripting')
-        self.assertEqual(findings[2].title, 'Missing firewall')
+        self.assertEqual(findings[0].title, "SQL Injection")
+        self.assertEqual(findings[1].title, "Cross Site Scripting")
+        self.assertEqual(findings[2].title, "Missing firewall")

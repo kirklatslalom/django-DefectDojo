@@ -1,6 +1,6 @@
-{  
-   "vulnerabilities":[  
-      {  
+{
+   "vulnerabilities":[
+      {
          "name":"WS-2009-0001",
          "type":"WS",
          "severity":"low",
@@ -11,7 +11,7 @@
          "description":"Not all \"business\" method implementations of public API in Apache Commons Codec 1.x are thread safe, which might disclose the wrong data or allow an attacker to change non-private fields.\n\nUpdated 2018-10-07 - an additional review by WhiteSource research team could not indicate on a clear security vulnerability",
          "project":"okhttp",
          "product":"okhttp",
-         "library":{  
+         "library":{
             "keyUuid":"9aa14ac7-e415-4ed5-be35-bd2957fd7fd2",
             "filename":"commons-codec-1.3.jar",
             "name":"Codec",
