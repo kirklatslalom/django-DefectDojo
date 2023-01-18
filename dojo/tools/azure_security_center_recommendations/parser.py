@@ -61,7 +61,9 @@ class AzureSecurityCenterRecommendationsParser(object):
                 title = f"{resource_name} - {recommendation_display_name}"
 
                 if controls.startswith('{"'):
-                    controls = controls[controls.find('{"') + 2 : controls.find('":')]
+                    controls = controls[
+                        controls.find('{"') + 2 : controls.find('":')  # noqa: E203
+                    ]  # noqa: E203
 
                 description = (
                     "**Recommendation:** "

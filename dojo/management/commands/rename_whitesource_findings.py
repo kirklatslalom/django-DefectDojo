@@ -34,7 +34,7 @@ def rename_whitesource_finding():
         lib_name_end = re.search(
             "\\*\\*Library Description\\*\\*", finding.description
         ).span(0)[0]
-        lib_name = finding.description[lib_name_begin : lib_name_end - 1]
+        lib_name = finding.description[lib_name_begin : lib_name_end - 1]  # noqa: E203
         if finding.cve is None:
             finding.title = "CVE-None | " + lib_name
         else:

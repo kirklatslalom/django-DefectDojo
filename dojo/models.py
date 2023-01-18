@@ -748,7 +748,7 @@ class System_Settings(models.Model):
         blank=False,
         verbose_name=_("Password must contain one special character"),
         help_text=_(
-            "Requires user passwords to contain at least one special character (()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?)."
+            "Requires user passwords to contain at least one special character (()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?)."  # noqa: W605
         ),
     )  # noqa W605
     lowercase_character_required = models.BooleanField(
@@ -2251,7 +2251,7 @@ class Endpoint(models.Model):
                 )
                 if not self.protocol:
                     if clean_url[: len(dummy_scheme) + 3] == (dummy_scheme + "://"):
-                        clean_url = clean_url[len(dummy_scheme) + 3 :]
+                        clean_url = clean_url[len(dummy_scheme) + 3 :]  # noqa: E203
                     else:
                         raise ValueError(
                             "hyperlink lib did not create URL as was expected"

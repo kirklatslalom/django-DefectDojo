@@ -178,7 +178,9 @@ def construct_imported_message(
 def chunk_list(list):
     chunk_size = settings.ASYNC_FINDING_IMPORT_CHUNK_SIZE
     # Break the list of parsed findings into "chunk_size" lists
-    chunk_list = [list[i : i + chunk_size] for i in range(0, len(list), chunk_size)]
+    chunk_list = [
+        list[i : i + chunk_size] for i in range(0, len(list), chunk_size)  # noqa: E203
+    ]  # noqa: E203
     logger.debug(
         "IMPORT_SCAN: Split endpoints into "
         + str(len(chunk_list))

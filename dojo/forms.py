@@ -3193,7 +3193,7 @@ def get_jira_issue_template_dir_choices():
 
         for dirname in dirnames:
             if base_dir.startswith(settings.TEMPLATE_DIR_PREFIX):
-                base_dir = base_dir[len(settings.TEMPLATE_DIR_PREFIX) :]
+                base_dir = base_dir[len(settings.TEMPLATE_DIR_PREFIX) :]  # noqa: E203
             template_dir_list.append((os.path.join(base_dir, dirname), dirname))
 
     logger.debug("templates: %s", template_dir_list)
