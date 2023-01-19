@@ -28,6 +28,7 @@ repos:
           - id: check-merge-conflict
           - id: check-yaml
           - id: check-json
+          - id: pretty-format-json
           - id: debug-statements
           - id: trailing-whitespace
           - id: requirements-txt-fixer
