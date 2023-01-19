@@ -59,8 +59,9 @@ class NumberValidator(object):
 
     def validate(self, password, user=None):
         if (
-            not re.findall("\d", password) and self.settings.number_character_required
-        ):  # noqa W605
+            not re.findall("\d", password)  # noqa W605
+            and self.settings.number_character_required
+        ):
             raise ValidationError(
                 ugettext("Password must contain at least 1 digit, 0-9."),
                 code="password_no_number",
@@ -115,14 +116,14 @@ class SymbolValidator(object):
 
     def validate(self, password, user=None):
         contains_special_character = re.findall(
-            "[()[\]{}|\\`~!@#$%^&*_\-+=;:'\",<>./?]", password
-        )  # noqa W605
+            "[()[\]{}|\\`~!@#$%^&*_\-+=;:'\",<>./?]", password  # noqa W605
+        )
         if not contains_special_character and self.settings.special_character_required:
             raise ValidationError(
                 ugettext(
                     "The password must contain at least 1 special character, "
-                    + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?."
-                ),  # noqa W605
+                    + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?."  # noqa W605
+                ),
                 code="password_no_symbol",
             )
         else:
@@ -132,6 +133,6 @@ class SymbolValidator(object):
         return (
             ugettext(
                 "The password must contain at least 1 special character, "
-                + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?."
+                + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?."  # noqa W605
             ),
-        )  # noqa W605
+        )
