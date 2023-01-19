@@ -62,10 +62,6 @@ repos:
             args:
                 - --args=--path=aws
             verbose: true
-    - repo: https://github.com/jazzband/pip-tools
-      rev: 6.12.1
-      hooks:
-          - id: pip-compile
     - repo: https://github.com/aws-cloudformation/cfn-python-lint
       rev: v0.72.5
       hooks:
