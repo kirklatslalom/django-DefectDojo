@@ -22,8 +22,8 @@ repos:
       rev: 22.12.0
       hooks:
           - id: black
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.4.0
+    - repo: https://github.com/kirklatslalom/pre-commit-hooks.git
+      rev: v4.4.1
       hooks:
           - id: check-merge-conflict
           - id: check-yaml
@@ -35,6 +35,7 @@ repos:
           - id: fix-encoding-pragma
           - id: end-of-file-fixer
           - id: detect-private-key
+            args: [--ignore=unittest]
           - id: check-executables-have-shebangs
     # - repo: https://github.com/Lucas-C/pre-commit-hooks-bandit
     #  rev: v1.0.6
